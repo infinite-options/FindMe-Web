@@ -1,0 +1,54 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Grid, Button } from "@mui/material";
+import GoogleSignup from "./GoogleSignup";
+import EmailLogin2 from "../../Icons/EmailLogin2.png";
+export default function Signup() {
+  const navigate = useNavigate();
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: "5%",
+      }}
+    >
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        border={1}
+        margin={5}
+      >
+        <div style={{ marginTop: "3rem" }}> Create a Profile</div>
+        <div style={{ marginTop: "3rem" }}> We recommend Google</div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <GoogleSignup />
+        </div>
+        <div style={{ marginTop: "3rem" }}> Sign up using Email</div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src={EmailLogin2}
+            onClick={() => navigate("/email-signup")}
+            style={{ width: "2.7rem", margin: "2rem" }}
+          />{" "}
+        </div>
+      </Grid>
+    </div>
+  );
+}
