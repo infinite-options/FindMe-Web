@@ -16,8 +16,10 @@
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "install": "^0.13.0",
+    "jwt-decode": "^3.1.2",
     "npm": "^8.1.0",
     "react": "^17.0.2",
+    "react-bootstrap": "^2.7.4",
     "react-code-input": "^3.10.1",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
@@ -27,8 +29,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
