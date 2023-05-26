@@ -28,10 +28,10 @@ export default function EventParticulars() {
 
     const saveEventObject = () => {
         console.log("** ", retrievedEventObject)
-        retrievedEventObject['eventStartDate'] = selectedStartDate;
-        retrievedEventObject['eventEndDate'] = selectedEndDate;
-        retrievedEventObject['eventStartTime'] = startTime;
-        retrievedEventObject['eventEndTime'] = endTime;
+        retrievedEventObject['eventStartDate'] = new Date(selectedStartDate).toLocaleDateString("en-US");
+        retrievedEventObject['eventEndDate'] = new Date(selectedEndDate).toLocaleDateString("en-US");
+        retrievedEventObject['eventStartTime'] = new Date(startTime).toLocaleTimeString("en-US");;
+        retrievedEventObject['eventEndTime'] = new Date(endTime).toLocaleTimeString("en-US");;
         localStorage.setItem('event', JSON.stringify(retrievedEventObject));
         console.log("66 ",retrievedEventObject)
     }

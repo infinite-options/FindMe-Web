@@ -1,8 +1,12 @@
-import React, { Component } from 'react';
-import { Grid } from "@mui/material";
+import React, { Component, useEffect, useState } from 'react';
+import { Grid, Typography, Button, TextField } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
+export default function EventList() {
+    const navigate = useNavigate();
+    const [eventList, setEventList] = useState('');
 
-export default function PageOutlineTemplate() {
     return (
         <>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>

@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Typography, Button } from "@mui/material";
+import axios from "axios";
 
 export default function EventCreationConfirmation() {
     const navigate = useNavigate();
+    const getQRcodeLink = 'https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/preEventQuestionnaire&size=150x150';
+
     return (
         <>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
@@ -19,6 +22,9 @@ export default function EventCreationConfirmation() {
                 <Typography variant="h5" sx={{mt: 2}}> Confirmation </Typography>
                 <Typography sx={{mt: 2}}> Registration Code : </Typography>
                 <Typography sx={{mt: 2}}> QR Code : </Typography>
+                
+                <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />
+
                 <footer> Confirmation sent to 'email/mobile' </footer>
             </Grid>
         </div>

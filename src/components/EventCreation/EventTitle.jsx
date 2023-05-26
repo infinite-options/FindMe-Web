@@ -46,7 +46,7 @@ export default function EventTitle() {
                 variant="outlined" sx={{ width: '30%', mt: 2}} 
                 value={eventDescription}
                 onChange={handleDescInput}/>
-                <Button onClick={() => { navigate('/eventPhotoUpload'); saveEventObject()}}> Next</Button>
+                <Button onClick={() => { navigate('/eventCapacity'); saveEventObject()}}> Next</Button>
 
                 </Grid>
         </div>

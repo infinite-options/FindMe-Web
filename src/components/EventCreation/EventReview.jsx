@@ -8,7 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
-const BASE_URL = 'http://localhost:4000/api/v2/';
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function EventReview() {
     const navigate = useNavigate();
@@ -45,13 +45,13 @@ export default function EventReview() {
                 
                 <List sx={{ bgcolor: 'background.paper', mt:2 }}>
                     <ListItem sx={{ border: '1px solid grey' }}>                    
-                        <Typography>Event Type : {retrievedEventObject.eventTitle}</Typography>
+                        <Typography>Event Title : {retrievedEventObject.eventTitle}</Typography>
                             <IconButton component="span" onClick={() => { navigate('/eventTitle') }}>
                             <EditIcon fontSize="small"/>
                         </IconButton>
                     </ListItem>
                     <ListItem sx={{ border: '1px solid grey' }}>                    
-                        <Typography>Event Type : {retrievedEventObject.eventDescription}</Typography>
+                        <Typography>Event Description : {retrievedEventObject.eventDescription}</Typography>
                             <IconButton component="span" onClick={() => { navigate('/eventTitle') }}>
                             <EditIcon fontSize="small"/>
                         </IconButton>
@@ -71,7 +71,21 @@ export default function EventReview() {
                     </ListItem>
                     
                     <ListItem sx={{ border: '1px solid grey' }}>                    
-                        <Typography>Event Start Date : {retrievedEventObject.eventStartDate}</Typography>
+                    <Typography>Event Capacity : {retrievedEventObject.eventCapacity}</Typography>
+                    <IconButton component="span" onClick={() => { navigate('/eventCapacity') }}>
+                        <EditIcon fontSize="small"/>
+                    </IconButton>
+                    </ListItem>
+                    
+                    <ListItem sx={{ border: '1px solid grey' }}>                    
+                        <Typography>Event Starts on {retrievedEventObject.eventStartDate}   at {retrievedEventObject.eventStartTime}</Typography>
+                        <IconButton component="span" onClick={() => { navigate('/eventParticulars') }}>
+                            <EditIcon fontSize="small"/>
+                        </IconButton>
+                    </ListItem>
+                    
+                    <ListItem sx={{ border: '1px solid grey' }}>                    
+                        <Typography>Event Ends on {retrievedEventObject.eventEndDate}   at {retrievedEventObject.eventEndTime}</Typography>
                         <IconButton component="span" onClick={() => { navigate('/eventParticulars') }}>
                             <EditIcon fontSize="small"/>
                         </IconButton>

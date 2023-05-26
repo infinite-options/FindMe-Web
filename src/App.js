@@ -12,10 +12,13 @@ import EventVisibility from "./components/EventCreation/EventVisibility";
 import EventParticulars from "./components/EventCreation/EventParticulars";
 import EventLocation from "./components/EventCreation/EventLocation";
 import EventTitle from "./components/EventCreation/EventTitle";
+import EventCapacity from "./components/EventCreation/EventCapacity";
 import EventPhotoUpload from "./components/EventCreation/EventPhotoUpload";
 import PreEventQuestionnaire from "./components/EventCreation/PreEventQuestionnaire";
 import EventReview from "./components/EventCreation/EventReview";
 import EventCreationConfirmation from "./components/EventCreation/EventCreationConfirmation";
+
+import Searchbox from "./components/EventCreation/Searchbox";
 function App() {
 
   return (
@@ -28,6 +31,7 @@ function App() {
           <Route exact path='/eventParticulars' element={<EventParticulars />} />
           <Route exact path='/eventLocation' element={<EventLocation />} />
           <Route exact path='/eventTitle' element={<EventTitle />} />
+          <Route exact path='/eventCapacity' element={<EventCapacity />} />
           <Route exact path='/eventPhotoUpload' element={<EventPhotoUpload />} />
           <Route exact path='/preEventQuestionnaire' element={<PreEventQuestionnaire />} />
           <Route exact path='/eventReview' element={<EventReview />} />
@@ -36,7 +40,9 @@ function App() {
           <Route exact path='/pre-registration' element={<PreRegMenu />} />
           <Route exact path='/registrationCode' element={<RegCode />} />
           <Route exact path='/eventProfile' element={<EventProfile />} />
-          <Route exact path='/findEventByDate' element={<FindEventByDate/>} />
+          <Route exact path='/findEventByDate' element={<FindEventByDate />} />
+          
+          <Route exact path='/searchbox' element={<Searchbox/>} />
 
         </Routes>
       </Router>

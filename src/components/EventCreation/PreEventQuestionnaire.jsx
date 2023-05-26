@@ -18,6 +18,7 @@ export default function PreEventQuestionnaire() {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [question, setQuestion] = useState('')
     const options = [
+        'What is your current role?',
         'What Are You Really Good At?',
         'What are a Few Things you Need?',
         'What is one thing you are really proud of?',

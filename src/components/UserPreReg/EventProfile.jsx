@@ -27,7 +27,7 @@ export default function EventProfile(props) {
                 event_organizer_uid :{location.state.event.event_organizer_uid} <br/>
                 event_start_time :{location.state.event.event_start_time} <br/>
                 event_end_time :{location.state.event.event_end_time} <br/>
-                <Button variant="outlined" sx={{mt: 2}} onClick={() => proceedToRegister()}> Proceed </Button>
+                <Button variant="outlined" sx={{mt: 2}} onClick={() => proceedToRegister()}> Proceed to Registration </Button>
 
             </Grid>
         </div>
