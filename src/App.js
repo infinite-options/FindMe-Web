@@ -12,6 +12,7 @@ import EventVisibility from "./components/EventCreation/EventVisibility";
 import EventParticulars from "./components/EventCreation/EventParticulars";
 import EventLocation from "./components/EventCreation/EventLocation";
 import EventTitle from "./components/EventCreation/EventTitle";
+import EventCapacity from "./components/EventCreation/EventCapacity";
 import EventPhotoUpload from "./components/EventCreation/EventPhotoUpload";
 import PreEventQuestionnaire from "./components/EventCreation/PreEventQuestionnaire";
 import EventReview from "./components/EventCreation/EventReview";
@@ -30,6 +31,8 @@ import FindEvent from "./components/FindEvents/FindEvent";
 import EventList from "./components/FindEvents/EventList";
 import CurrentRSVPs from "./components/FindEvents/CurrentRSVPs";
 import EventByType from "./components/FindEvents/EventByType";
+import Searchbox from "./components/EventCreation/Searchbox";
+
 function App() {
   return (
     <div className="hero-container">
@@ -62,6 +65,25 @@ function App() {
           <Route exact path="/event-list" element={<EventList />} />
           <Route exact path="/current-rsvps" element={<CurrentRSVPs />} />
           <Route exact path="/event-bytype" element={<EventByType />} />
+          <Route exact path='/welcome' element={<Welcome />} />
+          <Route exact path='/eventTypeMenu' element={<EventTypeMenu />} />
+          <Route exact path='/eventVisibility' element={<EventVisibility />} />
+          <Route exact path='/eventParticulars' element={<EventParticulars />} />
+          <Route exact path='/eventLocation' element={<EventLocation />} />
+          <Route exact path='/eventTitle' element={<EventTitle />} />
+          <Route exact path='/eventPhotoUpload' element={<EventPhotoUpload />} />
+          <Route exact path='/preEventQuestionnaire' element={<PreEventQuestionnaire />} />
+          <Route exact path='/eventReview' element={<EventReview />} />
+          <Route exact path='/eventCreationConfirmation' element={<EventCreationConfirmation />} />
+          <Route exact path='/eventCapacity' element={<EventCapacity />} />
+
+          <Route exact path='/pre-registration' element={<PreRegMenu />} />
+          <Route exact path='/registrationCode' element={<RegCode />} />
+          <Route exact path='/eventProfile' element={<EventProfile />} />
+          <Route exact path='/findEventByDate' element={<FindEventByDate />} />
+          
+          <Route exact path='/searchbox' element={<Searchbox/>} />
+
         </Routes>
       </Router>
     </div>

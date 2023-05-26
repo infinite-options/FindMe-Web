@@ -3,7 +3,7 @@ import { Grid, Typography, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4000/api/v2/";
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function RegCode() {
   const navigate = useNavigate();
