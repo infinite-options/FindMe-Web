@@ -16,7 +16,7 @@ import EventPhotoUpload from "./components/EventCreation/EventPhotoUpload";
 import PreEventQuestionnaire from "./components/EventCreation/PreEventQuestionnaire";
 import EventReview from "./components/EventCreation/EventReview";
 import EventCreationConfirmation from "./components/EventCreation/EventCreationConfirmation";
-import PreRegSuccess from "./components/UserAfterPreReg/PreRegSuccess";
+import PreRegistration from "./components/UserAfterPreReg/PreRegistration";
 import PreRegQuestionnare from "./components/UserAfterPreReg/PreRegQuestionnare";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
@@ -26,6 +26,10 @@ import EmailSignupForm from "./components/Signup/EmailSignupForm";
 import RegistrationConfirmation from "./components/UserAfterPreReg/RegistrationConfirmation";
 import CreateFindMeCard from "./components/UserAfterPreReg/CreateFindMeCard";
 import ValidationCode from "./components/Signup/ValidationCode";
+import FindEvent from "./components/FindEvents/FindEvent";
+import EventList from "./components/FindEvents/EventList";
+import CurrentRSVPs from "./components/FindEvents/CurrentRSVPs";
+import EventByType from "./components/FindEvents/EventByType";
 function App() {
   return (
     <div className="hero-container">
@@ -63,8 +67,8 @@ function App() {
           <Route exact path="/findEventByDate" element={<FindEventByDate />} />
           <Route
             exact
-            path="/registration-success"
-            element={<PreRegSuccess />}
+            path="/preregistration-event"
+            element={<PreRegistration />}
           />
           <Route
             exact
@@ -91,6 +95,10 @@ function App() {
             element={<EmailSignupForm />}
           />
           <Route exact path="/validate-code" element={<ValidationCode />} />
+          <Route exact path="/find-event" element={<FindEvent />} />
+          <Route exact path="/event-list" element={<EventList />} />
+          <Route exact path="/current-rsvps" element={<CurrentRSVPs />} />
+          <Route exact path="/event-bytype" element={<EventByType />} />
         </Routes>
       </Router>
     </div>

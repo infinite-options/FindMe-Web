@@ -1,8 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Button, Box } from "@mui/material";
-export default function PreRegSuccess() {
+export default function PreRegistration() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const event = state.event;
+  console.log(event);
   return (
     <div
       style={{
@@ -22,18 +25,18 @@ export default function PreRegSuccess() {
       >
         {" "}
         <div style={{ margin: "1rem 0rem" }}> You are Pregistering for</div>
-        <Box style={{ margin: "2rem 0rem" }}>
-          Save the Gray Spotted Whales Color Blind Networking Event
-        </Box>
+        <Box style={{ margin: "2rem 0rem" }}>{event.event_title}</Box>
         <div style={{ margin: "1rem 0rem", textAlign: "center" }}>
-          January 18, 2024 <br />
-          8pm - 9pm
+          {event.event_description}
         </div>
+        {event.event_start_time} - {event.event_end_time}
         <Button
           variant="outlined"
           color="info"
           style={{ margin: "2rem 0rem" }}
-          onClick={() => navigate("/registration-questionnare")}
+          onClick={() =>
+            navigate("/registration-questionnare", { state: { event: event } })
+          }
         >
           Next
         </Button>

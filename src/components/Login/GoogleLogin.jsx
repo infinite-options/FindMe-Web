@@ -106,7 +106,7 @@ function GoogleLogin(props) {
     }
   }
   const socialGoogle = async (e, u) => {
-    navigate("/registration-confirmation", {
+    navigate(path, {
       state: {
         email: e,
         user: u,

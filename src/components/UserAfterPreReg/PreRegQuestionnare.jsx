@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Button, Box } from "@mui/material";
+import axios from "axios";
 
 export default function PreRegQuestionnare() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const event = state.event;
   const [index, setIndex] = useState(0);
   const [showAllQuestions, setShowAllQuestions] = useState(0);
-  const [questions, setQuestions] = useState([
-    { id: 1, question: "What Help Do You Need?", answer: "" },
-    { id: 2, question: "What is your Area of Expertise?", answer: "" },
-    { id: 3, question: "If you had a magic wand...", answer: "" },
-    { id: 4, question: "Trivia Question", answer: "" },
-  ]);
+  const [questions, setQuestions] = useState(
+    JSON.parse(event.pre_event_questionnaire)
+  );
   const current = questions[index];
 
-  const handleChange = (e) => {
+  const handleChange = (e, id) => {
     setQuestions((prevCards) =>
       prevCards.map((card, i) => {
         if (i === index) {
@@ -41,7 +41,27 @@ export default function PreRegQuestionnare() {
       })
     );
   };
-  console.log(questions);
+
+  const CreateEventReg = () => {
+    let eventObj = {
+      eu_user_id: "100-000035",
+      eu_event_id: event.event_uid,
+      eu_qas: questions,
+    };
+    axios
+      .post(
+        "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/EventUser",
+        eventObj
+      )
+      .then((response) => {
+        console.log(response);
+        navigate("/login", {
+          state: {
+            path: "/registration-confirmation",
+          },
+        });
+      });
+  };
   return (
     <div
       style={{
@@ -75,7 +95,9 @@ export default function PreRegQuestionnare() {
                 return (
                   <div>
                     <div>
-                      <p>{quest.question}</p>
+                      <p style={{ maxWidth: "250px", wordWrap: "break-word" }}>
+                        {quest.question}
+                      </p>
                     </div>
                     <div>
                       <textarea
@@ -93,13 +115,14 @@ export default function PreRegQuestionnare() {
                 variant="outlined"
                 color="primary"
                 style={{ margin: "2rem 0rem" }}
-                onClick={() =>
-                  navigate("/login", {
-                    state: {
-                      path: "/registration-confirmation",
-                    },
-                  })
-                }
+                onClick={() => CreateEventReg()}
+                // onClick={() =>
+                //   navigate("/login", {
+                //     state: {
+                //       path: "/registration-confirmation",
+                //     },
+                //   })
+                // }
               >
                 Confirm Answers
               </Button>
@@ -116,7 +139,7 @@ export default function PreRegQuestionnare() {
               <div>
                 <p>{current.question}</p>
               </div>
-              <div>
+              <div key={index}>
                 <textarea
                   rows={15}
                   name="answer"
