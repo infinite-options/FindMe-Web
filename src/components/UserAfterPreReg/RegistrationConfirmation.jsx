@@ -1,11 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Button, Box } from "@mui/material";
 import { small } from "../../styles";
+import axios from "axios";
 export default function RegistrationConfirmation() {
   const navigate = useNavigate();
+  const [showCreateCard, setShowCreateCard] = useState(false);
+  const [showEditCard, setShowEditCard] = useState(false);
+  const [userDetails, setUserDetails] = useState([]);
   const { state } = useLocation();
   let email = state.email;
+  let user = state.user;
+
+  const GetUserProfile = async () => {
+    let x = {
+      profile_user_id: user.user_uid,
+    };
+
+    axios
+      .get(
+        `https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/CheckUserProfile/${user.user_uid}`
+      )
+      .then((response) => {
+        if (response.data.message === "User Profile Doest Not Exist") {
+          setShowCreateCard(true);
+        } else {
+          setShowEditCard(true);
+        }
+        setUserDetails(response.data.result[0]);
+      });
+  };
+
+  useEffect(() => {
+    GetUserProfile();
+  }, []);
+
   return (
     <div
       style={{
@@ -28,27 +57,59 @@ export default function RegistrationConfirmation() {
           {" "}
           Registration Confirmation
         </div>
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "2rem 0rem",
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              navigate("/create-card", { state: { email: email } })
-            }
+        {showCreateCard ? (
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "2rem 0rem",
+            }}
           >
-            {" "}
-            Create FindMe Card
-          </Button>
-          <p style={small}>Better than a business card</p>
-        </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                navigate("/create-card", {
+                  state: { email: email, user: userDetails, edit: false },
+                })
+              }
+            >
+              {" "}
+              Create FindMe Card
+            </Button>
+            <p style={small}>Better than a business card</p>
+          </Box>
+        ) : (
+          ""
+        )}
+        {showEditCard ? (
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "2rem 0rem",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                navigate("/create-card", {
+                  state: { email: email, user: userDetails, edit: true },
+                })
+              }
+            >
+              {" "}
+              Edit FindMe Card
+            </Button>
+          </Box>
+        ) : (
+          ""
+        )}
         <Box
           style={{
             display: "flex",

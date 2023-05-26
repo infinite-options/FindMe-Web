@@ -63,13 +63,11 @@ export default function EmailSignup() {
         user
       )
       .then((response) => {
-        console.log(response);
         if (response.data.message == "User already exists") {
           setUserAlreadyExists(!userAlreadyExists);
           return;
           // add validation
         } else {
-          console.log(response.data.result);
           navigate("/validate-code", {
             state: {
               user_uid: response.data.result.user_uid,

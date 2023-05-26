@@ -17,66 +17,143 @@ export default function CreateFindMeCard() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const email = state.email;
-  console.log(email);
-  const [userDetails, setUserDetails] = useState([]);
+  const userDetails = state.user;
+  const edit = state.edit;
+  // const [userDetails, setUserDetails] = useState([]);
   const [displayCard, setDisplayCard] = useState(false);
   const [agreement, setAgreement] = useState(false);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [company, setCompany] = useState("");
   const [title, setTitle] = useState("");
   const [catchPhrase, setCatchPhrase] = useState("");
   const imageState = useState([]);
-  const fetchUserDetails = () => {
-    axios
-      .get(
-        `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserDetailsByEmail/FINDME/${email}`
-      )
-      .then((response) => {
-        console.log(response.data.result);
-        setUserDetails(response.data.result[0]);
-      });
+  const loadUserDetails = () => {
+    setFirstName(userDetails.first_name);
+    setLastName(userDetails.last_name);
+    setPhoneNumber(userDetails.phone_number);
+    setCompany(userDetails.company);
+    setTitle(userDetails.title);
+    setCatchPhrase(userDetails.catch_phrase);
+
+    loadImages();
+  };
+  const loadImages = async () => {
+    const files = [];
+    const images = JSON.parse(userDetails.images);
+    if (images !== null && images.length > 0) {
+      for (let i = 0; i < images.length; i++) {
+        files.push({
+          index: i,
+          image: images[i],
+          file: null,
+          coverPhoto: i === 0,
+        });
+      }
+      imageState[1](files);
+    }
   };
   useEffect(() => {
-    fetchUserDetails();
-  }, []);
+    if (userDetails) {
+      loadUserDetails();
+    }
+  }, [userDetails]);
   const UpdateProfile = async () => {
-    const body = {
-      profile_user_id: userDetails.user_uid,
-      title: title,
-      company: company,
-      catch_phrase: catchPhrase,
-    };
-    const files = imageState[0];
-    let i = 0;
-    for (const file of imageState[0]) {
-      let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
-      if (file.file !== null) {
-        body[key] = file.file;
-      } else {
-        body[key] = file.image;
+    if (edit) {
+      const body = {
+        profile_uid: userDetails.profile_uid,
+        profile_user_id: userDetails.user_uid,
+        title: title,
+        company: company,
+        catch_phrase: catchPhrase,
+      };
+      const files = imageState[0];
+      let i = 0;
+      for (const file of imageState[0]) {
+        let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
+        if (file.file !== null) {
+          body[key] = file.file;
+        } else {
+          body[key] = file.image;
+        }
       }
-    }
-    let headers = {
-      "content-type": "application/json",
-    };
-    let requestBody = JSON.stringify(body);
-    if (files !== null) {
-      headers = {};
-      requestBody = new FormData();
-      for (const key of Object.keys(body)) {
-        requestBody.append(key, body[key]);
-      }
-    }
 
-    const response = await fetch(
-      "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserProfile",
-      {
-        method: "POST",
-        headers: headers,
-        body: requestBody,
+      let headers = {
+        "content-type": "application/json",
+      };
+      let requestBody = JSON.stringify(body);
+      if (files !== null) {
+        headers = {};
+        requestBody = new FormData();
+        for (const key of Object.keys(body)) {
+          requestBody.append(key, body[key]);
+        }
       }
-    );
 
-    const data = await response.json();
+      const response = await fetch(
+        "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserProfile",
+        {
+          method: "PUT",
+          headers: headers,
+          body: requestBody,
+        }
+      );
+
+      const data = await response.json();
+      navigate("/registration-confirmation", {
+        state: {
+          email: email,
+          user: userDetails,
+        },
+      });
+    } else {
+      const body = {
+        profile_user_id: userDetails.user_uid,
+        title: title,
+        company: company,
+        catch_phrase: catchPhrase,
+      };
+      const files = imageState[0];
+      let i = 0;
+      for (const file of imageState[0]) {
+        let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
+        if (file.file !== null) {
+          body[key] = file.file;
+        } else {
+          body[key] = file.image;
+        }
+      }
+      let headers = {
+        "content-type": "application/json",
+      };
+      let requestBody = JSON.stringify(body);
+      if (files !== null) {
+        headers = {};
+        requestBody = new FormData();
+        for (const key of Object.keys(body)) {
+          requestBody.append(key, body[key]);
+        }
+      }
+
+      const response = await fetch(
+        "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserProfile",
+        {
+          method: "POST",
+          headers: headers,
+          body: requestBody,
+        }
+      );
+
+      const data = await response.json();
+      navigate("/registration-confirmation", {
+        state: {
+          email: email,
+          user: userDetails,
+        },
+      });
+    }
   };
   const handleChange = (e) => {
     setAgreement(e.target.checked);
@@ -176,12 +253,12 @@ export default function CreateFindMeCard() {
               <TextField
                 InputLabelProps={{ shrink: true }}
                 fullWidth
-                disabled
                 variant="outlined"
                 size="small"
                 margin="normal"
                 label="First Name"
-                value={userDetails.first_name}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
               />
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -190,8 +267,8 @@ export default function CreateFindMeCard() {
                 size="small"
                 margin="normal"
                 label="Last Name"
-                value={userDetails.last_name}
-                disabled
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
               />
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -210,8 +287,8 @@ export default function CreateFindMeCard() {
                 size="small"
                 margin="normal"
                 label="Phone Number"
-                value={userDetails.phone_number}
-                disabled
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <TextField
                 InputLabelProps={{ shrink: true }}

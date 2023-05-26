@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { unix } from "dayjs";
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
@@ -18,22 +19,22 @@ function GoogleLogin(props) {
       let email = userObject.email;
       setNewEmail(email);
       let user_id = "";
+      let user = [];
       axios
         .get(
-          `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserToken/FINDME/${email}`
+          `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserSocialLogin/FINDME/${email}`
         )
         .then((response) => {
-          console.log(response["data"]["result"].length);
-          if (response["data"]["result"].length === 0) {
+          if (response["data"]["message"] === "Email ID doesnt exist") {
             setUserDoesntExist(true);
             return;
           } else {
-            setAccessToken(response["data"]["result"][0]["google_auth_token"]);
+            user = response.data.result;
+            setAccessToken(response.data.result.google_auth_token);
 
-            user_id = response["data"]["result"][0]["user_uid"];
-            var old_at = response["data"]["result"][0]["google_auth_token"];
-            var refreshToken =
-              response["data"]["result"][0]["google_refresh_token"];
+            user_id = response.data.result.user_uid;
+            var old_at = response.data.result.google_auth_token;
+            var refreshToken = response.data.result.google_refresh_token;
 
             fetch(
               `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`,
@@ -99,15 +100,16 @@ function GoogleLogin(props) {
               .catch((err) => {
                 console.log(err);
               });
-            socialGoogle(email);
+            socialGoogle(email, user);
           }
         });
     }
   }
-  const socialGoogle = async (e) => {
+  const socialGoogle = async (e, u) => {
     navigate("/registration-confirmation", {
       state: {
         email: e,
+        user: u,
       },
     });
   };

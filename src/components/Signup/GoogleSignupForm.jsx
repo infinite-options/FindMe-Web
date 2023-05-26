@@ -20,7 +20,6 @@ function GoogleSignupForm(props) {
   const navigate = useNavigate();
   const location = useLocation();
   let user = location.state.user;
-  console.log(user);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -47,7 +46,6 @@ function GoogleSignupForm(props) {
         u
       )
       .then((response) => {
-        console.log(response);
         if (response.data.message == "User already exists") {
           setUserAlreadyExists(!userAlreadyExists);
           return;

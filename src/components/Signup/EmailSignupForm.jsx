@@ -33,7 +33,6 @@ export default function EmailSignupForm() {
         updatedUser
       )
       .then((response) => {
-        console.log(response);
         navigate("/login", {
           state: {
             path: "",

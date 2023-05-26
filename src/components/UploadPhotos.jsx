@@ -19,7 +19,7 @@ function UploadPhotos(props) {
     reader.onload = (e) => {
       file.image = e.target.result;
       const newImageState = [...imageState];
-      newImageState.push(file);
+      newImageState[0] = file;
       setImageState(newImageState);
     };
     reader.readAsDataURL(file.file);
@@ -27,10 +27,10 @@ function UploadPhotos(props) {
 
   const addFile = (e) => {
     const file = {
-      index: imageState.length,
+      index: 0,
       file: e.target.files[0],
       image: null,
-      coverPhoto: imageState.length === 0,
+      coverPhoto: true,
     };
     let isLarge = file.file.size > 5000000;
     let file_size = (file.file.size / 1000000).toFixed(1);
@@ -44,7 +44,6 @@ function UploadPhotos(props) {
 
     readImage(file);
   };
-  console.log(imageState);
   return (
     <div
       style={{
@@ -86,15 +85,13 @@ function UploadPhotos(props) {
             {file.file === null ? (
               <img
                 key={Date.now()}
-                // src={file.image}
-                src={file.image}
+                src={`${file.image}?${Date.now()}`}
                 style={{ ...tileImg, objectFit: "cover" }}
               />
             ) : (
               <img
                 key={Date.now()}
                 src={file.image}
-                // src={`${file.image}?${Date.now()}`}
                 style={{ ...tileImg, objectFit: "cover" }}
               />
             )}

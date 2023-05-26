@@ -79,19 +79,16 @@ export default function EmailLogin(props) {
                     return byte.toString(16).padStart(2, "0");
                   })
                   .join("");
-                console.log(hashedPassword);
                 let loginObject = {
                   email: email,
                   password: hashedPassword,
                 };
-                console.log(JSON.stringify(loginObject));
                 axios
                   .post(
                     "https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/Login/FINDME",
                     loginObject
                   )
                   .then((response) => {
-                    console.log(response.data.message);
                     if (response.data.message === "Incorrect password") {
                       setErrorMessage(response.data.message);
                       // setShowSpinner(false);
@@ -102,7 +99,9 @@ export default function EmailLogin(props) {
                       // setShowSpinner(false);
                     } else if (response.data.message === "Login successful") {
                       setErrorMessage("");
-                      navigate(path, { state: { email: email } });
+                      navigate(path, {
+                        state: { email: email, user: response.data.result },
+                      });
                     }
                   })
                   .catch((err) => {
