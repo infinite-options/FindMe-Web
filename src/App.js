@@ -35,65 +35,28 @@ function App() {
     <div className="hero-container">
       <Router>
         <Routes>
-          <Route exact path="/welcome" element={<Welcome />} />
+          <Route exact path="/" element={<Welcome />} />
           <Route exact path="/eventTypeMenu" element={<EventTypeMenu />} />
           <Route exact path="/eventVisibility" element={<EventVisibility />} />
-          <Route
-            exact
-            path="/eventParticulars"
-            element={<EventParticulars />}
-          />
+          <Route exact path="/eventParticulars" element={<EventParticulars />} />
           <Route exact path="/eventLocation" element={<EventLocation />} />
           <Route exact path="/eventTitle" element={<EventTitle />} />
-          <Route
-            exact
-            path="/eventPhotoUpload"
-            element={<EventPhotoUpload />}
-          />
-          <Route
-            exact
-            path="/preEventQuestionnaire"
-            element={<PreEventQuestionnaire />}
-          />
+          <Route exact path="/eventPhotoUpload" element={<EventPhotoUpload />} />
+          <Route exact path="/preEventQuestionnaire" element={<PreEventQuestionnaire />} />
           <Route exact path="/eventReview" element={<EventReview />} />
-          <Route
-            exact
-            path="/eventCreationConfirmation"
-            element={<EventCreationConfirmation />}
-          />
+          <Route exact path="/eventCreationConfirmation" element={<EventCreationConfirmation />} />
           <Route exact path="/pre-registration" element={<PreRegMenu />} />
           <Route exact path="/registrationCode" element={<RegCode />} />
           <Route exact path="/eventProfile" element={<EventProfile />} />
           <Route exact path="/findEventByDate" element={<FindEventByDate />} />
-          <Route
-            exact
-            path="/preregistration-event"
-            element={<PreRegistration />}
-          />
-          <Route
-            exact
-            path="/registration-questionnare"
-            element={<PreRegQuestionnare />}
-          />
-          <Route
-            exact
-            path="/registration-confirmation"
-            element={<RegistrationConfirmation />}
-          />
+          <Route exact path="/preregistration-event" element={<PreRegistration />} />
+          <Route exact path="/registration-questionnare" element={<PreRegQuestionnare />} />
+          <Route exact path="/registration-confirmation" element={<RegistrationConfirmation />} />
           <Route exact path="/create-card" element={<CreateFindMeCard />} />
-          <Route exact path="/login" element={<Login />} />{" "}
-          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/login" element={<Login />} /> <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/email-signup" element={<EmailSignup />} />
-          <Route
-            exact
-            path="/google-signup-form"
-            element={<GoogleSignupForm />}
-          />
-          <Route
-            exact
-            path="/email-signup-form"
-            element={<EmailSignupForm />}
-          />
+          <Route exact path="/google-signup-form" element={<GoogleSignupForm />} />
+          <Route exact path="/email-signup-form" element={<EmailSignupForm />} />
           <Route exact path="/validate-code" element={<ValidationCode />} />
           <Route exact path="/find-event" element={<FindEvent />} />
           <Route exact path="/event-list" element={<EventList />} />
