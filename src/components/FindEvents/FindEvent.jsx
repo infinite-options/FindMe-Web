@@ -39,7 +39,7 @@ export default function FindEvent() {
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
-          //   onClick={() => navigate("/findEventByDate")}
+          onClick={() => navigate("/event-byorganizer")}
         >
           Find By Organizer
         </Button>

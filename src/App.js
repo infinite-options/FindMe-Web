@@ -32,7 +32,7 @@ import EventList from "./components/FindEvents/EventList";
 import CurrentRSVPs from "./components/FindEvents/CurrentRSVPs";
 import EventByType from "./components/FindEvents/EventByType";
 import Searchbox from "./components/EventCreation/Searchbox";
-import PreConfirmation from "./components/UserAfterPreReg/PreConfirmation";
+import EventsByOrganizer from "./components/FindEvents/EventsByOrganizer";
 
 function App() {
   return (
@@ -79,7 +79,6 @@ function App() {
             path="/registration-questionnare"
             element={<PreRegQuestionnare />}
           />
-          <Route exact path="/pr-confirmation" element={<PreConfirmation />} />
           <Route
             exact
             path="/registration-confirmation"
@@ -103,7 +102,12 @@ function App() {
           <Route exact path="/find-event" element={<FindEvent />} />
           <Route exact path="/event-list" element={<EventList />} />
           <Route exact path="/current-rsvps" element={<CurrentRSVPs />} />
-          <Route exact path="/event-bytype" element={<EventByType />} />
+          <Route exact path="/event-bytype" element={<EventByType />} />{" "}
+          <Route
+            exact
+            path="/event-byorganizer"
+            element={<EventsByOrganizer />}
+          />
           <Route exact path="/welcome" element={<Welcome />} />
           <Route exact path="/eventTypeMenu" element={<EventTypeMenu />} />
           <Route exact path="/eventVisibility" element={<EventVisibility />} />
