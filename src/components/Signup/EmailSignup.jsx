@@ -10,14 +10,15 @@ import {
   TextField,
   FormLabel,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import UserAlreadyExistsModal from "./UserAlreadyExistsModal";
 import { formatPhoneNumber } from "../../helper";
 import { red, boldSmall } from "../../styles";
 
 export default function EmailSignup() {
   const navigate = useNavigate();
-
+  const { state } = useLocation();
+  const path = state.path;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -73,6 +74,7 @@ export default function EmailSignup() {
               user_uid: response.data.result.user_uid,
               email: response.data.result.email,
               user: response.data.result,
+              path: path,
             },
           });
         }

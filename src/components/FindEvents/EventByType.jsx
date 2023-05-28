@@ -3,6 +3,9 @@ import axios from "axios";
 import { Grid, Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
+
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 export default function EventByType() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
@@ -11,9 +14,7 @@ export default function EventByType() {
   const [isLoading, setIsLoading] = useState(true);
   const getEventsByType = () => {
     axios
-      .get(
-        `https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/GetEvents?event_type=${eventType}`
-      )
+      .get(BASE_URL + `/GetEvents?event_type=${eventType}`)
       .then((response) => {
         console.log(response.data.result);
         setEvents(response.data.result);

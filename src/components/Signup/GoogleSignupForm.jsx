@@ -18,8 +18,9 @@ let SCOPES =
 
 function GoogleSignupForm(props) {
   const navigate = useNavigate();
-  const location = useLocation();
-  let user = location.state.user;
+  const { state } = useLocation();
+  let user = state.user;
+  let path = state.path;
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -102,7 +103,7 @@ function GoogleSignupForm(props) {
                 onClick={() =>
                   navigate("/login", {
                     state: {
-                      path: "",
+                      path: path,
                     },
                   })
                 }

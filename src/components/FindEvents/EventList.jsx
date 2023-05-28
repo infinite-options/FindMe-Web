@@ -3,18 +3,17 @@ import axios from "axios";
 import { Grid, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
+
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 export default function EventList() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const getAllEvents = () => {
-    axios
-      .get(
-        "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/GetEvents"
-      )
-      .then((response) => {
-        console.log(response.data.result);
-        setEvents(response.data.result);
-      });
+    axios.get(BASE_URL + "/GetEvents").then((response) => {
+      console.log(response.data.result);
+      setEvents(response.data.result);
+    });
   };
   useEffect(() => {
     getAllEvents();

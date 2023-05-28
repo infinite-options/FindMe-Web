@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Button, Box } from "@mui/material";
 import { small } from "../../styles";
 import axios from "axios";
+
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 export default function RegistrationConfirmation() {
   const navigate = useNavigate();
   const [showCreateCard, setShowCreateCard] = useState(false);
@@ -18,9 +21,7 @@ export default function RegistrationConfirmation() {
     };
 
     axios
-      .get(
-        `https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/CheckUserProfile/${user.user_uid}`
-      )
+      .get(BASE_URL + `/CheckUserProfile/${user.user_uid}`)
       .then((response) => {
         if (response.data.message === "User Profile Doest Not Exist") {
           setShowCreateCard(true);

@@ -147,34 +147,7 @@ export default function EmailLogin(props) {
   const onCancel = () => {
     setpassModal(false);
   };
-  // const onCancelModal = () => {
-  //   setUserDoesntExist(false);
-  // };
-  // const UserDoesNotExistModal = (props) => {
-  //   return (
-  //     <Dialog
-  //       open={userDoesntExist}
-  //       aria-labelledby="alert-dialog-title"
-  //       aria-describedby="alert-dialog-description"
-  //     >
-  //       <DialogTitle id="alert-dialog-title">User Does Not Exists</DialogTitle>
-  //       <DialogContent>
-  //         <DialogContentText id="alert-dialog-description">
-  //           The user does not exist! Please Signup!
-  //         </DialogContentText>
-  //       </DialogContent>
-  //       <DialogActions>
-  //         <Button type="submit" onClick={onCancelModal}>
-  //           Cancel
-  //         </Button>
 
-  //         <Button type="submit" onClick={() => navigate("/signup")}>
-  //           Signup
-  //         </Button>
-  //       </DialogActions>
-  //     </Dialog>
-  //   );
-  // };
   const required =
     errorMessage === "Please fill out all fields" ? (
       <span style={red} className="ms-1">
@@ -192,13 +165,6 @@ export default function EmailLogin(props) {
         paddingTop: "5%",
       }}
     >
-      {/* {userDoesntExist && (
-        <UserDoesNotExistModal
-          isOpen={userDoesntExist}
-          onCancel={onCancelModal}
-        />
-      )} */}
-
       <PasswordModal isOpen={passModal} onCancel={onCancel} />
       {showForm ? (
         <div

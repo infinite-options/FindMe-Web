@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Button, Box } from "@mui/material";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 export default function PreRegQuestionnare() {
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -48,19 +50,14 @@ export default function PreRegQuestionnare() {
       eu_event_id: event.event_uid,
       eu_qas: questions,
     };
-    axios
-      .post(
-        "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/EventUser",
-        eventObj
-      )
-      .then((response) => {
-        console.log(response);
-        navigate("/login", {
-          state: {
-            path: "/registration-confirmation",
-          },
-        });
+    axios.post(BASE_URL + "/EventUser", eventObj).then((response) => {
+      console.log(response);
+      navigate("/login", {
+        state: {
+          path: "/registration-confirmation",
+        },
       });
+    });
   };
   return (
     <div

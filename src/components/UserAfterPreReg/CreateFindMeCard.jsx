@@ -12,7 +12,7 @@ import axios from "axios";
 import Checkbox from "@mui/material/Checkbox";
 import UploadPhotos from "../UploadPhotos";
 import { tileImg } from "../../styles";
-
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 export default function CreateFindMeCard() {
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -92,14 +92,11 @@ export default function CreateFindMeCard() {
         }
       }
 
-      const response = await fetch(
-        "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserProfile",
-        {
-          method: "PUT",
-          headers: headers,
-          body: requestBody,
-        }
-      );
+      const response = await fetch(BASE_URL + "/UserProfile", {
+        method: "PUT",
+        headers: headers,
+        body: requestBody,
+      });
 
       const data = await response.json();
       navigate("/registration-confirmation", {
@@ -137,14 +134,11 @@ export default function CreateFindMeCard() {
         }
       }
 
-      const response = await fetch(
-        "https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserProfile",
-        {
-          method: "POST",
-          headers: headers,
-          body: requestBody,
-        }
-      );
+      const response = await fetch(BASE_URL + "/UserProfile", {
+        method: "POST",
+        headers: headers,
+        body: requestBody,
+      });
 
       const data = await response.json();
       navigate("/registration-confirmation", {

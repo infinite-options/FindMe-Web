@@ -34,6 +34,7 @@ export default function Login() {
       <UserDoesNotExistModal
         isOpen={userDoesntExist}
         onCancel={onCancelModal}
+        path={path}
       />
 
       <Grid
@@ -86,7 +87,7 @@ export default function Login() {
               variant="outlined"
               color="info"
               style={{ margin: "6rem 0rem" }}
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/signup", { state: { path: path } })}
             >
               Signup
             </Button>

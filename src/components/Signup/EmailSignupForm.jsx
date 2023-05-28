@@ -16,6 +16,7 @@ export default function EmailSignupForm() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const user_uid = state.user_uid;
+  const path = state.path;
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -35,7 +36,7 @@ export default function EmailSignupForm() {
       .then((response) => {
         navigate("/login", {
           state: {
-            path: "",
+            path: path,
           },
         });
       });

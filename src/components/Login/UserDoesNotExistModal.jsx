@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
 
 export default function UserDoesNotExistModal(props) {
-  const { isOpen, onCancel } = props;
+  const { isOpen, onCancel, path } = props;
   const navigate = useNavigate();
   return (
     <Dialog
@@ -27,7 +27,10 @@ export default function UserDoesNotExistModal(props) {
           Cancel
         </Button>
 
-        <Button type="submit" onClick={() => navigate("/signup")}>
+        <Button
+          type="submit"
+          onClick={() => navigate("/signup", { state: { path: path } })}
+        >
           Signup
         </Button>
       </DialogActions>
