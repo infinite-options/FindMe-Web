@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
 
 export default function UserAlreadyExistsModal(props) {
-  const { isOpen, onCancel, email } = props;
+  const { isOpen, onCancel, email, path, eventObj } = props;
   const navigate = useNavigate();
   return (
     <Dialog
@@ -27,7 +27,12 @@ export default function UserAlreadyExistsModal(props) {
           Cancel
         </Button>
 
-        <Button type="submit" onClick={() => navigate("/login")}>
+        <Button
+          type="submit"
+          onClick={() =>
+            navigate("/login", { state: { path: path, eventObj: eventObj } })
+          }
+        >
           Login
         </Button>
       </DialogActions>

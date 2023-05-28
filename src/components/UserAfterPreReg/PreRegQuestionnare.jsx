@@ -28,36 +28,38 @@ export default function PreRegQuestionnare() {
     );
   };
   const handleChangeLater = (e, ind) => {
-    console.log(ind);
+    // console.log(ind);
     setQuestions((prevCards) =>
       prevCards.map((card, i) => {
-        console.log(i, ind);
+        // console.log(i, ind);
         if (i === ind) {
-          console.log("===");
-          console.log(e.target.name, e.target.value);
+          // console.log("===");
+          // console.log(e.target.name, e.target.value);
           return { ...card, [e.target.name]: e.target.value };
         } else {
           return card;
         }
-        console.log(card);
+        // console.log(card);
       })
     );
   };
 
   const CreateEventReg = () => {
     let eventObj = {
-      eu_user_id: "100-000035",
+      eu_user_id: "",
       eu_event_id: event.event_uid,
       eu_qas: questions,
     };
-    axios.post(BASE_URL + "/EventUser", eventObj).then((response) => {
-      console.log(response);
-      navigate("/login", {
-        state: {
-          path: "/registration-confirmation",
-        },
-      });
+    navigate("/login", {
+      state: {
+        path: "/registration-confirmation",
+        eventObj: eventObj,
+      },
     });
+    // axios.post(BASE_URL + "/EventUser", eventObj).then((response) => {
+    //   console.log(response);
+
+    // });
   };
   return (
     <div

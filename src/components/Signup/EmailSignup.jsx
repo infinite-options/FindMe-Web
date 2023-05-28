@@ -19,6 +19,7 @@ export default function EmailSignup() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const path = state.path;
+  const eventObj = state.eventObj !== undefined ? state.eventObj : "";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -75,6 +76,7 @@ export default function EmailSignup() {
               email: response.data.result.email,
               user: response.data.result,
               path: path,
+              eventObj: eventObj,
             },
           });
         }
@@ -112,7 +114,14 @@ export default function EmailSignup() {
               </p>
               <Button
                 variant="primary"
-                onClick={() => navigate("/login")}
+                onClick={() =>
+                  navigate("/login", {
+                    state: {
+                      path: path,
+                      eventObj: eventObj,
+                    },
+                  })
+                }
                 className="mb-4"
               >
                 Login

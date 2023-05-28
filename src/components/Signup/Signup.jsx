@@ -7,6 +7,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const path = state.path;
+  const eventObj = state.eventObj !== undefined ? state.eventObj : "";
   return (
     <div
       style={{
@@ -33,7 +34,7 @@ export default function Signup() {
             alignItems: "center",
           }}
         >
-          <GoogleSignup path={path} />
+          <GoogleSignup path={path} eventObj={eventObj} />
         </div>
         <div style={{ marginTop: "3rem" }}> Sign up using Email</div>
         <div
@@ -45,7 +46,11 @@ export default function Signup() {
         >
           <img
             src={EmailLogin2}
-            onClick={() => navigate("/email-signup", { state: { path: path } })}
+            onClick={() =>
+              navigate("/email-signup", {
+                state: { path: path, eventObj: eventObj },
+              })
+            }
             style={{ width: "2.7rem", margin: "2rem" }}
           />{" "}
         </div>

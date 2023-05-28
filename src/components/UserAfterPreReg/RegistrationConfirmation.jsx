@@ -14,6 +14,7 @@ export default function RegistrationConfirmation() {
   const { state } = useLocation();
   let email = state.email;
   let user = state.user;
+  const eventObj = state.eventObj !== undefined ? state.eventObj : "";
 
   const GetUserProfile = async () => {
     let x = {
@@ -31,9 +32,19 @@ export default function RegistrationConfirmation() {
         setUserDetails(response.data.result[0]);
       });
   };
+  const addEventUser = () => {
+    let eObj = eventObj;
+    eObj.eu_user_id = user.user_uid;
+    axios.post(BASE_URL + "/EventUser", eObj).then((response) => {
+      console.log(response);
+    });
+  };
 
   useEffect(() => {
     GetUserProfile();
+    if (eventObj) {
+      addEventUser();
+    }
   }, []);
 
   return (

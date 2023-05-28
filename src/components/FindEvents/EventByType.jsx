@@ -16,7 +16,6 @@ export default function EventByType() {
     axios
       .get(BASE_URL + `/GetEvents?event_type=${eventType}`)
       .then((response) => {
-        console.log(response.data.result);
         setEvents(response.data.result);
         setIsLoading(false);
       });

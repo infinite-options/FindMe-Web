@@ -21,6 +21,7 @@ function GoogleSignupForm(props) {
   const { state } = useLocation();
   let user = state.user;
   let path = state.path;
+  let eventObj = state.eventObj !== undefined ? state.eventObj : "";
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -104,6 +105,7 @@ function GoogleSignupForm(props) {
                   navigate("/login", {
                     state: {
                       path: path,
+                      eventObj: eventObj,
                     },
                   })
                 }
