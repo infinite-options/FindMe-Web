@@ -33,6 +33,8 @@ import CurrentRSVPs from "./components/FindEvents/CurrentRSVPs";
 import EventByType from "./components/FindEvents/EventByType";
 import Searchbox from "./components/EventCreation/Searchbox";
 import EventsByOrganizer from "./components/FindEvents/EventsByOrganizer";
+import EditEventsReg from "./components/UserAfterPreReg/EditEventsReg";
+import EventsRegDetails from "./components/UserAfterPreReg/EventsRegDetails";
 
 function App() {
   return (
@@ -83,7 +85,9 @@ function App() {
             exact
             path="/registration-confirmation"
             element={<RegistrationConfirmation />}
-          />
+          />{" "}
+          <Route exact path="/edit-event" element={<EditEventsReg />} />{" "}
+          <Route exact path="/event-details" element={<EventsRegDetails />} />
           <Route exact path="/create-card" element={<CreateFindMeCard />} />
           <Route exact path="/login" element={<Login />} />{" "}
           <Route exact path="/signup" element={<Signup />} />

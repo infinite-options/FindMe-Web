@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Button, Box } from "@mui/material";
-import { small } from "../../styles";
 import axios from "axios";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContentText from "@mui/material/DialogContentText";
+import { small } from "../../styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -10,6 +15,8 @@ export default function RegistrationConfirmation() {
   const navigate = useNavigate();
   const [showCreateCard, setShowCreateCard] = useState(false);
   const [showEditCard, setShowEditCard] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [event, setEvent] = useState([]);
   const [userDetails, setUserDetails] = useState([]);
   const { state } = useLocation();
   let email = state.email;
@@ -34,10 +41,23 @@ export default function RegistrationConfirmation() {
   };
   const addEventUser = () => {
     let eObj = eventObj;
+
     eObj.eu_user_id = user.user_uid;
-    axios.post(BASE_URL + "/EventUser", eObj).then((response) => {
-      console.log(response);
-    });
+    axios
+      .get(
+        BASE_URL +
+          `/CheckAlreadyRegistered/${eObj.eu_event_id},${eObj.eu_user_id}`
+      )
+      .then((response) => {
+        if (response.data.message === "Already Registered") {
+          setEvent(response.data.result[0]);
+          setShowModal(true);
+        } else {
+          axios.post(BASE_URL + "/EventUser", eObj).then((response) => {
+            console.log(response);
+          });
+        }
+      });
   };
 
   useEffect(() => {
@@ -47,6 +67,34 @@ export default function RegistrationConfirmation() {
     }
   }, []);
 
+  const alreadyRegistered = () => {
+    return (
+      <Dialog
+        open={showModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Already Registered</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You have already registered for this event
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              navigate("/event-details", {
+                state: { event: event },
+              });
+            }}
+            color="primary"
+          >
+            Go to Event Details
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
   return (
     <div
       style={{
@@ -64,7 +112,7 @@ export default function RegistrationConfirmation() {
         justify="center"
         border={1}
       >
-        {" "}
+        {alreadyRegistered()}
         <div style={{ margin: "1rem 0rem", fontSize: "18px" }}>
           {" "}
           Registration Confirmation

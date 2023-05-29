@@ -56,10 +56,6 @@ export default function PreRegQuestionnare() {
         eventObj: eventObj,
       },
     });
-    // axios.post(BASE_URL + "/EventUser", eventObj).then((response) => {
-    //   console.log(response);
-
-    // });
   };
   return (
     <div

@@ -49,6 +49,7 @@ export default function EventList() {
                 margin: "1rem 0rem",
                 padding: "1rem",
                 width: "400px",
+                cursor: "pointer",
               }}
               onClick={() => {
                 navigate("/preregistration-event", {
