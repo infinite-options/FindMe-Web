@@ -8,7 +8,7 @@ import ListItem from "@mui/material/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 
-const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+const BASE_URL = "http://localhost:4000/api/v2/";
 
 export default function EventReview() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function EventReview() {
     console.log(event);
 
         axios
-          .post(BASE_URL + `addEvent`, retrievedEventObject)
+          .post(BASE_URL + `AddEvent`, retrievedEventObject)
             .then((response) => {
                 console.log("event created")
                 navigate('/eventCreationConfirmation');
