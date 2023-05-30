@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import * as ReactBootStrap from "react-bootstrap";
-import {
-  Grid,
-  Button,
-  FormControl,
-  FormGroup,
-  FormControlLabel,
-  TextField,
-  FormLabel,
-} from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContentText from "@mui/material/DialogContentText";
+import { Grid, Button, FormControl, FormGroup, TextField } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import PasswordModal from "./PasswordModal";
 import EmailLogin2 from "../../Icons/EmailLogin2.png";
@@ -25,6 +12,7 @@ export default function EmailLogin(props) {
 
   const { userDoesntExist, setUserDoesntExist, path, showForm, setShowForm } =
     props;
+  const eventObj = props.eventObj !== undefined ? props.eventObj : "";
   const [passModal, setpassModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -100,7 +88,11 @@ export default function EmailLogin(props) {
                     } else if (response.data.message === "Login successful") {
                       setErrorMessage("");
                       navigate(path, {
-                        state: { email: email, user: response.data.result },
+                        state: {
+                          email: email,
+                          user: response.data.result,
+                          eventObj: eventObj,
+                        },
                       });
                     }
                   })
@@ -138,7 +130,6 @@ export default function EmailLogin(props) {
           setpassModal(true);
         }
         if (response.data.code === 280) {
-          console.log(response);
           setErrorMessage("No account found with that email.");
           return;
         }
@@ -147,34 +138,7 @@ export default function EmailLogin(props) {
   const onCancel = () => {
     setpassModal(false);
   };
-  // const onCancelModal = () => {
-  //   setUserDoesntExist(false);
-  // };
-  // const UserDoesNotExistModal = (props) => {
-  //   return (
-  //     <Dialog
-  //       open={userDoesntExist}
-  //       aria-labelledby="alert-dialog-title"
-  //       aria-describedby="alert-dialog-description"
-  //     >
-  //       <DialogTitle id="alert-dialog-title">User Does Not Exists</DialogTitle>
-  //       <DialogContent>
-  //         <DialogContentText id="alert-dialog-description">
-  //           The user does not exist! Please Signup!
-  //         </DialogContentText>
-  //       </DialogContent>
-  //       <DialogActions>
-  //         <Button type="submit" onClick={onCancelModal}>
-  //           Cancel
-  //         </Button>
 
-  //         <Button type="submit" onClick={() => navigate("/signup")}>
-  //           Signup
-  //         </Button>
-  //       </DialogActions>
-  //     </Dialog>
-  //   );
-  // };
   const required =
     errorMessage === "Please fill out all fields" ? (
       <span style={red} className="ms-1">
@@ -192,13 +156,6 @@ export default function EmailLogin(props) {
         paddingTop: "5%",
       }}
     >
-      {/* {userDoesntExist && (
-        <UserDoesNotExistModal
-          isOpen={userDoesntExist}
-          onCancel={onCancelModal}
-        />
-      )} */}
-
       <PasswordModal isOpen={passModal} onCancel={onCancel} />
       {showForm ? (
         <div

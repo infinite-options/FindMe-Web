@@ -37,7 +37,13 @@ export default function Welcome() {
             {" "}
             Pre-register{" "}
           </Button>
-          <Button variant="outlined" sx={{ mt: 2 }} style={{ width: "50rem" }}>
+          <Button 
+            variant="outlined" 
+            sx={{ mt: 2 }} 
+            style={{ width: "50rem" }} 
+            onClick={() =>
+              navigate("/login", { state: { path: "/currentEvents" } })
+            }>
             {" "}
             Arrive at Event{" "}
           </Button>

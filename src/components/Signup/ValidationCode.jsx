@@ -19,8 +19,10 @@ const codeInputStyle = {
 export default function ValidationCode() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log(state);
+
   const user_uid = state.user_uid;
+  const path = state.path;
+  const eventObj = state.eventObj !== undefined ? state.eventObj : "";
   const email = state.email;
   const user = state.user;
   const [code, setCode] = useState("");
@@ -42,13 +44,14 @@ export default function ValidationCode() {
         input
       )
       .then((response) => {
-        console.log(response.data);
         if (response.data.email_validated_status === "...") {
           setErrorMessage(response.data.message);
         } else if (response.data.email_validated_status === "TRUE") {
           navigate("/email-signup-form", {
             state: {
               user_uid: user_uid,
+              eventObj: eventObj,
+              path: path,
             },
           });
         }

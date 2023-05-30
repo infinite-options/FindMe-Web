@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { unix } from "dayjs";
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
@@ -10,6 +9,8 @@ const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
 function GoogleLogin(props) {
   const navigate = useNavigate();
   const { userDoesntExist, setUserDoesntExist, path } = props;
+  const eventObj = props.eventObj !== undefined ? props.eventObj : "";
+
   const [newEmail, setNewEmail] = useState("");
   const [accessToken, setAccessToken] = useState("");
 
@@ -110,6 +111,7 @@ function GoogleLogin(props) {
       state: {
         email: e,
         user: u,
+        eventObj: eventObj,
       },
     });
   };

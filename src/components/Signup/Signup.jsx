@@ -1,11 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Button } from "@mui/material";
 import GoogleSignup from "./GoogleSignup";
 import EmailLogin2 from "../../Icons/EmailLogin2.png";
 export default function Signup() {
   const navigate = useNavigate();
-
+  const { state } = useLocation();
+  const path = state.path;
+  const eventObj = state.eventObj !== undefined ? state.eventObj : "";
   return (
     <div
       style={{
@@ -32,7 +34,7 @@ export default function Signup() {
             alignItems: "center",
           }}
         >
-          <GoogleSignup />
+          <GoogleSignup path={path} eventObj={eventObj} />
         </div>
         <div style={{ marginTop: "3rem" }}> Sign up using Email</div>
         <div
@@ -44,7 +46,11 @@ export default function Signup() {
         >
           <img
             src={EmailLogin2}
-            onClick={() => navigate("/email-signup")}
+            onClick={() =>
+              navigate("/email-signup", {
+                state: { path: path, eventObj: eventObj },
+              })
+            }
             style={{ width: "2.7rem", margin: "2rem" }}
           />{" "}
         </div>

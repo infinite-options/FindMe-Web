@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Box } from "@mui/material";
 import { mediumBold, xSmall, small } from "../../styles";
+
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 export default function CurrentRSVPs() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const email = state.email;
   const user = state.user;
   const [events, setEvents] = useState([]);
-  console.log(email, user);
 
   const getRSVPdEvents = () => {
-    axios
-      .get(
-        `https://qlw29nnkwh.execute-api.us-west-1.amazonaws.com/dev/api/v2/GetEventUser/${user.user_uid}`
-      )
-      .then((response) => {
-        console.log(response.data.result);
-        setEvents(response.data.result);
-      });
+    axios.get(BASE_URL + `/GetEventUser/${user.user_uid}`).then((response) => {
+      setEvents(response.data.result);
+    });
   };
   useEffect(() => {
     getRSVPdEvents();
@@ -55,7 +53,11 @@ export default function CurrentRSVPs() {
                 margin: "1rem 0rem",
                 padding: "1rem",
                 width: "400px",
+                cursor: "pointer",
               }}
+              onClick={() =>
+                navigate("/event-details", { state: { event: event } })
+              }
             >
               <div
                 style={{

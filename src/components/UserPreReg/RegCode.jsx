@@ -13,7 +13,7 @@ export default function RegCode() {
 
   const verifyRegCode = () => {
     axios
-      .get(BASE_URL + `verifyRegCode/${regCode}`)
+      .get(BASE_URL + `/verifyRegCode/${regCode}`)
       .then((response) => {
         if (
           response.data.result.result.length !== 0 &&

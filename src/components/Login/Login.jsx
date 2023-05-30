@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Button } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContentText from "@mui/material/DialogContentText";
-import EmailLogin2 from "../../Icons/EmailLogin2.png";
 import GoogleLogin from "./GoogleLogin";
 import EmailLogin from "./EmailLogin";
 import UserDoesNotExistModal from "./UserDoesNotExistModal";
@@ -15,6 +9,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const path = state.path;
+  const eventObj = state.eventObj !== undefined ? state.eventObj : "";
   const [userDoesntExist, setUserDoesntExist] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
@@ -34,6 +29,8 @@ export default function Login() {
       <UserDoesNotExistModal
         isOpen={userDoesntExist}
         onCancel={onCancelModal}
+        path={path}
+        eventObj={eventObj}
       />
 
       <Grid
@@ -60,6 +57,7 @@ export default function Login() {
               userDoesntExist={userDoesntExist}
               setUserDoesntExist={setUserDoesntExist}
               path={path}
+              eventObj={eventObj}
             />
           )}
 
@@ -69,6 +67,7 @@ export default function Login() {
             showForm={showForm}
             setShowForm={setShowForm}
             path={path}
+            eventObj={eventObj}
           />
         </div>
         {showForm ? (
@@ -86,7 +85,11 @@ export default function Login() {
               variant="outlined"
               color="info"
               style={{ margin: "6rem 0rem" }}
-              onClick={() => navigate("/signup")}
+              onClick={() =>
+                navigate("/signup", {
+                  state: { path: path, eventObj: eventObj },
+                })
+              }
             >
               Signup
             </Button>
