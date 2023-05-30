@@ -22,7 +22,7 @@ export default function EventReview() {
     console.log(event);
 
     axios
-      .post(BASE_URL + `/addEvent`, retrievedEventObject)
+      .post(BASE_URL + `/AddEvent`, retrievedEventObject)
       .then((response) => {
         console.log("event created");
         navigate("/eventCreationConfirmation");

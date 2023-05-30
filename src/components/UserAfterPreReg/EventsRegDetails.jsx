@@ -24,6 +24,9 @@ export default function EventsRegDetails() {
         justify="center"
         border={1}
       >
+        <div style={{ textTransform: "uppercase", fontSize: "20px" }}>
+          Registration Confirmation
+        </div>
         <div
           style={{
             width: "50px",
