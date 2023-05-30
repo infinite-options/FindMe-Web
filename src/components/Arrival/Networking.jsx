@@ -9,8 +9,16 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Highcharts from "../../config/networking";
 import HighchartsReact from "highcharts-react-official";
+import { styled } from "@mui/material/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
+const StyledButton = styled(Button)(
+  () => `
+      width: 200px;
+      align-self: center;
+    `
+);
 
 const Networking = () => {
   const navigate = useNavigate();
@@ -115,21 +123,21 @@ const Networking = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h3" gutterBottom>
+      <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
+        <Typography variant="h4" align="center" gutterBottom>
           {"Networking activity"}
         </Typography>
         <Stack spacing={2} direction="column">
-          <Typography variant="h5" gutterBottom>
+          <Typography align="center" variant="h5" gutterBottom>
             {event.name}
           </Typography>
           <HighchartsReact highcharts={Highcharts} options={options} />
-          <Button
+          <StyledButton
             variant="contained"
             onClick={() => navigate("/eventAttendees")}
           >
             {"See other attendees"}
-          </Button>
+          </StyledButton>
         </Stack>
       </Box>
     </Container>

@@ -26,7 +26,7 @@ const OrangeButton = styled(StyledButton)(({ theme }) => ({
 const EventDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { event } = location.state;
+  const { event, user } = location.state;
   const [selectedId, setSelectedId] = useState();
 
   const hanldeOptionClick = (id, event) => {
@@ -43,7 +43,7 @@ const EventDashboard = () => {
         break;
       case 3:
         navigate("/networkingDashboard", {
-          state: event,
+          state: { event, user },
         });
         break;
       case 4:

@@ -46,6 +46,7 @@ import NetworkingDashboard from "./components/Arrival/NetworkingDashboard";
 import Networking from "./components/Arrival/Networking";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
+import Waiting from "./components/Arrival/Waiting";
 
 function App() {
   return (
@@ -178,6 +179,7 @@ function App() {
             element={<NetworkingDashboard />}
           />
           <Route exact path="/showCheckinCode" element={<ShowCheckinCode />} />
+          <Route exact path="/waiting" element={<Waiting />} />
         </Routes>
       </Router>
     </div>
