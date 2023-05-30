@@ -46,7 +46,6 @@ import NetworkingDashboard from "./components/Arrival/NetworkingDashboard";
 import Networking from "./components/Arrival/Networking";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
-import BroadcastMessage from "./components/EventCreation/BroadcastMessage";
 
 function App() {
   return (
@@ -171,11 +170,6 @@ function App() {
           <Route exact path="/eventAgenda" element={<EventAgenda />} />
           <Route exact path="/eventAttendees" element={<EventAttendees />} />
           <Route exact path="/attendeeDetails" element={<AttendeeDetails />} />
-          <Route
-            exact
-            path="/broadcastMessage"
-            element={<BroadcastMessage />}
-          />
           <Route exact path="/attendeeCheckin" element={<AttendeeCheckin />} />
           <Route exact path="/networking" element={<Networking />} />
           <Route
