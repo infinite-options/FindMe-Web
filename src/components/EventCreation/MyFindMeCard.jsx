@@ -1,12 +1,8 @@
-import React, { Component, useEffect, useState } from 'react';
-import { Grid, Typography, Button, TextField } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import React, { Component } from 'react';
+import { Button, Grid, TextField, Typography } from "@mui/material";
 
-export default function EventList() {
-    const navigate = useNavigate();
-    const [eventList, setEventList] = useState('');
 
+export default function MyFindMeCard() {
     return (
         <>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
@@ -19,6 +15,8 @@ export default function EventList() {
             justify="center"
             border={1}
             >
+                <Typography variant="h5" sx={{mt: 2}}> My FindMe Card </Typography>
+
             </Grid>
         </div>
         </>

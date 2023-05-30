@@ -19,10 +19,10 @@ export default function EventReview() {
   const addEvent = () => {
     delete retrievedEventObject["eventPhoto"];
     var event = JSON.stringify(retrievedEventObject);
-    console.log(event);
+    console.log("event object", retrievedEventObject);
 
         axios
-          .post(BASE_URL + `addEvent`, retrievedEventObject)
+          .post(BASE_URL + `AddEvent`, retrievedEventObject)
             .then((response) => {
                 console.log("event created")
                 navigate('/eventCreationConfirmation');
@@ -48,13 +48,13 @@ export default function EventReview() {
                 
                 <List sx={{ bgcolor: 'background.paper', mt:2 }}>
                     <ListItem sx={{ border: '1px solid grey' }}>                    
-                        <Typography>Event Type : {retrievedEventObject.eventTitle}</Typography>
+                        <Typography>Event Title : {retrievedEventObject.eventTitle}</Typography>
                             <IconButton component="span" onClick={() => { navigate('/eventTitle') }}>
                             <EditIcon fontSize="small"/>
                         </IconButton>
                     </ListItem>
                     <ListItem sx={{ border: '1px solid grey' }}>                    
-                        <Typography>Event Type : {retrievedEventObject.eventDescription}</Typography>
+                        <Typography>Event Description : {retrievedEventObject.eventDescription}</Typography>
                             <IconButton component="span" onClick={() => { navigate('/eventTitle') }}>
                             <EditIcon fontSize="small"/>
                         </IconButton>

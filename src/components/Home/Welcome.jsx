@@ -55,7 +55,7 @@ export default function Welcome() {
             sx={{ mt: 2 }}
             style={{ width: "50rem" }}
             onClick={() =>
-              navigate("/login", { state: { path: "/eventTypeMenu" } })
+              navigate("/login", { state: { path: "/organizerEventList" } })
             }
           >
             {" "}

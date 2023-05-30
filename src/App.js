@@ -32,6 +32,8 @@ import EventList from "./components/FindEvents/EventList";
 import CurrentRSVPs from "./components/FindEvents/CurrentRSVPs";
 import EventByType from "./components/FindEvents/EventByType";
 import Searchbox from "./components/EventCreation/Searchbox";
+import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
+import BroadcastMessage from "./components/EventCreation/BroadcastMessage";
 
 function App() {
   return (
@@ -66,6 +68,7 @@ function App() {
           <Route exact path="/current-rsvps" element={<CurrentRSVPs />} />
           <Route exact path="/event-bytype" element={<EventByType />} />
           <Route exact path='/welcome' element={<Welcome />} />
+          <Route exact path='/organizerEventList' element={<OrganizerEventList />} />
           <Route exact path='/eventTypeMenu' element={<EventTypeMenu />} />
           <Route exact path='/eventVisibility' element={<EventVisibility />} />
           <Route exact path='/eventParticulars' element={<EventParticulars />} />
@@ -76,6 +79,7 @@ function App() {
           <Route exact path='/eventReview' element={<EventReview />} />
           <Route exact path='/eventCreationConfirmation' element={<EventCreationConfirmation />} />
           <Route exact path='/eventCapacity' element={<EventCapacity />} />
+          <Route exact path='/broadcastMessage' element={<BroadcastMessage />} />
 
           <Route exact path='/pre-registration' element={<PreRegMenu />} />
           <Route exact path='/registrationCode' element={<RegCode />} />

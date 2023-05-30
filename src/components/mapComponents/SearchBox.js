@@ -54,7 +54,6 @@ class SearchBox extends Component {
           type="text"
           onFocus={this.clearSearchBox}
           placeholder="Enter a location"
-          width={'2px'}
         />
       </Wrapper>
     );
