@@ -11,6 +11,8 @@ let SCOPES =
 
 function GoogleSignup(props) {
   const navigate = useNavigate();
+  const { path } = props;
+  const eventObj = props.eventObj !== undefined ? props.eventObj : "";
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [socialId, setSocialId] = useState("");
@@ -108,6 +110,8 @@ function GoogleSignup(props) {
                       navigate("/google-signup-form", {
                         state: {
                           user: user,
+                          path: path,
+                          eventObj: eventObj,
                         },
                       });
                     };

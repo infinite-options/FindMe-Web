@@ -5,7 +5,7 @@ export default function PreRegistration() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const event = state.event;
-  console.log(event);
+
   return (
     <div
       style={{

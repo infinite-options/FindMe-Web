@@ -6,23 +6,32 @@ import { mediumBold, xSmall, small } from "../../styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
-export default function EventByType() {
+export default function EventByOrganizer() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  const [eventType, setEventType] = useState("");
-  const [eventTypeSet, setEventTypeSet] = useState(false);
+  const [organizers, setOrganizers] = useState("");
+  const [eventOrganizer, setEventOrganizer] = useState("");
+  const [eventOrganizerSet, setEventOrganizerSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const getEventsByType = () => {
+
+  const getOrganizers = () => {
+    axios.get(BASE_URL + `/GetOrganizers`).then((response) => {
+      setOrganizers(response.data.result);
+      setIsLoading(false);
+    });
+  };
+
+  const getEventsByOrganizer = (id) => {
     axios
-      .get(BASE_URL + `/GetEvents?event_type=${eventType}`)
+      .get(BASE_URL + `/GetEvents?event_organizer_uid=${id}`)
       .then((response) => {
         setEvents(response.data.result);
-        setIsLoading(false);
+        setEventOrganizerSet(true);
       });
   };
   useEffect(() => {
-    getEventsByType();
-  }, [eventTypeSet]);
+    getOrganizers();
+  }, []);
 
   return (
     <div
@@ -41,8 +50,8 @@ export default function EventByType() {
         justify="center"
         border={1}
       >
-        Events By Type {eventTypeSet ? `: ${eventType}` : ""}
-        {!eventTypeSet ? (
+        Events By Type {eventOrganizerSet ? `: ${eventOrganizer}` : ""}
+        {!eventOrganizerSet ? (
           <div
             style={{
               display: "flex",
@@ -52,47 +61,33 @@ export default function EventByType() {
               margin: "2rem 0rem",
             }}
           >
-            {" "}
-            <Button
-              variant="outlined"
-              sx={{ mt: 1, width: "10rem" }}
-              onClick={() => {
-                setEventType("Business Networking");
-                setEventTypeSet(true);
-              }}
-            >
-              Business Networking
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ mt: 1, width: "10rem" }}
-              onClick={() => {
-                setEventType("Party");
-                setEventTypeSet(true);
-              }}
-            >
-              Party
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ mt: 1, width: "10rem" }}
-              onClick={() => {
-                setEventType("Social Mixer");
-                setEventTypeSet(true);
-              }}
-            >
-              Social Mixer
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ mt: 1, width: "10rem" }}
-              onClick={() => {
-                setEventType("Other");
-                setEventTypeSet(true);
-              }}
-            >
-              Other
-            </Button>
+            {organizers &&
+              organizers.map((organizer) => {
+                return (
+                  <Box
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      border: "1px solid black",
+                      borderRadius: "5px",
+                      margin: "1rem 0rem",
+                      padding: "1rem",
+                      width: "400px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      setEventOrganizer(
+                        organizer.first_name + " " + organizer.last_name
+                      );
+                      getEventsByOrganizer(organizer.user_uid);
+                    }}
+                  >
+                    {organizer.first_name} {organizer.last_name}
+                  </Box>
+                );
+              })}
           </div>
         ) : (
           <div
@@ -147,7 +142,7 @@ export default function EventByType() {
                     </Box>
                   );
                 })
-              : `No events of type ${eventType}`}
+              : `No events of type ${eventOrganizer}`}
             {}
           </div>
         )}
