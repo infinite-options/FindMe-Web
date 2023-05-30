@@ -27,7 +27,7 @@ const OrangeButton = styled(StyledButton)(({ theme }) => ({
 const EventDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const event = location.state;
+  const { event } = location.state;
   const [selectedId, setSelectedId] = useState();
 
   const hanldeOptionClick = (id, event) => {
@@ -43,7 +43,7 @@ const EventDashboard = () => {
         navigate("/introduction");
         break;
       case 3:
-        startActvity();
+        // startActvity();
         navigate("/networkingDashboard", {
           state: event,
         });
@@ -63,12 +63,12 @@ const EventDashboard = () => {
     }
   };
 
-  const startActvity = async () => {
-    await axios.post(`http://localhost:4000/api/v2/startActivty`, {
-      activityType: "networking",
-      eventId: event.event_uid,
-    });
-  };
+  // const startActvity = async () => {
+  //   await axios.post(`http://localhost:4000/api/v2/startActivty`, {
+  //     activityType: "networking",
+  //     eventId: event.event_uid,
+  //   });
+  // };
 
   return (
     <Container maxWidth="sm">
@@ -84,6 +84,7 @@ const EventDashboard = () => {
             border: 1,
             borderColor: "primary.main",
             borderRadius: "15px",
+            padding: "10px",
           }}
         >
           <Typography variant="h6" gutterBottom>
@@ -132,13 +133,13 @@ const EventDashboard = () => {
             variant={selectedId === 5 ? "outlined" : "text"}
             onClick={() => hanldeOptionClick(5, event)}
           >
-            Show check-in/QR code
+            {"Show check-in QR/code"}
           </StyledButton>
         </Stack>
       </Box>
       <Box sx={{ my: 4 }} align="center">
         <OrangeButton variant="contained" onClick={handleStartClick}>
-          {"Start"}
+          {"Enter"}
         </OrangeButton>
       </Box>
     </Container>

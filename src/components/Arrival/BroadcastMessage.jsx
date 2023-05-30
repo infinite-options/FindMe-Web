@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -8,6 +9,13 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Input, { inputClasses } from "@mui/base/Input";
 import { styled } from "@mui/system";
 import { blue, grey } from "@mui/material/colors";
+
+const StyledButton = styled(Button)(
+  () => `
+      width: 200px;
+      align-self: center;
+    `
+);
 
 const StyledInputRoot = styled("div")(
   ({ theme }) => `
@@ -115,6 +123,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 );
 
 const BroadcastMessage = () => {
+  const navigate = useNavigate();
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
@@ -127,7 +136,10 @@ const BroadcastMessage = () => {
             placeholder="Type subject here..."
           />
           <StyledTextarea minRows={5} placeholder="Enter message here..." />
-          <Button variant="contained">Send</Button>
+          <StyledButton variant="contained">{"Send"}</StyledButton>
+          <StyledButton variant="contained" onClick={() => navigate(-1)}>
+            {"Back"}
+          </StyledButton>
         </Stack>
       </Box>
     </Container>

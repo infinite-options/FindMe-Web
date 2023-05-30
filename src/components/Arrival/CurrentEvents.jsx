@@ -24,12 +24,34 @@ const OrangeButton = styled(StyledButton)(({ theme }) => ({
   },
 }));
 
-const OrganizerDashboard = () => {
+const CurrentEvents = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = location.state;
-  const [selected, setSelected] = useState({ id: -1 });
+  const { user } = location.state;
+  const [selected, setSelected] = useState({ event_uid: -1 });
   const [events, setEvents] = useState([]);
+
+  const handleEnter = async () => {
+    if (selected.event_uid < 0) return;
+    const response = await axios.get(
+      `http://localhost:4000/api/v2/isOrganizer?userId=${user.user_uid}&eventId=${selected.event_uid}`
+    );
+    if (response.data.isOrganizer) {
+      navigate("/eventDashboard", {
+        state: { event: selected, user: user },
+      });
+    } else {
+      const response = await axios.get(
+        `http://localhost:4000/api/v2/eventStatus?eventId=${selected.event_uid}`
+      );
+      if (!response.data.eventStarted) alert("Event has not started yet");
+      else {
+        navigate("/attendeeCheckin", {
+          state: { event: selected, user: user },
+        });
+      }
+    }
+  };
 
   const handleEventClick = (event) => {
     setSelected(event);
@@ -37,9 +59,9 @@ const OrganizerDashboard = () => {
 
   const fetchEventsByOrganizer = async () => {
     const response = await axios.get(
-      `http://localhost:4000/api/v2/GetEvents?event_organizer_uid=${user.user_uid}`
+      `http://localhost:4000/api/v2/currentEvents`
     );
-    setEvents(response.data.result);
+    setEvents(response.data.events);
   };
 
   useEffect(() => {
@@ -52,7 +74,17 @@ const OrganizerDashboard = () => {
         <Typography variant="h4" align="center" gutterBottom>
           {"Current events"}
         </Typography>
-        <Stack spacing={2} direction="column">
+        <Stack
+          sx={{
+            bgcolor: "background.paper",
+            border: 1,
+            borderColor: "primary.main",
+            borderRadius: "15px",
+            padding: "10px",
+          }}
+          spacing={2}
+          direction="column"
+        >
           {events.map((event) => (
             <StyledButton
               key={event.event_uid}
@@ -61,7 +93,7 @@ const OrganizerDashboard = () => {
               }
               onClick={() => handleEventClick(event)}
             >
-              {event.event_title}
+              {event.event_title + " " + event.event_start_date}
             </StyledButton>
           ))}
         </Stack>
@@ -69,11 +101,8 @@ const OrganizerDashboard = () => {
       <Box sx={{ my: 4 }}>
         <Stack spacing={2} direction="column">
           <StyledButton variant="contained">{"Edit"}</StyledButton>
-          <OrangeButton
-            variant="contained"
-            onClick={() => navigate("/eventDashboard", { state: selected })}
-          >
-            {"Start"}
+          <OrangeButton variant="contained" onClick={handleEnter}>
+            {"Enter"}
           </OrangeButton>
         </Stack>
       </Box>
@@ -81,4 +110,4 @@ const OrganizerDashboard = () => {
   );
 };
 
-export default OrganizerDashboard;
+export default CurrentEvents;

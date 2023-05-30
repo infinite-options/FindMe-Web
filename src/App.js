@@ -32,7 +32,7 @@ import EventList from "./components/FindEvents/EventList";
 import CurrentRSVPs from "./components/FindEvents/CurrentRSVPs";
 import EventByType from "./components/FindEvents/EventByType";
 import Searchbox from "./components/EventCreation/Searchbox";
-import OrganizerDashboard from "./components/Arrival/OrganizerDashboard";
+import CurrentEvents from "./components/Arrival/CurrentEvents";
 import EventDashboard from "./components/Arrival/EventDashboard";
 import EventAgenda from "./components/Arrival/EventAgenda";
 import BroadcastMessage from "./components/Arrival/BroadcastMessage";
@@ -40,7 +40,6 @@ import EventAttendees from "./components/Arrival/EventAttendees";
 import AttendeeDetails from "./components/Arrival/AttendeeDetails";
 import AttendeeCheckin from "./components/Arrival/AttendeeCheckin";
 import NetworkingDashboard from "./components/Arrival/NetworkingDashboard";
-import ArriveAtEvent from "./components/Arrival/ArriveAtEvent";
 import Networking from "./components/Arrival/Networking";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 
@@ -94,7 +93,7 @@ function App() {
           <Route exact path='/findEventByDate' element={<FindEventByDate />} />
           
           <Route exact path='/searchbox' element={<Searchbox/>} />
-          <Route exact path="/organizerDashboard" element={<OrganizerDashboard />} />
+          <Route exact path="/currentEvents" element={<CurrentEvents />} />
           <Route exact path="/eventDashboard" element={<EventDashboard />} />
           <Route exact path="/eventAgenda" element={<EventAgenda />} />
           <Route exact path="/eventAttendees" element={<EventAttendees />} />
@@ -104,7 +103,6 @@ function App() {
           <Route exact path="/networking" element={<Networking />} />
           <Route exact path="/networkingDashboard" element={<NetworkingDashboard />} />
           <Route exact path="/showCheckinCode" element={<ShowCheckinCode />} />
-          <Route exact path="/arriveAtEvent" element={<ArriveAtEvent />} />
         </Routes>
       </Router>
     </div>
