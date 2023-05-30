@@ -91,6 +91,14 @@ export default function RegistrationConfirmation() {
           >
             Go to Event Details
           </Button>
+          <Button
+            onClick={() => {
+              setShowModal(false);
+            }}
+            color="primary"
+          >
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
     );

@@ -8,6 +8,8 @@ import {
   TextField,
   FormControlLabel,
 } from "@mui/material";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import Checkbox from "@mui/material/Checkbox";
 import UploadPhotos from "../UploadPhotos";
@@ -29,6 +31,7 @@ export default function CreateFindMeCard() {
   const [company, setCompany] = useState("");
   const [title, setTitle] = useState("");
   const [catchPhrase, setCatchPhrase] = useState("");
+  const [role, setRole] = useState("");
   const imageState = useState([]);
   const loadUserDetails = () => {
     setFirstName(userDetails.first_name);
@@ -37,6 +40,7 @@ export default function CreateFindMeCard() {
     setCompany(userDetails.company);
     setTitle(userDetails.title);
     setCatchPhrase(userDetails.catch_phrase);
+    setRole(userDetails.role);
 
     loadImages();
   };
@@ -68,14 +72,21 @@ export default function CreateFindMeCard() {
         title: title,
         company: company,
         catch_phrase: catchPhrase,
+        role: role,
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
       };
       const files = imageState[0];
+      console.log(files);
       let i = 0;
       for (const file of imageState[0]) {
         let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
         if (file.file !== null) {
+          console.log("if file not null");
           body[key] = file.file;
         } else {
+          console.log("if else");
           body[key] = file.image;
         }
       }
@@ -91,6 +102,7 @@ export default function CreateFindMeCard() {
           requestBody.append(key, body[key]);
         }
       }
+      console.log(requestBody);
 
       const response = await fetch(BASE_URL + "/UserProfile", {
         method: "PUT",
@@ -111,9 +123,14 @@ export default function CreateFindMeCard() {
         title: title,
         company: company,
         catch_phrase: catchPhrase,
+        role: role,
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
       };
       const files = imageState[0];
       let i = 0;
+      console.log(files);
       for (const file of imageState[0]) {
         let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
         if (file.file !== null) {
@@ -152,7 +169,17 @@ export default function CreateFindMeCard() {
   const handleChange = (e) => {
     setAgreement(e.target.checked);
   };
+  const canBeSubmitted = () => {
+    const isValid = agreement; // checkbox for terms
 
+    if (isValid) {
+      document.getElementById("submitButton").removeAttribute("disabled");
+    } else {
+      document.getElementById("submitButton").setAttribute("disabled", true);
+    }
+    console.log({ agreement });
+  };
+  useEffect(() => canBeSubmitted(), [agreement]);
   return (
     <div
       style={{
@@ -314,6 +341,20 @@ export default function CreateFindMeCard() {
                 value={catchPhrase}
                 onChange={(e) => setCatchPhrase(e.target.value)}
               />
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={role}
+                label="Role"
+                size="small"
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <MenuItem value={"VC"}>VC</MenuItem>
+                <MenuItem value={"Founder"}>Founder</MenuItem>
+                <MenuItem value={"Looking for Next Opportunity"}>
+                  Looking for Next Opportunity
+                </MenuItem>
+              </Select>
               {/* pop up upload pic */}
             </FormControl>{" "}
             <UploadPhotos state={imageState} />
@@ -325,6 +366,7 @@ export default function CreateFindMeCard() {
             <Button
               variant="contained"
               color="primary"
+              id="submitButton"
               style={{ margin: "2rem 0rem" }}
               onClick={() => setDisplayCard(true)}
             >
