@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -21,7 +20,7 @@ const StyledButton = styled(Button)(
 const AttendeeCheckin = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = location.state;
+  const { event, user } = location.state;
   const [error, setError] = useState(false);
   const [helperText, setHelperText] = useState("");
   const [regCode, setRegCode] = useState("");
@@ -35,11 +34,12 @@ const AttendeeCheckin = () => {
 
   const handleOnSubmit = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/v2/eventByRegCode?regCode=${regCode}&userId=${user.user_uid}`
-      );
-      const event = response["data"];
-      navigate("/networking", { state: event });
+      await axios.post("http://localhost:4000/api/v2/verifyCheckinCode", {
+        regCode: regCode,
+        userId: user.user_uid,
+        eventId: event.event_uid,
+      });
+      navigate("/waiting", { state: { event, user } });
     } catch (error) {
       setError(true);
       setHelperText(error.response.data.message);
@@ -54,7 +54,10 @@ const AttendeeCheckin = () => {
     <Container maxWidth="sm">
       <Box component="form" noValidate autoComplete="off" sx={{ my: 4 }}>
         <Typography variant="h4" gutterBottom>
-          {"Enter registration code"}
+          {"Attendee check-in"}
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          {"Enter event registration code"}
         </Typography>
         <Box sx={{ my: 4 }}>
           <Stack spacing={2} direction="column">

@@ -1,12 +1,13 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import ably from "../../config/ably";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import Input, { inputClasses } from "@mui/base/Input";
 import { styled } from "@mui/system";
 import { blue, grey } from "@mui/material/colors";
 
@@ -16,78 +17,6 @@ const StyledButton = styled(Button)(
       align-self: center;
     `
 );
-
-const StyledInputRoot = styled("div")(
-  ({ theme }) => `
-    font-family: IBM Plex Sans, sans-serif;
-    font-weight: 400;
-    border-radius: 12px;
-    color: ${theme.palette.mode === "dark" ? grey[300] : grey[500]};
-    background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-    border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-    box-shadow: 0px 2px 2px ${
-      theme.palette.mode === "dark" ? grey[900] : grey[50]
-    };
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-  
-    &.${inputClasses.focused} {
-      border-color: ${blue[400]};
-      box-shadow: 0 0 0 3px ${
-        theme.palette.mode === "dark" ? blue[500] : blue[200]
-      };
-    }
-  
-    &:hover {
-      border-color: ${blue[400]};
-    }
-  
-    // firefox
-    &:focus-visible {
-      outline: 0;
-    }
-  `
-);
-
-const StyledInputElement = styled("input")(
-  ({ theme }) => `
-    font-size: 0.875rem;
-    font-family: inherit;
-    font-weight: 400;
-    line-height: 1.5;
-    flex-grow: 1;
-    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-    background: inherit;
-    border: none;
-    border-radius: inherit;
-    padding: 12px 12px;
-    outline: 0;
-  `
-);
-
-const InputAdornment = styled("div")`
-  margin: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CustomInput = React.forwardRef(function CustomInput(props, ref) {
-  const { slots, ...other } = props;
-  return (
-    <Input
-      slots={{
-        root: StyledInputRoot,
-        input: StyledInputElement,
-        ...slots,
-      }}
-      {...other}
-      ref={ref}
-    />
-  );
-});
 
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -124,6 +53,19 @@ const StyledTextarea = styled(TextareaAutosize)(
 
 const BroadcastMessage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { event } = location.state;
+  const [message, setMessage] = useState("");
+
+  const handleSend = () => {
+    const channel = ably.channels.get(`FindMe/${event.event_uid}`);
+    channel.publish({ data: { message: "Event started" } });
+  };
+
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+  };
+
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
@@ -131,12 +73,19 @@ const BroadcastMessage = () => {
           {"Broadcast Message"}
         </Typography>
         <Stack spacing={2} direction="column">
-          <CustomInput
+          {/* <CustomInput
             startAdornment={<InputAdornment>{"Subject:"}</InputAdornment>}
             placeholder="Type subject here..."
+          /> */}
+          <StyledTextarea
+            value={message}
+            minRows={5}
+            placeholder="Enter message here..."
+            onChange={handleMessageChange}
           />
-          <StyledTextarea minRows={5} placeholder="Enter message here..." />
-          <StyledButton variant="contained">{"Send"}</StyledButton>
+          <StyledButton variant="contained" onClick={handleSend}>
+            {"Send"}
+          </StyledButton>
           <StyledButton variant="contained" onClick={() => navigate(-1)}>
             {"Back"}
           </StyledButton>

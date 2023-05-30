@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import ably from "../../config/ably";
 import axios from "axios";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -12,7 +13,7 @@ import HighchartsReact from "highcharts-react-official";
 const Networking = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const event = location.state;
+  const { event, user } = location.state;
   const [options, setOptions] = useState({
     chart: {
       type: "networkgraph",
@@ -64,7 +65,7 @@ const Networking = () => {
 
   const refreshGraph = async () => {
     const response = await axios.get(
-      `http://localhost:4000/api/v2/networkingGraph?eventId=200-000003&userId=100-000020`
+      `http://localhost:4000/api/v2/networkingGraph?eventId=${event.event_uid}&userId=${user.user_uid}`
     );
     const data = response["data"];
     let nodesArr = [];
@@ -92,8 +93,22 @@ const Networking = () => {
     });
   };
 
+  const broadcastAndExitSubscribe = () => {
+    const channel = ably.channels.get(`FindMe/${event.event_uid}`);
+    channel.subscribe((event) => {
+      if (event.data.message === "Event ended") {
+        alert("Event ended");
+        navigate("/currentEvents", { state: { event, user } });
+      }
+      if (event.data.message[0] === "Broadcast") {
+        alert(event.data.message[1]);
+      }
+    });
+  };
+
   useEffect(() => {
     refreshGraph();
+    broadcastAndExitSubscribe();
   }, []);
 
   return (

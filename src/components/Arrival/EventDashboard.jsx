@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -43,7 +42,6 @@ const EventDashboard = () => {
         navigate("/introduction");
         break;
       case 3:
-        // startActvity();
         navigate("/networkingDashboard", {
           state: event,
         });
@@ -62,13 +60,6 @@ const EventDashboard = () => {
         break;
     }
   };
-
-  // const startActvity = async () => {
-  //   await axios.post(`http://localhost:4000/api/v2/startActivty`, {
-  //     activityType: "networking",
-  //     eventId: event.event_uid,
-  //   });
-  // };
 
   return (
     <Container maxWidth="sm">
@@ -111,12 +102,6 @@ const EventDashboard = () => {
           >
             {"View/Edit agenda"}
           </StyledButton>
-          {/* <StyledButton
-            variant={selectedId === 2 ? "outlined" : "text"}
-            onClick={() => hanldeOptionClick(2, event)}
-          >
-            Introduction
-          </StyledButton> */}
           <StyledButton
             variant={selectedId === 3 ? "outlined" : "text"}
             onClick={() => hanldeOptionClick(3, event)}

@@ -36,7 +36,7 @@ const OrangeButton = styled(StyledButton)(({ theme }) => ({
 const NetworkingDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const event = location.state;
+  const { event, user } = location.state;
   const [hasStarted, setStarted] = useState(false);
   const countdownRef = useRef();
 
@@ -48,7 +48,7 @@ const NetworkingDashboard = () => {
   };
 
   const handleBroadcast = () => {
-    navigate("/broadcastMessage");
+    navigate("/broadcastMessage", { state: { event, user } });
   };
 
   const handleStop = () => {

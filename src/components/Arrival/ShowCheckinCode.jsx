@@ -21,7 +21,7 @@ const ShowCheckinCode = () => {
 
   useEffect(() => {
     const canvas = document.getElementById("canvas");
-    QRCode.toCanvas(canvas, "980765", (error) => {
+    QRCode.toCanvas(canvas, event.event_registration_code, (error) => {
       if (error) console.error(error);
     });
   }, []);
@@ -41,6 +41,7 @@ const ShowCheckinCode = () => {
             border: 1,
             borderColor: "primary.main",
             borderRadius: "15px",
+            padding: "10px",
           }}
         >
           <Typography variant="h5" gutterBottom>
@@ -52,7 +53,7 @@ const ShowCheckinCode = () => {
             {"Check-in code"}
           </Typography>
           <Typography variant="h5" gutterBottom>
-            {"980765"}
+            {event.event_registration_code}
           </Typography>
           <StyledButton variant="contained">{"Share code"}</StyledButton>
         </Stack>
