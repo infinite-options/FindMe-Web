@@ -237,6 +237,18 @@ function App() {
               element={<ShowCheckinCode />}
             />
             <Route exact path="/waiting" element={<Waiting />} />
+            <Route exact path="/eventRegCode" element={<EventRegCode />} />
+            <Route exact path="/eventDetails" element={<EventDetails />} />
+            <Route
+              exact
+              path="/emailBroadcastMessage"
+              element={<EmailBroadcastMessage />}
+            />
+            <Route
+              exact
+              path="/organizerEventAgenda"
+              element={<OrganizerEventAgenda />}
+            />
           </Routes>
         </LoginContext.Provider>
       </Router>
