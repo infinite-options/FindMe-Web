@@ -12,7 +12,10 @@ export default function EventDetails() {
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
-      : JSON.parse(localStorage.getItem("event"));
+          : JSON.parse(localStorage.getItem("event"));
+    
+    const event = {};
+    event["event_uid"] = '200-000009';
   
     return (
         <>
@@ -66,12 +69,12 @@ export default function EventDetails() {
                 
                 
                 <Button onClick={() => { navigate('/eventReview');}}> Edit Event </Button>
-                <Button onClick={() => { navigate('/eventReview');}}> Create/Edit Agenda </Button>
+                <Button onClick={() => { navigate('/organizerEventAgenda');}}> Create/Edit Agenda </Button>
                 <Button onClick={() => { navigate('/eventReview');}}> Show Pre-registration Code </Button>
                 <Button onClick={() => { navigate('/eventReview');}}> Create Activity </Button>
-                <Button onClick={() => { navigate('/eventReview');}}> View Attendees </Button>
+                <Button onClick={() => { navigate('/eventAttendees', {state: {event: event}})}}> View Attendees </Button>
                 <Button onClick={() => { navigate('/emailBroadcastMessage'); }}> Broadcast Message </Button>
-                <Button onClick={() => { navigate('/eventReview');}}> Show Event QR Code </Button>
+                <Button onClick={() => { navigate('/eventRegCode');}}> Show Event QR Code </Button>
                 <Button onClick={() => { navigate('/eventReview');}}> View In-Demand Services </Button>
                 <Button onClick={() => { navigate('/eventReview');}}> See Events </Button>
 

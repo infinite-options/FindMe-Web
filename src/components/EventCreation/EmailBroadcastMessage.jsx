@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
 export default function EmailBroadcastMessage() {
+    const navigate = useNavigate();
+
     return (
         <>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
@@ -23,6 +26,7 @@ export default function EmailBroadcastMessage() {
                 </TextField>
                 <Button>Send</Button>
                 <Button>Event Details</Button>
+                <Button onClick={() => navigate(-1)}>Back</Button>
 
             </Grid>
         </div>

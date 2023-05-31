@@ -17,7 +17,9 @@ import EventPhotoUpload from "./components/EventCreation/EventPhotoUpload";
 import PreEventQuestionnaire from "./components/EventCreation/PreEventQuestionnaire";
 import EventReview from "./components/EventCreation/EventReview";
 import EventCreationConfirmation from "./components/EventCreation/EventCreationConfirmation";
+import EventRegCode from "./components/EventCreation/EventRegCode";
 import EventDetails from "./components/EventCreation/EventDetails";
+import OrganizerEventAgenda from "./components/EventCreation/OrganizerEventAgenda";
 import EmailBroadcastMessage from "./components/EventCreation/EmailBroadcastMessage";
 import PreRegistration from "./components/UserAfterPreReg/PreRegistration";
 import PreRegQuestionnare from "./components/UserAfterPreReg/PreRegQuestionnare";
@@ -82,6 +84,7 @@ function App() {
           />
           <Route exact path="/eventDetails" element={<EventDetails />} />
           <Route exact path="/emailBroadcastMessage" element={<EmailBroadcastMessage />} />
+          <Route exact path="/organizerEventAgenda" element={<OrganizerEventAgenda />} />
 
           <Route exact path="/pre-registration" element={<PreRegMenu />} />
           <Route exact path="/registrationCode" element={<RegCode />} />
@@ -159,6 +162,7 @@ function App() {
             path="/eventCreationConfirmation"
             element={<EventCreationConfirmation />}
           />
+          <Route exact path="/eventRegCode" element={<EventRegCode />} />
           <Route exact path="/eventCapacity" element={<EventCapacity />} />
           <Route
             exact
