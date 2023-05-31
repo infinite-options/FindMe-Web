@@ -53,7 +53,6 @@ import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
 import EventByLocation from "./components/FindEvents/EventByLocation";
 import Waiting from "./components/Arrival/Waiting";
-
 function App() {
   const [loginState, setLoginState] = useState(LoginInitState);
 
@@ -203,11 +202,6 @@ function App() {
               element={<EventCreationConfirmation />}
             />
             <Route exact path="/eventCapacity" element={<EventCapacity />} />
-            <Route
-              exact
-              path="/broadcastMessage"
-              element={<BroadcastMessage />}
-            />
             <Route exact path="/pre-registration" element={<PreRegMenu />} />
             <Route exact path="/registrationCode" element={<RegCode />} />
             <Route exact path="/eventProfile" element={<EventProfile />} />
