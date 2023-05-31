@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +7,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import MUIAlert from "@mui/material/Alert";
+import Slide from "@mui/material/Slide";
 import { styled } from "@mui/material/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
@@ -17,15 +21,27 @@ const StyledButton = styled(Button)(
     `
 );
 
+const SlideTransition = (props) => {
+  return <Slide {...props} direction="down" />;
+};
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MUIAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const CurrentEvents = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = location.state;
   const [events, setEvents] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleEventClick = async (event) => {
+    const user_uid =
+      typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+    if (!user_uid) alert("User UID is undefined");
     const response = await axios.get(
-      `${BASE_URL}/isOrganizer?userId=${user.user_uid}&eventId=${event.event_uid}`
+      `${BASE_URL}/isOrganizer?userId=${user_uid}&eventId=${event.event_uid}`
     );
     if (response.data.isOrganizer) {
       navigate("/eventDashboard", {
@@ -35,7 +51,7 @@ const CurrentEvents = () => {
       const response = await axios.get(
         `${BASE_URL}/eventStatus?eventId=${event.event_uid}`
       );
-      if (!response.data.eventStarted) alert("Event has not started yet");
+      if (!response.data.eventStarted) setShowAlert(true);
       else {
         navigate("/attendeeCheckin", {
           state: { event, user },
@@ -49,6 +65,13 @@ const CurrentEvents = () => {
     setEvents(response.data.events);
   };
 
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowAlert(false);
+  };
+
   useEffect(() => {
     fetchEventsByOrganizer();
   }, []);
@@ -56,6 +79,17 @@ const CurrentEvents = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={SlideTransition}
+        >
+          <Alert onClose={handleAlertClose} severity="warning">
+            {"Event has not started yet"}
+          </Alert>
+        </Snackbar>
         <Typography variant="h4" align="center" gutterBottom>
           {"Current events"}
         </Typography>

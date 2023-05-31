@@ -35,13 +35,18 @@ const AttendeeCheckin = () => {
   };
 
   const handleOnSubmit = async () => {
+    const user_uid =
+      typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+    if (!user_uid) alert("User UID is undefined");
     try {
-      await axios.post(`${BASE_URL}/verifyCheckinCode`, {
+      const response = await axios.post(`${BASE_URL}/verifyCheckinCode`, {
         regCode: regCode,
-        userId: user.user_uid,
+        userId: user_uid,
         eventId: event.event_uid,
       });
-      navigate("/waiting", { state: { event, user } });
+      if (!response.data.hasRegistered)
+        navigate("/preregistration-event", { state: { event } });
+      else navigate("/waiting", { state: { event, user } });
     } catch (error) {
       setError(true);
       setHelperText(error.response.data.message);
@@ -59,7 +64,7 @@ const AttendeeCheckin = () => {
           {"Attendee check-in"}
         </Typography>
         <Typography variant="h5" align="center" gutterBottom>
-          {"Enter event registration code"}
+          {"Enter event checkin code"}
         </Typography>
         <Box sx={{ my: 4 }}>
           <Stack spacing={2} direction="column">

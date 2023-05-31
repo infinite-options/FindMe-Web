@@ -18,6 +18,15 @@ const EventDashboard = () => {
   const location = useLocation();
   const { event, user } = location.state;
 
+  const handleAttend = () => {
+    localStorage.setItem("event", JSON.stringify(event));
+    localStorage.setItem("user", JSON.stringify(user));
+    window.open("/waiting", "_blank");
+    navigate("/networkingDashboard", {
+      state: { event, user },
+    });
+  };
+
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
@@ -56,12 +65,6 @@ const EventDashboard = () => {
           <Stack spacing={2}>
             <StyledButton
               variant="contained"
-              onClick={() => navigate("/eventAgenda")}
-            >
-              {"View/Edit agenda"}
-            </StyledButton>
-            <StyledButton
-              variant="contained"
               onClick={() =>
                 navigate("/networkingDashboard", {
                   state: { event, user },
@@ -89,6 +92,9 @@ const EventDashboard = () => {
               }
             >
               {"Show check-in QR/code"}
+            </StyledButton>
+            <StyledButton variant="contained" onClick={handleAttend}>
+              {"Attend"}
             </StyledButton>
           </Stack>
         </Stack>
