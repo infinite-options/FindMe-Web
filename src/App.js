@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Cookies from "universal-cookie";
 import { Button, Grid, Paper, TextField } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import LoginContext, { LoginInitState } from "./LoginContext";
 import PreRegMenu from "./components/UserPreReg/PreRegMenu";
 import RegCode from "./components/UserPreReg/RegCode";
 import EventProfile from "./components/UserPreReg/EventProfile";
@@ -18,10 +16,7 @@ import EventCapacity from "./components/EventCreation/EventCapacity";
 import EventPhotoUpload from "./components/EventCreation/EventPhotoUpload";
 import PreEventQuestionnaire from "./components/EventCreation/PreEventQuestionnaire";
 import EventReview from "./components/EventCreation/EventReview";
-import EventCreationConfirmation from "./components/EventCreation/EventCreationConfirmation";
-import EventRegCode from "./components/EventCreation/EventRegCode";
 import EventDetails from "./components/EventCreation/EventDetails";
-import OrganizerEventAgenda from "./components/EventCreation/OrganizerEventAgenda";
 import EmailBroadcastMessage from "./components/EventCreation/EmailBroadcastMessage";
 import PreRegistration from "./components/UserAfterPreReg/PreRegistration";
 import PreRegQuestionnare from "./components/UserAfterPreReg/PreRegQuestionnare";
@@ -51,206 +46,135 @@ import NetworkingDashboard from "./components/Arrival/NetworkingDashboard";
 import Networking from "./components/Arrival/Networking";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
-import EventByLocation from "./components/FindEvents/EventByLocation";
-import Waiting from "./components/Arrival/Waiting";
+import EventPreRegCode from "./components/EventCreation/EventPreRegCode";
+import EventCheckInCode from "./components/EventCreation/EventCheckInCode";
+
 function App() {
-  const [loginState, setLoginState] = useState(LoginInitState);
-
-  const isSignedIn =
-    document.cookie.split("; ").find((row) => row.startsWith("loggedIn=")) !==
-    undefined
-      ? loginState.loggedIn
-        ? loginState.loggedIn
-        : document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("loggedIn="))
-            .split("=")[1]
-      : loginState.loggedIn;
-  useEffect(
-    () => console.log("curUser = ", loginState.user_uid),
-    [loginState.user_uid]
-  );
-
   return (
     <div className="hero-container">
       <Router>
-        <LoginContext.Provider
-          value={{
-            loginState: loginState,
-            setLoginState: setLoginState,
-          }}
-        >
-          {" "}
-          <Routes>
-            <Route exact path="/" element={<Welcome />} />
-            <Route exact path="/eventTypeMenu" element={<EventTypeMenu />} />
-            <Route
-              exact
-              path="/eventVisibility"
-              element={<EventVisibility />}
-            />
-            <Route
-              exact
-              path="/eventParticulars"
-              element={<EventParticulars />}
-            />
-            <Route exact path="/eventLocation" element={<EventLocation />} />
-            <Route exact path="/eventTitle" element={<EventTitle />} />
-            <Route
-              exact
-              path="/eventPhotoUpload"
-              element={<EventPhotoUpload />}
-            />
-            <Route
-              exact
-              path="/preEventQuestionnaire"
-              element={<PreEventQuestionnaire />}
-            />
-            <Route exact path="/eventReview" element={<EventReview />} />
-            <Route
-              exact
-              path="/eventCreationConfirmation"
-              element={<EventCreationConfirmation />}
-            />
-            <Route exact path="/pre-registration" element={<PreRegMenu />} />
-            <Route exact path="/registrationCode" element={<RegCode />} />
-            <Route exact path="/eventProfile" element={<EventProfile />} />
-            <Route
-              exact
-              path="/findEventByDate"
-              element={<FindEventByDate />}
-            />
-            <Route
-              exact
-              path="/preregistration-event"
-              element={<PreRegistration />}
-            />
-            <Route
-              exact
-              path="/registration-questionnare"
-              element={<PreRegQuestionnare />}
-            />
-            <Route
-              exact
-              path="/registration-confirmation"
-              element={<RegistrationConfirmation />}
-            />{" "}
-            <Route exact path="/edit-event" element={<EditEventsReg />} />{" "}
-            <Route exact path="/event-details" element={<EventsRegDetails />} />
-            <Route exact path="/create-card" element={<CreateFindMeCard />} />
-            <Route exact path="/login" element={<Login />} />{" "}
-            <Route exact path="/signup" element={<Signup />} />
-            <Route exact path="/email-signup" element={<EmailSignup />} />
-            <Route
-              exact
-              path="/google-signup-form"
-              element={<GoogleSignupForm />}
-            />
-            <Route
-              exact
-              path="/email-signup-form"
-              element={<EmailSignupForm />}
-            />
-            <Route exact path="/validate-code" element={<ValidationCode />} />
-            <Route exact path="/find-event" element={<FindEvent />} />
-            <Route exact path="/event-list" element={<EventList />} />
-            <Route exact path="/current-rsvps" element={<CurrentRSVPs />} />
-            <Route exact path="/event-bytype" element={<EventByType />} />{" "}
-            <Route
-              exact
-              path="/event-byorganizer"
-              element={<EventsByOrganizer />}
-            />
-            <Route
-              exact
-              path="/event-bylocation"
-              element={<EventByLocation />}
-            />
-            <Route exact path="/welcome" element={<Welcome />} />
-            <Route
-              exact
-              path="/organizerEventList"
-              element={<OrganizerEventList />}
-            />
-            <Route exact path="/eventTypeMenu" element={<EventTypeMenu />} />
-            <Route
-              exact
-              path="/eventVisibility"
-              element={<EventVisibility />}
-            />
-            <Route
-              exact
-              path="/eventParticulars"
-              element={<EventParticulars />}
-            />
-            <Route exact path="/eventLocation" element={<EventLocation />} />
-            <Route exact path="/eventTitle" element={<EventTitle />} />
-            <Route
-              exact
-              path="/eventPhotoUpload"
-              element={<EventPhotoUpload />}
-            />
-            <Route
-              exact
-              path="/preEventQuestionnaire"
-              element={<PreEventQuestionnaire />}
-            />
-            <Route exact path="/eventReview" element={<EventReview />} />
-            <Route
-              exact
-              path="/eventCreationConfirmation"
-              element={<EventCreationConfirmation />}
-            />
-            <Route exact path="/eventCapacity" element={<EventCapacity />} />
-            <Route exact path="/pre-registration" element={<PreRegMenu />} />
-            <Route exact path="/registrationCode" element={<RegCode />} />
-            <Route exact path="/eventProfile" element={<EventProfile />} />
-            <Route
-              exact
-              path="/findEventByDate"
-              element={<FindEventByDate />}
-            />
-            <Route exact path="/searchbox" element={<Searchbox />} />
-            <Route exact path="/currentEvents" element={<CurrentEvents />} />
-            <Route exact path="/eventDashboard" element={<EventDashboard />} />
-            <Route exact path="/eventAgenda" element={<EventAgenda />} />
-            <Route exact path="/eventAttendees" element={<EventAttendees />} />
-            <Route
-              exact
-              path="/attendeeDetails"
-              element={<AttendeeDetails />}
-            />
-            <Route
-              exact
-              path="/attendeeCheckin"
-              element={<AttendeeCheckin />}
-            />
-            <Route exact path="/networking" element={<Networking />} />
-            <Route
-              exact
-              path="/networkingDashboard"
-              element={<NetworkingDashboard />}
-            />
-            <Route
-              exact
-              path="/showCheckinCode"
-              element={<ShowCheckinCode />}
-            />
-            <Route exact path="/waiting" element={<Waiting />} />
-            <Route exact path="/eventRegCode" element={<EventRegCode />} />
-            <Route exact path="/eventDetails" element={<EventDetails />} />
-            <Route
-              exact
-              path="/emailBroadcastMessage"
-              element={<EmailBroadcastMessage />}
-            />
-            <Route
-              exact
-              path="/organizerEventAgenda"
-              element={<OrganizerEventAgenda />}
-            />
-          </Routes>
-        </LoginContext.Provider>
+        <Routes>
+          <Route exact path="/" element={<Welcome />} />
+          <Route exact path="/eventTypeMenu" element={<EventTypeMenu />} />
+          <Route exact path="/eventVisibility" element={<EventVisibility />} />
+          <Route
+            exact
+            path="/eventParticulars"
+            element={<EventParticulars />}
+          />
+          <Route exact path="/eventLocation" element={<EventLocation />} />
+          <Route exact path="/eventTitle" element={<EventTitle />} />
+          <Route
+            exact
+            path="/eventPhotoUpload"
+            element={<EventPhotoUpload />}
+          />
+          <Route
+            exact
+            path="/preEventQuestionnaire"
+            element={<PreEventQuestionnaire />}
+          />
+          <Route exact path="/eventReview" element={<EventReview />} />
+          <Route
+            exact
+            path="/eventPreRegCode"
+            element={<EventPreRegCode />}
+          />
+          <Route exact path="/eventDetails" element={<EventDetails />} />
+          <Route exact path="/emailBroadcastMessage" element={<EmailBroadcastMessage />} />
+
+          <Route exact path="/pre-registration" element={<PreRegMenu />} />
+          <Route exact path="/registrationCode" element={<RegCode />} />
+          <Route exact path="/eventProfile" element={<EventProfile />} />
+          <Route exact path="/findEventByDate" element={<FindEventByDate />} />
+          <Route
+            exact
+            path="/preregistration-event"
+            element={<PreRegistration />}
+          />
+          <Route
+            exact
+            path="/registration-questionnare"
+            element={<PreRegQuestionnare />}
+          />
+          <Route
+            exact
+            path="/registration-confirmation"
+            element={<RegistrationConfirmation />}
+          />{" "}
+          <Route exact path="/edit-event" element={<EditEventsReg />} />{" "}
+          <Route exact path="/event-details" element={<EventsRegDetails />} />
+          <Route exact path="/create-card" element={<CreateFindMeCard />} />
+          <Route exact path="/login" element={<Login />} />{" "}
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/email-signup" element={<EmailSignup />} />
+          <Route
+            exact
+            path="/google-signup-form"
+            element={<GoogleSignupForm />}
+          />
+          <Route
+            exact
+            path="/email-signup-form"
+            element={<EmailSignupForm />}
+          />
+          <Route exact path="/validate-code" element={<ValidationCode />} />
+          <Route exact path="/find-event" element={<FindEvent />} />
+          <Route exact path="/event-list" element={<EventList />} />
+          <Route exact path="/current-rsvps" element={<CurrentRSVPs />} />
+          <Route exact path="/event-bytype" element={<EventByType />} />{" "}
+          <Route
+            exact
+            path="/event-byorganizer"
+            element={<EventsByOrganizer />}
+          />
+          <Route exact path="/welcome" element={<Welcome />} />
+          <Route
+            exact
+            path="/organizerEventList"
+            element={<OrganizerEventList />}
+          />
+          <Route exact path="/eventTypeMenu" element={<EventTypeMenu />} />
+          <Route exact path="/eventVisibility" element={<EventVisibility />} />
+          <Route
+            exact
+            path="/eventParticulars"
+            element={<EventParticulars />}
+          />
+          <Route exact path="/eventLocation" element={<EventLocation />} />
+          <Route exact path="/eventTitle" element={<EventTitle />} />
+          <Route
+            exact
+            path="/eventPhotoUpload"
+            element={<EventPhotoUpload />}
+          />
+          <Route
+            exact
+            path="/preEventQuestionnaire"
+            element={<PreEventQuestionnaire />}
+          />
+          <Route exact path="/eventReview" element={<EventReview />} />
+          <Route exact path="/eventCheckInCode" element={<EventCheckInCode />} />
+          <Route exact path="/eventCapacity" element={<EventCapacity />} />
+          <Route exact path="/pre-registration" element={<PreRegMenu />} />
+          <Route exact path="/registrationCode" element={<RegCode />} />
+          <Route exact path="/eventProfile" element={<EventProfile />} />
+          <Route exact path="/findEventByDate" element={<FindEventByDate />} />
+          <Route exact path="/searchbox" element={<Searchbox />} />
+          <Route exact path="/currentEvents" element={<CurrentEvents />} />
+          <Route exact path="/eventDashboard" element={<EventDashboard />} />
+          <Route exact path="/eventAgenda" element={<EventAgenda />} />
+          <Route exact path="/eventAttendees" element={<EventAttendees />} />
+          <Route exact path="/attendeeDetails" element={<AttendeeDetails />} />
+          <Route exact path="/attendeeCheckin" element={<AttendeeCheckin />} />
+          <Route exact path="/networking" element={<Networking />} />
+          <Route
+            exact
+            path="/networkingDashboard"
+            element={<NetworkingDashboard />}
+          />
+          <Route exact path="/showCheckinCode" element={<ShowCheckinCode />} />
+        </Routes>
       </Router>
     </div>
   );

@@ -25,7 +25,7 @@ export default function EventReview() {
       .post(BASE_URL + `/AddEvent`, retrievedEventObject)
       .then((response) => {
         console.log("event created");
-        navigate("/eventCreationConfirmation");
+        navigate("/eventPreRegCode");
       })
       .catch((error) => {
         console.log(error);
