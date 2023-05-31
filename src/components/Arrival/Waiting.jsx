@@ -10,7 +10,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 const Waiting = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { event, user } = location.state;
+  const user = location.state
+    ? location.state.user
+    : JSON.parse(localStorage.getItem("user"));
+  const event = location.state
+    ? location.state.event
+    : JSON.parse(localStorage.getItem("event"));
 
   const joinSubscribe = () => {
     const channel = ably.channels.get(`FindMe/${event.event_uid}`);

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ably from "../../config/ably";
@@ -9,6 +10,9 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Highcharts from "../../config/networking";
 import HighchartsReact from "highcharts-react-official";
+import Snackbar from "@mui/material/Snackbar";
+import MUIAlert from "@mui/material/Alert";
+import Slide from "@mui/material/Slide";
 import { styled } from "@mui/material/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
@@ -20,10 +24,20 @@ const StyledButton = styled(Button)(
     `
 );
 
+const SlideTransition = (props) => {
+  return <Slide {...props} direction="down" />;
+};
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MUIAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Networking = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { event, user } = location.state;
+  const [showAlert, setShowAlert] = useState(false);
+  const [message, setMessage] = useState("");
   const [options, setOptions] = useState({
     chart: {
       type: "networkgraph",
@@ -74,8 +88,11 @@ const Networking = () => {
   };
 
   const refreshGraph = async () => {
+    const user_uid =
+      typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+    if (!user_uid) alert("User UID is undefined");
     const response = await axios.get(
-      `${BASE_URL}/networkingGraph?eventId=${event.event_uid}&userId=${user.user_uid}`
+      `${BASE_URL}/networkingGraph?eventId=${event.event_uid}&userId=${user_uid}`
     );
     const data = response["data"];
     let nodesArr = [];
@@ -111,9 +128,17 @@ const Networking = () => {
         channel.unsubscribe();
         navigate("/currentEvents", { state: { event, user } });
       } else {
-        alert(event.data.message);
+        setMessage(event.data.message);
+        setShowAlert(true);
       }
     });
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowAlert(false);
   };
 
   useEffect(() => {
@@ -124,6 +149,17 @@ const Networking = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={SlideTransition}
+        >
+          <Alert onClose={handleAlertClose} severity="info">
+            {message}
+          </Alert>
+        </Snackbar>
         <Typography variant="h4" align="center" gutterBottom>
           {"Networking activity"}
         </Typography>
