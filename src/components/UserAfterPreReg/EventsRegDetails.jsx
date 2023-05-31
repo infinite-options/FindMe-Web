@@ -5,7 +5,8 @@ export default function EventsRegDetails() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const event = state.event;
-
+  // console.log(event);
+  // console.log(event.event_description);
   return (
     <div
       style={{
