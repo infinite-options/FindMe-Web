@@ -46,9 +46,33 @@ export default function Welcome() {
             variant="outlined"
             sx={{ mt: 2 }}
             style={{ width: "20rem" }}
-            onClick={() =>
-              navigate("/login", { state: { path: "/currentEvents" } })
-            }
+            onClick={() => {
+              if (document.cookie !== "") {
+                document.cookie
+                  .split("; ")
+                  .find((row) => row.startsWith("loggedIn="))
+                  .split("=")[1] === "true"
+                  ? navigate("/currentEvents", {
+                      state: {
+                        email: document.cookie
+                          .split("; ")
+                          .find((row) => row.startsWith("user_email="))
+                          .split("=")[1],
+                        user: document.cookie
+                          .split("; ")
+                          .find((row) => row.startsWith("user_details="))
+                          .split("=")[1],
+                      },
+                    })
+                  : navigate("/login", {
+                      state: { path: "/currentEvents" },
+                    });
+              } else {
+                navigate("/login", {
+                  state: { path: "/currentEvents" },
+                });
+              }
+            }}
           >
             {" "}
             Arrive at Event{" "}
