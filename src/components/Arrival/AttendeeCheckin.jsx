@@ -55,10 +55,10 @@ const AttendeeCheckin = () => {
   return (
     <Container maxWidth="sm">
       <Box component="form" noValidate autoComplete="off" sx={{ my: 4 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" align="center" gutterBottom>
           {"Attendee check-in"}
         </Typography>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" align="center" gutterBottom>
           {"Enter event registration code"}
         </Typography>
         <Box sx={{ my: 4 }}>
@@ -74,6 +74,9 @@ const AttendeeCheckin = () => {
               <QrReader
                 onResult={(result) => {
                   if (result) setRegCode(result.text);
+                }}
+                constraints={{
+                  facingMode: "environment",
                 }}
                 videoStyle={{ width: "", height: "" }}
               />

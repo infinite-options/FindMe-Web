@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -6,7 +5,6 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import { orange } from "@mui/material/colors";
 
 const StyledButton = styled(Button)(
   () => `
@@ -15,51 +13,10 @@ const StyledButton = styled(Button)(
     `
 );
 
-const OrangeButton = styled(StyledButton)(({ theme }) => ({
-  color: theme.palette.getContrastText(orange[500]),
-  backgroundColor: orange[500],
-  "&:hover": {
-    backgroundColor: orange[700],
-  },
-}));
-
 const EventDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { event } = location.state;
-  const [selectedId, setSelectedId] = useState();
-
-  const hanldeOptionClick = (id, event) => {
-    setSelectedId(id);
-  };
-
-  const handleStartClick = () => {
-    switch (selectedId) {
-      case 1:
-        navigate("/eventAgenda");
-        break;
-      case 2:
-        navigate("/introduction");
-        break;
-      case 3:
-        navigate("/networkingDashboard", {
-          state: event,
-        });
-        break;
-      case 4:
-        navigate("/eventAttendees", {
-          state: event,
-        });
-        break;
-      case 5:
-        navigate("/showCheckinCode", {
-          state: event,
-        });
-        break;
-      default:
-        break;
-    }
-  };
+  const { event, user } = location.state;
 
   return (
     <Container maxWidth="sm">
@@ -96,36 +53,45 @@ const EventDashboard = () => {
           <Typography variant="h6" gutterBottom>
             {`${event.event_location}, ${event.event_zip}`}
           </Typography>
-          <StyledButton
-            variant={selectedId === 1 ? "outlined" : "text"}
-            onClick={() => hanldeOptionClick(1, event)}
-          >
-            {"View/Edit agenda"}
-          </StyledButton>
-          <StyledButton
-            variant={selectedId === 3 ? "outlined" : "text"}
-            onClick={() => hanldeOptionClick(3, event)}
-          >
-            {"Networking"}
-          </StyledButton>
-          <StyledButton
-            variant={selectedId === 4 ? "outlined" : "text"}
-            onClick={() => hanldeOptionClick(4, event)}
-          >
-            {"View attendees"}
-          </StyledButton>
-          <StyledButton
-            variant={selectedId === 5 ? "outlined" : "text"}
-            onClick={() => hanldeOptionClick(5, event)}
-          >
-            {"Show check-in QR/code"}
-          </StyledButton>
+          <Stack spacing={2}>
+            <StyledButton
+              variant="contained"
+              onClick={() => navigate("/eventAgenda")}
+            >
+              {"View/Edit agenda"}
+            </StyledButton>
+            <StyledButton
+              variant="contained"
+              onClick={() =>
+                navigate("/networkingDashboard", {
+                  state: { event, user },
+                })
+              }
+            >
+              {"Networking"}
+            </StyledButton>
+            <StyledButton
+              variant="contained"
+              onClick={() =>
+                navigate("/eventAttendees", {
+                  state: event,
+                })
+              }
+            >
+              {"View attendees"}
+            </StyledButton>
+            <StyledButton
+              variant="contained"
+              onClick={() =>
+                navigate("/showCheckinCode", {
+                  state: event,
+                })
+              }
+            >
+              {"Show check-in QR/code"}
+            </StyledButton>
+          </Stack>
         </Stack>
-      </Box>
-      <Box sx={{ my: 4 }} align="center">
-        <OrangeButton variant="contained" onClick={handleStartClick}>
-          {"Enter"}
-        </OrangeButton>
       </Box>
     </Container>
   );

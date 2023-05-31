@@ -7,15 +7,15 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const AttendeeCheckin = () => {
+const Waiting = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { event, user } = location.state;
 
   const joinSubscribe = () => {
     const channel = ably.channels.get(`FindMe/${event.event_uid}`);
-    channel.subscribe((event) => {
-      if (event.data.message === "Event started") {
+    channel.subscribe((e) => {
+      if (e.data.message === "Event started") {
         navigate("/networking", { state: { event, user } });
       }
     });
@@ -28,12 +28,16 @@ const AttendeeCheckin = () => {
   return (
     <Container maxWidth="sm">
       <Box component="form" noValidate autoComplete="off" sx={{ my: 4 }}>
-        <Stack spacing={4} direction="column" sx={{ my: 4 }} align="center">
+        <Stack
+          spacing={4}
+          direction="column"
+          sx={{ my: 4, justifyContent: "center", alignItems: "center" }}
+        >
           <Typography variant="h4" gutterBottom>
             {event.event_title}
           </Typography>
           <Typography variant="h5" gutterBottom>
-            {"Waiting for the host to start the activity..."}
+            {"Waiting for host to start activity..."}
           </Typography>
           <CircularProgress disableShrink />
         </Stack>
@@ -42,4 +46,4 @@ const AttendeeCheckin = () => {
   );
 };
 
-export default AttendeeCheckin;
+export default Waiting;

@@ -152,8 +152,11 @@ export default function EventReview() {
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Pre-Event Questionnaire :{" "}
-                {retrievedEventObject.preEventQuestionnaire}
-              </Typography>
+                {retrievedEventObject.preEventQuestionnaire.map(
+                    (question, index) => {
+                        { return <ListItem>{question.question}</ListItem> }
+                    })}
+                </Typography>
               <IconButton
                 component="span"
                 onClick={() => {

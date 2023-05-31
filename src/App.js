@@ -19,6 +19,10 @@ import EventPhotoUpload from "./components/EventCreation/EventPhotoUpload";
 import PreEventQuestionnaire from "./components/EventCreation/PreEventQuestionnaire";
 import EventReview from "./components/EventCreation/EventReview";
 import EventCreationConfirmation from "./components/EventCreation/EventCreationConfirmation";
+import EventRegCode from "./components/EventCreation/EventRegCode";
+import EventDetails from "./components/EventCreation/EventDetails";
+import OrganizerEventAgenda from "./components/EventCreation/OrganizerEventAgenda";
+import EmailBroadcastMessage from "./components/EventCreation/EmailBroadcastMessage";
 import PreRegistration from "./components/UserAfterPreReg/PreRegistration";
 import PreRegQuestionnare from "./components/UserAfterPreReg/PreRegQuestionnare";
 import Login from "./components/Login/Login";
@@ -40,7 +44,6 @@ import EventsRegDetails from "./components/UserAfterPreReg/EventsRegDetails";
 import CurrentEvents from "./components/Arrival/CurrentEvents";
 import EventDashboard from "./components/Arrival/EventDashboard";
 import EventAgenda from "./components/Arrival/EventAgenda";
-import BroadcastMessage from "./components/Arrival/BroadcastMessage";
 import EventAttendees from "./components/Arrival/EventAttendees";
 import AttendeeDetails from "./components/Arrival/AttendeeDetails";
 import AttendeeCheckin from "./components/Arrival/AttendeeCheckin";
@@ -49,6 +52,7 @@ import Networking from "./components/Arrival/Networking";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
 import EventByLocation from "./components/FindEvents/EventByLocation";
+import Waiting from "./components/Arrival/Waiting";
 
 function App() {
   const [loginState, setLoginState] = useState(LoginInitState);
@@ -238,6 +242,7 @@ function App() {
               path="/showCheckinCode"
               element={<ShowCheckinCode />}
             />
+            <Route exact path="/waiting" element={<Waiting />} />
           </Routes>
         </LoginContext.Provider>
       </Router>
