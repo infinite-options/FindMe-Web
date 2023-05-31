@@ -3,26 +3,36 @@ import axios from "axios";
 import { Grid, Box, Typography, Button } from "@mui/material";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function OrganizerEventList() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [events, setEvents] = useState([]);
-  const [eventOrganizerUID, setEventOrganizerUID] = useState('100-000036');
+  const [eventOrganizerUID, setEventOrganizerUID] = useState(location.state.user.user_uid);
+  const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
+
   const getAllEvents = () => {
     axios
       .get(
-        BASE_URL + `GetEvents?event_organizer_uid=${eventOrganizerUID}`
+        BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`
       )
       .then((response) => {
         console.log(response.data.result);
         setEvents(response.data.result);
       });
   };
+  const saveEventObject = () => {
+        console.log("** ", retrievedEventObject)
+        retrievedEventObject['event_organizer_uid'] = eventOrganizerUID;
+        localStorage.setItem('event', JSON.stringify(retrievedEventObject));
+        console.log("66 ",retrievedEventObject)
+  }
   useEffect(() => {
+    saveEventObject();
     getAllEvents();
   }, []);
 

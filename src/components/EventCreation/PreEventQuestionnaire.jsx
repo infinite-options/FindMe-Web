@@ -46,9 +46,11 @@ export default function PreEventQuestionnaire() {
         }
     }
 
-    const saveEventObject = () => {
-        console.log("** ", retrievedEventObject)
-        retrievedEventObject['preEventQuestionnaire'] = selectedOptions;
+    const saveEventObject = () => {        
+        let preEventQuestionnaire = selectedOptions.map((question, index) => ({ id: index + 1, question: question }));
+        console.log("preEventQuestionnaire - ", preEventQuestionnaire)
+
+        retrievedEventObject['preEventQuestionnaire'] = preEventQuestionnaire;
         localStorage.setItem('event', JSON.stringify(retrievedEventObject));
         console.log("66 ",retrievedEventObject)
     }
