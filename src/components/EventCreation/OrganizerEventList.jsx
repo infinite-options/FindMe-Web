@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import GroupsIcon from '@mui/icons-material/Groups';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useLocation, useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
 
@@ -45,16 +47,39 @@ export default function OrganizerEventList() {
         setEvents(response.data.result);
       });
   };
-  const saveEventObject = () => {
-    console.log("** ", retrievedEventObject);
-    retrievedEventObject["event_organizer_uid"] = eventOrganizerUID;
+  const handleCreateEvent = () => {
+    localStorage.clear();
+    let newEvent = {};
+    newEvent["event_organizer_uid"] = eventOrganizerUID;
+    localStorage.setItem("event", JSON.stringify(newEvent));
+    navigate("/eventTypeMenu")
+  };
+  useEffect(() => {
+    getAllEvents();
+  }, []);
+
+  const saveEventObject = (event) => {
+    console.log("^^^ ", event);
+    retrievedEventObject["eventCapacity"] = event.event_capacity
+    retrievedEventObject["eventDescription"] = event.event_description
+    retrievedEventObject["eventPhoto"] = event.event_photo
+    retrievedEventObject["eventTitle"] = event.event_title
+    retrievedEventObject["eventType"] = event.event_type
+    retrievedEventObject["event_organizer_uid"] = event.event_organizer_uid
+    retrievedEventObject["preEventQuestionnaire"] = JSON.parse(event.pre_event_questionnaire)
+    retrievedEventObject["eventVisibility"] = event.event_visibility
+    retrievedEventObject["eventStartDate"] = event.event_start_date
+    retrievedEventObject["eventStartTime"] = event.event_start_time
+    retrievedEventObject["eventEndDate"] = event.event_end_date
+    retrievedEventObject["eventEndTime"] = event.event_end_time
+    retrievedEventObject["event_uid"] = event.event_uid
+    retrievedEventObject["eventLocation"] = event.event_location
+    retrievedEventObject["eventZip"] = event.event_zip
+    retrievedEventObject["eventRegCode"] = event.event_registration_code
+
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
     console.log("66 ", retrievedEventObject);
   };
-  useEffect(() => {
-    saveEventObject();
-    getAllEvents();
-  }, []);
 
   return (
     <div
@@ -128,15 +153,34 @@ export default function OrganizerEventList() {
               <IconButton
                 component="span"
                 onClick={() => {
+                  saveEventObject(event)
                   navigate("/eventTitle");
                 }}
               >
                 <EditIcon fontSize="small" />
               </IconButton>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  saveEventObject(event)
+                  navigate("/eventAttendeesList");
+                }}
+              >
+                <GroupsIcon fontSize="medium" />
+              </IconButton>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  saveEventObject(event)
+                  navigate("/eventDetails");
+                }}
+              >
+                <MoreHorizIcon fontSize="medium" />
+              </IconButton>
             </Grid>
           );
         })}
-        <Button onClick={() => navigate("/eventTypeMenu")}>Create Event</Button>
+        <Button onClick={()=>handleCreateEvent()}>Create Event</Button>
       </Paper>
     </div>
   );

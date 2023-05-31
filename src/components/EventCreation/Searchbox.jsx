@@ -65,7 +65,7 @@ class Searchbox extends Component {
                 lng={place.geometry.location.lng()}
               />
               {this.props.latLongHandler(place.geometry.location.lat(),place.geometry.location.lng())}
-              {console.log("666  ", place.name, " 00 ", place.id)}
+              {console.log("%%  ", place.name, " 00 ", place.id, " (( ", place)}
               </>
             ))}
         </GoogleMap>
