@@ -11,12 +11,10 @@ const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 export default function OrganizerEventList() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  const [eventOrganizerUID, setEventOrganizerUID] = useState('100-000036');
+  const [eventOrganizerUID, setEventOrganizerUID] = useState("100-000036");
   const getAllEvents = () => {
     axios
-      .get(
-        BASE_URL + `GetEvents?event_organizer_uid=${eventOrganizerUID}`
-      )
+      .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`)
       .then((response) => {
         console.log(response.data.result);
         setEvents(response.data.result);
@@ -43,10 +41,13 @@ export default function OrganizerEventList() {
         justify="center"
         border={1}
       >
-        <Typography variant="h5" sx={{mt: 2}}> Events List </Typography>
+        <Typography variant="h5" sx={{ mt: 2 }}>
+          {" "}
+          Events List{" "}
+        </Typography>
 
         {events.map((event) => {
-          console.log("event ", event)
+          console.log("event ", event);
           return (
             <Box
               style={{
@@ -84,18 +85,18 @@ export default function OrganizerEventList() {
                   {event.event_start_time} - {event.event_end_time}
                 </p>
               </div>
-              <IconButton component="span" onClick={() => { navigate('/eventTitle') }}>
-                  <EditIcon fontSize="small"/>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  navigate("/eventTitle");
+                }}
+              >
+                <EditIcon fontSize="small" />
               </IconButton>
             </Box>
           );
-        })
-        }
-        <Button onClick={() =>
-              navigate("/eventTypeMenu")
-            }
-        >Create Event</Button>
-
+        })}
+        <Button onClick={() => navigate("/eventTypeMenu")}>Create Event</Button>
       </Grid>
     </div>
   );

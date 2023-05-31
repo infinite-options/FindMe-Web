@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoginContext from "../../LoginContext";
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
 
 function GoogleLogin(props) {
+  const loginContext = useContext(LoginContext);
   const navigate = useNavigate();
   const { userDoesntExist, setUserDoesntExist, path } = props;
   const eventObj = props.eventObj !== undefined ? props.eventObj : "";
@@ -107,6 +109,18 @@ function GoogleLogin(props) {
     }
   }
   const socialGoogle = async (e, u) => {
+    document.cookie = "user_uid=" + u.user_uid;
+    document.cookie = "user_email=" + e;
+    document.cookie = "user_details=" + JSON.stringify(u);
+    document.cookie = "loggedIn=" + true;
+    loginContext.setLoginState({
+      ...loginContext.loginState,
+      reload: false,
+      loggedIn: true,
+      user_uid: u.user_uid,
+      user_email: e,
+      user_details: u,
+    });
     navigate(path, {
       state: {
         email: e,

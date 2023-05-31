@@ -53,9 +53,29 @@ export default function FindEvent() {
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
-          onClick={() =>
-            navigate("/login", { state: { path: "/current-rsvps" } })
-          }
+          onClick={() => {
+            if (document.cookie !== "") {
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("loggedIn="))
+                .split("=")[1] === "true"
+                ? navigate("/current-rsvps", {
+                    state: {
+                      email: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_email="))
+                        .split("=")[1],
+                      user: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_details="))
+                        .split("=")[1],
+                    },
+                  })
+                : navigate("/login", { state: { path: "/current-rsvps" } });
+            } else {
+              navigate("/login", { state: { path: "/current-rsvps" } });
+            }
+          }}
         >
           See Current RSVPs
         </Button>

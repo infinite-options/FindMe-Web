@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import * as ReactBootStrap from "react-bootstrap";
+import LoginContext from "../../LoginContext";
 import { Grid, Button, FormControl, FormGroup, TextField } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import PasswordModal from "./PasswordModal";
@@ -9,6 +9,7 @@ import { red, pillButton, boldSmall, hidden, small } from "../../styles";
 
 export default function EmailLogin(props) {
   const navigate = useNavigate();
+  const loginContext = useContext(LoginContext);
 
   const { userDoesntExist, setUserDoesntExist, path, showForm, setShowForm } =
     props;
@@ -87,6 +88,21 @@ export default function EmailLogin(props) {
                       // setShowSpinner(false);
                     } else if (response.data.message === "Login successful") {
                       setErrorMessage("");
+                      document.cookie =
+                        "user_uid=" + response.data.result.user_uid;
+                      document.cookie = "user_email=" + email;
+                      document.cookie =
+                        "user_details=" + JSON.stringify(response.data.result);
+                      document.cookie = "loggedIn=" + true;
+                      JSON.stringify(response.data.result);
+                      loginContext.setLoginState({
+                        ...loginContext.loginState,
+                        reload: false,
+                        loggedIn: true,
+                        user_uid: response.data.result.user_uid,
+                        user_email: email,
+                        user_details: response.data.result,
+                      });
                       navigate(path, {
                         state: {
                           email: email,

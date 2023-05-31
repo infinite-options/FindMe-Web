@@ -37,13 +37,14 @@ export default function Welcome() {
             {" "}
             Pre-register{" "}
           </Button>
-          <Button 
-            variant="outlined" 
-            sx={{ mt: 2 }} 
-            style={{ width: "50rem" }} 
+          <Button
+            variant="outlined"
+            sx={{ mt: 2 }}
+            style={{ width: "50rem" }}
             onClick={() =>
               navigate("/login", { state: { path: "/currentEvents" } })
-            }>
+            }
+          >
             {" "}
             Arrive at Event{" "}
           </Button>
@@ -60,9 +61,33 @@ export default function Welcome() {
             variant="outlined"
             sx={{ mt: 2 }}
             style={{ width: "50rem" }}
-            onClick={() =>
-              navigate("/login", { state: { path: "/organizerEventList" } })
-            }
+            onClick={() => {
+              if (document.cookie !== "") {
+                document.cookie
+                  .split("; ")
+                  .find((row) => row.startsWith("loggedIn="))
+                  .split("=")[1] === "true"
+                  ? navigate("/organizerEventList", {
+                      state: {
+                        email: document.cookie
+                          .split("; ")
+                          .find((row) => row.startsWith("user_email="))
+                          .split("=")[1],
+                        user: document.cookie
+                          .split("; ")
+                          .find((row) => row.startsWith("user_details="))
+                          .split("=")[1],
+                      },
+                    })
+                  : navigate("/login", {
+                      state: { path: "/organizerEventList" },
+                    });
+              } else {
+                navigate("/login", {
+                  state: { path: "/organizerEventList" },
+                });
+              }
+            }}
           >
             {" "}
             Create/Edit an Event{" "}

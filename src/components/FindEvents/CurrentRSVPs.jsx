@@ -11,10 +11,12 @@ export default function CurrentRSVPs() {
   const { state } = useLocation();
   const email = state.email;
   const user = state.user;
+  let user_uid =
+    typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
   const [events, setEvents] = useState([]);
 
   const getRSVPdEvents = () => {
-    axios.get(BASE_URL + `/GetEventUser/${user.user_uid}`).then((response) => {
+    axios.get(BASE_URL + `/GetEventUser/${user_uid}`).then((response) => {
       setEvents(response.data.result);
     });
   };
