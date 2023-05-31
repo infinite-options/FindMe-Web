@@ -22,10 +22,9 @@ export default function RegistrationConfirmation() {
   let email = state.email;
   let user = state.user;
   const eventObj = state.eventObj !== undefined ? state.eventObj : "";
-  console.log(typeof user);
+
   let user_uid =
     typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
-  console.log(JSON.parse(user).user_uid);
 
   const GetUserProfile = async () => {
     let x = {
@@ -68,7 +67,7 @@ export default function RegistrationConfirmation() {
       addEventUser();
     }
   }, []);
-
+  console.log(event);
   const alreadyRegistered = () => {
     return (
       <Dialog

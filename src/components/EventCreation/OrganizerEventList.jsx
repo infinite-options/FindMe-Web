@@ -24,28 +24,33 @@ const Img = styled("img")({
 });
 export default function OrganizerEventList() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { state } = useLocation();
+  let user = state.user;
+  let user_uid =
+    typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
   const [events, setEvents] = useState([]);
 
-  const [eventOrganizerUID, setEventOrganizerUID] = useState(location.state.user.user_uid);
-  const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
+  const [eventOrganizerUID, setEventOrganizerUID] = useState(user_uid);
+
+  const retrievedEventObject =
+    localStorage.getItem("event") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("event"));
 
   const getAllEvents = () => {
     axios
-      .get(
-        BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`
-      )
+      .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`)
       .then((response) => {
         console.log(response.data.result);
         setEvents(response.data.result);
       });
   };
   const saveEventObject = () => {
-        console.log("** ", retrievedEventObject)
-        retrievedEventObject['event_organizer_uid'] = eventOrganizerUID;
-        localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("66 ",retrievedEventObject)
-  }
+    console.log("** ", retrievedEventObject);
+    retrievedEventObject["event_organizer_uid"] = eventOrganizerUID;
+    localStorage.setItem("event", JSON.stringify(retrievedEventObject));
+    console.log("66 ", retrievedEventObject);
+  };
   useEffect(() => {
     saveEventObject();
     getAllEvents();
