@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, Paper } from "@mui/material";
 
 export default function PreRegMenu() {
   const navigate = useNavigate();
@@ -14,14 +14,19 @@ export default function PreRegMenu() {
           paddingTop: "5%",
         }}
       >
-        <Grid
-          container
-          direction="column"
-          margin={1}
-          style={{ height: "20rem", width: "80rem" }}
-          alignItems="center"
-          justify="center"
-          border={1}
+        <Paper
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: 5,
+            flexDirection: "column",
+            flexGrow: 1,
+            border: 1,
+            backgroundColor: (theme) =>
+              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+          }}
         >
           <Typography variant="h5" sx={{ mt: 2 }}>
             {" "}
@@ -30,7 +35,7 @@ export default function PreRegMenu() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => navigate("/registrationCode")}
           >
             {" "}
@@ -39,7 +44,7 @@ export default function PreRegMenu() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => navigate("/findEventByDate")}
           >
             {" "}
@@ -48,7 +53,7 @@ export default function PreRegMenu() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => navigate("/event-byorganizer")}
           >
             {" "}
@@ -57,7 +62,7 @@ export default function PreRegMenu() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => navigate("/event-list")}
           >
             {" "}
@@ -66,13 +71,13 @@ export default function PreRegMenu() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => navigate("/event-bylocation")}
           >
             {" "}
             See Events in your location{" "}
           </Button>
-        </Grid>
+        </Paper>
       </div>
     </>
   );

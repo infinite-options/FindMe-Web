@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Box, Button } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import {
+  Grid,
+  Box,
+  Paper,
+  Typography,
+  ButtonBase,
+  Button,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
+const Img = styled("img")({
+  margin: "auto",
+  display: "block",
+  maxWidth: "100%",
+  maxHeight: "100%",
+});
 
 export default function EventByOrganizer() {
   const navigate = useNavigate();
@@ -42,13 +57,19 @@ export default function EventByOrganizer() {
         paddingTop: "5%",
       }}
     >
-      <Grid
-        container
-        direction="column"
-        margin={5}
-        alignItems="center"
-        justify="center"
-        border={1}
+      <Paper
+        sx={{
+          p: 2,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: 5,
+          flexDirection: "column",
+          flexGrow: 1,
+          border: 1,
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+        }}
       >
         Events By Organizer {eventOrganizerSet ? `: ${eventOrganizer}` : ""}
         {!eventOrganizerSet ? (
@@ -89,64 +110,59 @@ export default function EventByOrganizer() {
                 );
               })}
           </div>
+        ) : !isLoading ? (
+          events.map((event) => {
+            return (
+              <Grid
+                container
+                spacing={2}
+                margin={2}
+                sx={{
+                  p: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: 1,
+                }}
+                onClick={() => {
+                  navigate("/preregistration-event", {
+                    state: { event: event },
+                  });
+                }}
+              >
+                <Grid item>
+                  <ButtonBase
+                    sx={{
+                      width: 128,
+                      height: 128,
+                      border: "1px solid red",
+                    }}
+                  >
+                    <Img alt="complex" src="/static/images/grid/complex.jpg" />
+                  </ButtonBase>
+                </Grid>
+                <Grid item xs={8} direction="column" spacing={2}>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    {event.event_title}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    {event.event_description}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {event.event_start_date}
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary">
+                    {event.event_start_time} - {event.event_end_time}
+                  </Typography>
+                </Grid>
+              </Grid>
+            );
+          })
         ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              margin: "2rem 0rem",
-            }}
-          >
-            {!isLoading
-              ? events.map((event) => {
-                  return (
-                    <Box
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        border: "1px solid black",
-                        borderRadius: "5px",
-                        margin: "1rem 0rem",
-                        padding: "1rem",
-                        width: "400px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/preregistration-event", {
-                          state: { event: event },
-                        });
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "50px",
-                          border: "1px solid red",
-                          padding: "1rem",
-                          margin: "0rem 1rem",
-                        }}
-                      >
-                        img
-                      </div>
-                      <div style={{ lineHeight: "2px" }}>
-                        <p style={mediumBold}>{event.event_title}</p>
-                        <p style={small}>{event.event_description}</p>
-                        <p style={small}>{event.event_start_date}</p>
-                        <p style={small}>
-                          {event.event_start_time} - {event.event_end_time}
-                        </p>
-                      </div>
-                    </Box>
-                  );
-                })
-              : `No events of type ${eventOrganizer}`}
-            {}
-          </div>
+          `No events of type ${eventOrganizer}`
         )}
-      </Grid>
+      </Paper>
     </div>
   );
 }

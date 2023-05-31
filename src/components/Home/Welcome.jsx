@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, Paper } from "@mui/material";
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -14,14 +14,19 @@ export default function Welcome() {
           paddingTop: "5%",
         }}
       >
-        <Grid
-          container
-          direction="column"
-          margin={5}
-          style={{ height: "30rem", width: "80rem" }}
-          alignItems="center"
-          justify="center"
-          border={1}
+        <Paper
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: 5,
+            flexDirection: "column",
+            flexGrow: 1,
+            border: 1,
+            backgroundColor: (theme) =>
+              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+          }}
         >
           <Typography variant="h5" sx={{ mt: 2 }}>
             {" "}
@@ -31,7 +36,7 @@ export default function Welcome() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => navigate("/pre-registration")}
           >
             {" "}
@@ -40,7 +45,7 @@ export default function Welcome() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() =>
               navigate("/login", { state: { path: "/currentEvents" } })
             }
@@ -51,7 +56,7 @@ export default function Welcome() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => navigate("/find-event")}
           >
             {" "}
@@ -60,7 +65,7 @@ export default function Welcome() {
           <Button
             variant="outlined"
             sx={{ mt: 2 }}
-            style={{ width: "50rem" }}
+            style={{ width: "20rem" }}
             onClick={() => {
               if (document.cookie !== "") {
                 document.cookie
@@ -96,7 +101,7 @@ export default function Welcome() {
             {" "}
             Disclaimer : We use cookies{" "}
           </Typography>
-        </Grid>
+        </Paper>
       </div>
     </>
   );
