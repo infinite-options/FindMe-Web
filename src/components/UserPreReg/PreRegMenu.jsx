@@ -63,7 +63,12 @@ export default function PreRegMenu() {
             {" "}
             See Event List{" "}
           </Button>
-          <Button variant="outlined" sx={{ mt: 2 }} style={{ width: "50rem" }}>
+          <Button
+            variant="outlined"
+            sx={{ mt: 2 }}
+            style={{ width: "50rem" }}
+            onClick={() => navigate("/event-bylocation")}
+          >
             {" "}
             See Events in your location{" "}
           </Button>

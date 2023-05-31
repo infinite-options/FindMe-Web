@@ -46,6 +46,7 @@ import NetworkingDashboard from "./components/Arrival/NetworkingDashboard";
 import Networking from "./components/Arrival/Networking";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
+import EventByLocation from "./components/FindEvents/EventByLocation";
 
 function App() {
   return (
@@ -123,6 +124,7 @@ function App() {
             path="/event-byorganizer"
             element={<EventsByOrganizer />}
           />
+          <Route exact path="/event-bylocation" element={<EventByLocation />} />
           <Route exact path="/welcome" element={<Welcome />} />
           <Route
             exact

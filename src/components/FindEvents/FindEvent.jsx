@@ -43,7 +43,11 @@ export default function FindEvent() {
         >
           See Event List
         </Button>
-        <Button variant="outlined" sx={{ mt: 2 }}>
+        <Button
+          variant="outlined"
+          sx={{ mt: 2 }}
+          onClick={() => navigate("/event-bylocation")}
+        >
           Events in your location
         </Button>{" "}
         <Button
