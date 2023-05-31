@@ -50,12 +50,42 @@ export default function PreRegQuestionnare() {
       eu_event_id: event.event_uid,
       eu_qas: questions,
     };
-    navigate("/login", {
-      state: {
-        path: "/registration-confirmation",
-        eventObj: eventObj,
-      },
-    });
+    if (
+      document.cookie !== "" &&
+      document.cookie.split("; ").find((row) => row.startsWith("loggedIn=")) !==
+        undefined
+    ) {
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("loggedIn="))
+        .split("=")[1] === "true"
+        ? navigate("/registration-confirmation", {
+            state: {
+              email: document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("user_email="))
+                .split("=")[1],
+              user: document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("user_details="))
+                .split("=")[1],
+              eventObj: eventObj,
+            },
+          })
+        : navigate("/login", {
+            state: {
+              path: "/registration-confirmation",
+              eventObj: eventObj,
+            },
+          });
+    } else {
+      navigate("/login", {
+        state: {
+          path: "/registration-confirmation",
+          eventObj: eventObj,
+        },
+      });
+    }
   };
   return (
     <div

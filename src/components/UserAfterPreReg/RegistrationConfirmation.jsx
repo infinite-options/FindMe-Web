@@ -22,27 +22,29 @@ export default function RegistrationConfirmation() {
   let email = state.email;
   let user = state.user;
   const eventObj = state.eventObj !== undefined ? state.eventObj : "";
+  console.log(typeof user);
+  let user_uid =
+    typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+  console.log(JSON.parse(user).user_uid);
 
   const GetUserProfile = async () => {
     let x = {
-      profile_user_id: user.user_uid,
+      profile_user_id: user_uid,
     };
 
-    axios
-      .get(BASE_URL + `/CheckUserProfile/${user.user_uid}`)
-      .then((response) => {
-        if (response.data.message === "User Profile Doest Not Exist") {
-          setShowCreateCard(true);
-        } else {
-          setShowEditCard(true);
-        }
-        setUserDetails(response.data.result[0]);
-      });
+    axios.get(BASE_URL + `/CheckUserProfile/${user_uid}`).then((response) => {
+      if (response.data.message === "User Profile Doest Not Exist") {
+        setShowCreateCard(true);
+      } else {
+        setShowEditCard(true);
+      }
+      setUserDetails(response.data.result[0]);
+    });
   };
   const addEventUser = () => {
     let eObj = eventObj;
 
-    eObj.eu_user_id = user.user_uid;
+    eObj.eu_user_id = user_uid;
     axios
       .get(
         BASE_URL +

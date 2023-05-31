@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 export default function FindEvent() {
   const navigate = useNavigate();
@@ -12,26 +12,25 @@ export default function FindEvent() {
         paddingTop: "5%",
       }}
     >
-      <Grid
-        container
-        direction="column"
-        margin={5}
-        style={{ height: "30rem", width: "80rem" }}
-        alignItems="center"
-        justify="center"
-        border={1}
+      <Paper
+        sx={{
+          p: 2,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: 5,
+          flexDirection: "column",
+          flexGrow: 1,
+          border: 1,
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+        }}
       >
         Find an Event
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
-          onClick={() => navigate("/registrationCode")}
-        >
-          Enter Registeration Code
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{ mt: 2 }}
+          style={{ width: "20rem" }}
           onClick={() => navigate("/findEventByDate")}
         >
           Find By Event Date
@@ -39,6 +38,7 @@ export default function FindEvent() {
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
+          style={{ width: "20rem" }}
           onClick={() => navigate("/event-byorganizer")}
         >
           Find By Organizer
@@ -46,30 +46,63 @@ export default function FindEvent() {
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
+          style={{ width: "20rem" }}
           onClick={() => navigate("/event-list")}
         >
           See Event List
         </Button>
-        <Button variant="outlined" sx={{ mt: 2 }}>
+        <Button
+          variant="outlined"
+          sx={{ mt: 2 }}
+          style={{ width: "20rem" }}
+          onClick={() => navigate("/event-bylocation")}
+        >
           Events in your location
         </Button>{" "}
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
-          onClick={() =>
-            navigate("/login", { state: { path: "/current-rsvps" } })
-          }
+          style={{ width: "20rem" }}
+          onClick={() => {
+            if (
+              document.cookie !== "" &&
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("loggedIn=")) !== undefined
+            ) {
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("loggedIn="))
+                .split("=")[1] === "true"
+                ? navigate("/current-rsvps", {
+                    state: {
+                      email: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_email="))
+                        .split("=")[1],
+                      user: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_details="))
+                        .split("=")[1],
+                    },
+                  })
+                : navigate("/login", { state: { path: "/current-rsvps" } });
+            } else {
+              navigate("/login", { state: { path: "/current-rsvps" } });
+            }
+          }}
         >
           See Current RSVPs
         </Button>
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
+          style={{ width: "20rem" }}
           onClick={() => navigate("/event-bytype")}
         >
           Event By Type
         </Button>
-      </Grid>
+      </Paper>
     </div>
   );
 }
