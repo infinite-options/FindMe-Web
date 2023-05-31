@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Grid, TextField, Typography } from "@mui/material";
 
 
-export default function BroadcastMessage() {
+export default function EmailBroadcastMessage() {
     return (
         <>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>

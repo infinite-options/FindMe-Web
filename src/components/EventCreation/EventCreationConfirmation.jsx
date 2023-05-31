@@ -26,6 +26,9 @@ export default function EventCreationConfirmation() {
                 <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />
 
                 <footer> Confirmation sent to 'email/mobile' </footer>
+                <Button>See Events</Button>
+                <Button onClick={() => { navigate('/eventDetails'); }}>Event Details</Button>
+
             </Grid>
         </div>
         </>
