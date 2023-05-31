@@ -108,10 +108,10 @@ const Networking = () => {
     channel.subscribe((event) => {
       if (event.data.message === "Event ended") {
         alert("Event ended");
+        channel.unsubscribe();
         navigate("/currentEvents", { state: { event, user } });
-      }
-      if (event.data.message[0] === "Broadcast") {
-        alert(event.data.message[1]);
+      } else {
+        alert(event.data.message);
       }
     });
   };

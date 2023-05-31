@@ -75,6 +75,9 @@ const AttendeeCheckin = () => {
                 onResult={(result) => {
                   if (result) setRegCode(result.text);
                 }}
+                constraints={{
+                  facingMode: "environment",
+                }}
                 videoStyle={{ width: "", height: "" }}
               />
             )}
