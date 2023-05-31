@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import { orange } from "@mui/material/colors";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -18,45 +17,31 @@ const StyledButton = styled(Button)(
     `
 );
 
-const OrangeButton = styled(StyledButton)(({ theme }) => ({
-  color: theme.palette.getContrastText(orange[500]),
-  backgroundColor: orange[500],
-  "&:hover": {
-    backgroundColor: orange[700],
-  },
-}));
-
 const CurrentEvents = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = location.state;
-  const [selected, setSelected] = useState({ event_uid: -1 });
   const [events, setEvents] = useState([]);
 
-  const handleEnter = async () => {
-    if (selected.event_uid < 0) return;
+  const handleEventClick = async (event) => {
     const response = await axios.get(
-      `${BASE_URL}/isOrganizer?userId=${user.user_uid}&eventId=${selected.event_uid}`
+      `${BASE_URL}/isOrganizer?userId=${user.user_uid}&eventId=${event.event_uid}`
     );
     if (response.data.isOrganizer) {
       navigate("/eventDashboard", {
-        state: { event: selected, user: user },
+        state: { event, user },
       });
     } else {
       const response = await axios.get(
-        `${BASE_URL}/eventStatus?eventId=${selected.event_uid}`
+        `${BASE_URL}/eventStatus?eventId=${event.event_uid}`
       );
       if (!response.data.eventStarted) alert("Event has not started yet");
       else {
         navigate("/attendeeCheckin", {
-          state: { event: selected, user: user },
+          state: { event, user },
         });
       }
     }
-  };
-
-  const handleEventClick = (event) => {
-    setSelected(event);
   };
 
   const fetchEventsByOrganizer = async () => {
@@ -88,22 +73,12 @@ const CurrentEvents = () => {
           {events.map((event) => (
             <StyledButton
               key={event.event_uid}
-              variant={
-                selected.event_uid === event.event_uid ? "outlined" : "text"
-              }
+              variant="contained"
               onClick={() => handleEventClick(event)}
             >
               {event.event_title + " " + event.event_start_date}
             </StyledButton>
           ))}
-        </Stack>
-      </Box>
-      <Box sx={{ my: 4 }}>
-        <Stack spacing={2} direction="column">
-          <StyledButton variant="contained">{"Edit"}</StyledButton>
-          <OrangeButton variant="contained" onClick={handleEnter}>
-            {"Enter"}
-          </OrangeButton>
         </Stack>
       </Box>
     </Container>

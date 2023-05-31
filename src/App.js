@@ -38,7 +38,6 @@ import EventsRegDetails from "./components/UserAfterPreReg/EventsRegDetails";
 import CurrentEvents from "./components/Arrival/CurrentEvents";
 import EventDashboard from "./components/Arrival/EventDashboard";
 import EventAgenda from "./components/Arrival/EventAgenda";
-import BroadcastMessage from "./components/Arrival/BroadcastMessage";
 import EventAttendees from "./components/Arrival/EventAttendees";
 import AttendeeDetails from "./components/Arrival/AttendeeDetails";
 import AttendeeCheckin from "./components/Arrival/AttendeeCheckin";
@@ -156,11 +155,6 @@ function App() {
             element={<EventCreationConfirmation />}
           />
           <Route exact path="/eventCapacity" element={<EventCapacity />} />
-          <Route
-            exact
-            path="/broadcastMessage"
-            element={<BroadcastMessage />}
-          />
           <Route exact path="/pre-registration" element={<PreRegMenu />} />
           <Route exact path="/registrationCode" element={<RegCode />} />
           <Route exact path="/eventProfile" element={<EventProfile />} />
