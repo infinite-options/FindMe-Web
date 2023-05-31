@@ -47,7 +47,12 @@ export default function Welcome() {
             sx={{ mt: 2 }}
             style={{ width: "20rem" }}
             onClick={() => {
-              if (document.cookie !== "") {
+              if (
+                document.cookie !== "" &&
+                document.cookie
+                  .split("; ")
+                  .find((row) => row.startsWith("loggedIn=")) !== undefined
+              ) {
                 document.cookie
                   .split("; ")
                   .find((row) => row.startsWith("loggedIn="))
@@ -91,7 +96,12 @@ export default function Welcome() {
             sx={{ mt: 2 }}
             style={{ width: "20rem" }}
             onClick={() => {
-              if (document.cookie !== "") {
+              if (
+                document.cookie !== "" &&
+                document.cookie
+                  .split("; ")
+                  .find((row) => row.startsWith("loggedIn=")) !== undefined
+              ) {
                 document.cookie
                   .split("; ")
                   .find((row) => row.startsWith("loggedIn="))

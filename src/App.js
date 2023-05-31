@@ -52,12 +52,17 @@ import EventByLocation from "./components/FindEvents/EventByLocation";
 
 function App() {
   const [loginState, setLoginState] = useState(LoginInitState);
-  const isSignedIn = loginState.loggedIn
-    ? loginState.loggedIn
-    : document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("loggedIn="))
-        .split("=")[1];
+
+  const isSignedIn =
+    document.cookie.split("; ").find((row) => row.startsWith("loggedIn=")) !==
+    undefined
+      ? loginState.loggedIn
+        ? loginState.loggedIn
+        : document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("loggedIn="))
+            .split("=")[1]
+      : loginState.loggedIn;
   useEffect(
     () => console.log("curUser = ", loginState.user_uid),
     [loginState.user_uid]

@@ -50,7 +50,11 @@ export default function PreRegQuestionnare() {
       eu_event_id: event.event_uid,
       eu_qas: questions,
     };
-    if (document.cookie !== "") {
+    if (
+      document.cookie !== "" &&
+      document.cookie.split("; ").find((row) => row.startsWith("loggedIn=")) !==
+        undefined
+    ) {
       document.cookie
         .split("; ")
         .find((row) => row.startsWith("loggedIn="))
