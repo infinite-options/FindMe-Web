@@ -50,7 +50,7 @@ export default function EventByOrganizer() {
         justify="center"
         border={1}
       >
-        Events By Type {eventOrganizerSet ? `: ${eventOrganizer}` : ""}
+        Events By Organizer {eventOrganizerSet ? `: ${eventOrganizer}` : ""}
         {!eventOrganizerSet ? (
           <div
             style={{

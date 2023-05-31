@@ -25,13 +25,6 @@ export default function FindEvent() {
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
-          onClick={() => navigate("/registrationCode")}
-        >
-          Enter Registeration Code
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{ mt: 2 }}
           onClick={() => navigate("/findEventByDate")}
         >
           Find By Event Date
