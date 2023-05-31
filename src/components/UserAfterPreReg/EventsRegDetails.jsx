@@ -5,8 +5,8 @@ export default function EventsRegDetails() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const event = state.event;
-  // console.log(event);
-  // console.log(event.event_description);
+  console.log(event);
+  console.log(event.eu_qas[0]);
   return (
     <div
       style={{
