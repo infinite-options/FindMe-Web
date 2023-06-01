@@ -21,7 +21,7 @@ const Waiting = () => {
     const channel = ably.channels.get(`FindMe/${event.event_uid}`);
     channel.subscribe((e) => {
       if (e.data.message === "Event started") {
-        navigate("/networking", { state: { event, user } });
+        navigate("/networkingActivity", { state: { event, user } });
       }
     });
   };

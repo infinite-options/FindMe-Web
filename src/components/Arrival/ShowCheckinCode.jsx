@@ -17,7 +17,9 @@ const StyledButton = styled(Button)(
 
 const ShowCheckinCode = () => {
   const location = useLocation();
-  const event = location.state;
+  const event = location.state
+    ? location.state.event
+    : JSON.parse(localStorage.getItem("event"));
 
   useEffect(() => {
     const canvas = document.getElementById("canvas");
