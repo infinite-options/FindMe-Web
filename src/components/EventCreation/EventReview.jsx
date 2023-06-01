@@ -66,6 +66,7 @@ export default function EventReview() {
     });
 
     const data = await response.json();
+    saveEventObject(data);
     navigate("/eventPreRegCode");
     // axios
     //   .post(BASE_URL + `/AddEvent`, retrievedEventObject)
@@ -124,8 +125,16 @@ export default function EventReview() {
     // });
 
     // const data = await response.json();
+    //   saveEventObject(data.image)
     navigate("/eventPreRegCode");
   };
+    
+  const saveEventObject = (data) => {
+        console.log("#### ", data.result)
+        // retrievedEventObject['eventPhoto'] = image;
+        // localStorage.setItem('event', JSON.stringify(retrievedEventObject));
+        console.log("66 ",retrievedEventObject)
+  }
     
   return (
     <>
