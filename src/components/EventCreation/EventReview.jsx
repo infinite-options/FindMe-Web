@@ -222,6 +222,20 @@ export default function EventReview() {
 
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
+                Event Location : {retrievedEventObject.eventLocation}
+              </Typography>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  navigate("/eventLocation");
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </ListItem>
+
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
                 Event Start Date : {retrievedEventObject.eventStartDate}
               </Typography>
               <IconButton
