@@ -224,8 +224,14 @@ export default function CreateFindMeCard() {
                   }}
                   key={i}
                 >
+                  {console.log(imageState[0])}
                   {file.file === null ? (
-                    ""
+                    <img
+                      key={Date.now()}
+                      // src={file.image}
+                      src={`${file.image}?${Date.now()}`}
+                      style={{ ...tileImg, objectFit: "cover" }}
+                    />
                   ) : (
                     <img
                       key={Date.now()}
@@ -280,6 +286,7 @@ export default function CreateFindMeCard() {
                 label="First Name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
+                required
               />
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -290,6 +297,7 @@ export default function CreateFindMeCard() {
                 label="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                required
               />
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -310,6 +318,7 @@ export default function CreateFindMeCard() {
                 label="Phone Number"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                required
               />
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -320,6 +329,7 @@ export default function CreateFindMeCard() {
                 label="Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                required
               />
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -330,6 +340,7 @@ export default function CreateFindMeCard() {
                 label="Company"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
+                required
               />
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -340,14 +351,15 @@ export default function CreateFindMeCard() {
                 label="Catch Phrase"
                 value={catchPhrase}
                 onChange={(e) => setCatchPhrase(e.target.value)}
+                required
               />
               <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
+                InputLabelProps={{ shrink: true }}
                 value={role}
                 label="Role"
                 size="small"
                 onChange={(e) => setRole(e.target.value)}
+                required
               >
                 <MenuItem value={"VC"}>VC</MenuItem>
                 <MenuItem value={"Founder"}>Founder</MenuItem>
