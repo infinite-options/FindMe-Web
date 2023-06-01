@@ -50,53 +50,79 @@ function UploadPhotos(props) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column",
+        margin: "1rem",
       }}
     >
-      <div className="d-flex overflow-auto mb-3">
-        <input
-          id="contained-button-file"
-          style={{ display: "none" }}
-          type="file"
-          accept="image/*"
-          onChange={addFile}
-          className="d-none"
-        />
-
-        <label
-          htmlFor="contained-button-file"
-          className="d-flex justify-content-center align-items-center"
+      <div>Upload Photo</div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          margin: "1rem",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "1rem",
+          }}
         >
-          <img src={AddPhoto} style={{ width: "2rem" }} alt="add an image" />
-        </label>
-      </div>
-      <div>
-        {imageState.map((file, i) => (
-          <div
-            className="mx-2"
-            style={{
-              position: "relative",
-              minHeight: "100px",
-              minWidth: "100px",
-              height: "100px",
-              width: "100px",
-            }}
-            key={i}
+          <input
+            id="contained-button-file"
+            style={{ display: "none" }}
+            type="file"
+            accept="image/*"
+            onChange={addFile}
+            className="d-none"
+          />
+          <label
+            htmlFor="contained-button-file"
+            className="d-flex justify-content-center align-items-center"
           >
-            {file.file === null ? (
-              <img
-                key={Date.now()}
-                src={`${file.image}?${Date.now()}`}
-                style={{ ...tileImg, objectFit: "cover" }}
-              />
-            ) : (
-              <img
-                key={Date.now()}
-                src={file.image}
-                style={{ ...tileImg, objectFit: "cover" }}
-              />
-            )}
-          </div>
-        ))}
+            <img src={AddPhoto} style={{ width: "2rem" }} alt="add an image" />
+          </label>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "1rem",
+          }}
+        >
+          {imageState.map((file, i) => (
+            <div
+              className="mx-2"
+              style={{
+                position: "relative",
+                minHeight: "100px",
+                minWidth: "100px",
+                height: "100px",
+                width: "100px",
+              }}
+              key={i}
+            >
+              {file.file === null ? (
+                <img
+                  key={Date.now()}
+                  src={`${file.image}?${Date.now()}`}
+                  style={{ ...tileImg, objectFit: "cover" }}
+                />
+              ) : (
+                <img
+                  key={Date.now()}
+                  src={file.image}
+                  style={{ ...tileImg, objectFit: "cover" }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="text-center" style={errorMessage === "" ? hidden : {}}>
