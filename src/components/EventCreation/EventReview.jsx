@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Grid, Button, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Grid, Button, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,6 +7,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import UploadPhotos from "../UploadPhotos";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -16,21 +17,66 @@ export default function EventReview() {
     localStorage.getItem("event") === null
       ? {}
       : JSON.parse(localStorage.getItem("event"));
-  const addEvent = () => {
-    delete retrievedEventObject["eventPhoto"];
-    var event = JSON.stringify(retrievedEventObject);
-    console.log("event object", retrievedEventObject);
+  console.log(retrievedEventObject);
 
-    axios
-      .post(BASE_URL + `/AddEvent`, retrievedEventObject)
-      .then((response) => {
-        console.log("event created");
-        navigate("/eventPreRegCode");
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("Invalid Code");
-      });
+  const imageState = useState([]);
+  console.log(imageState);
+  const addEvent = async () => {
+    const files = imageState[0];
+    let i = 0;
+    console.log(files);
+    for (const file of imageState[0]) {
+      let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
+      if (file.file !== null) {
+        retrievedEventObject[key] = file.file;
+      } else {
+        retrievedEventObject[key] = file.image;
+      }
+    }
+    console.log(retrievedEventObject);
+    let headers = {
+      "content-type": "application/json",
+    };
+    let requestBody = JSON.stringify(retrievedEventObject);
+    if (files !== null) {
+      headers = {};
+      requestBody = new FormData();
+      for (const key of Object.keys(retrievedEventObject)) {
+        console.log(
+          typeof retrievedEventObject[key],
+          retrievedEventObject[key],
+          key
+        );
+        if (
+          typeof retrievedEventObject[key] === "object" &&
+          key !== "img_cover"
+        ) {
+          requestBody.append(key, JSON.stringify(retrievedEventObject[key]));
+        } else {
+          requestBody.append(key, retrievedEventObject[key]);
+        }
+      }
+    }
+    console.log(requestBody);
+
+    const response = await fetch(BASE_URL + "/AddEvent", {
+      method: "POST",
+      headers: headers,
+      body: requestBody,
+    });
+
+    const data = await response.json();
+    navigate("/eventPreRegCode");
+    // axios
+    //   .post(BASE_URL + `/AddEvent`, retrievedEventObject)
+    //   .then((response) => {
+    //     console.log("event created");
+    //     // navigate("/eventPreRegCode");
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     console.log("Invalid Code");
+    //   });
   };
   return (
     <>
@@ -42,14 +88,19 @@ export default function EventReview() {
           paddingTop: "5%",
         }}
       >
-        <Grid
-          container
-          direction="column"
-          margin={1}
-          style={{ height: "30rem", width: "80rem" }}
-          alignItems="center"
-          justify="center"
-          border={1}
+        <Paper
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: 5,
+            flexDirection: "column",
+            flexGrow: 1,
+            border: 1,
+            backgroundColor: (theme) =>
+              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+          }}
         >
           <Typography variant="h5" sx={{ mt: 2 }}>
             {" "}
@@ -153,10 +204,13 @@ export default function EventReview() {
               <Typography>
                 Pre-Event Questionnaire :{" "}
                 {retrievedEventObject.preEventQuestionnaire.map(
-                    (question, index) => {
-                        { return <ListItem>{question.question}</ListItem> }
-                    })}
-                </Typography>
+                  (question, index) => {
+                    {
+                      return <ListItem>{question.question}</ListItem>;
+                    }
+                  }
+                )}
+              </Typography>
               <IconButton
                 component="span"
                 onClick={() => {
@@ -166,9 +220,11 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
+            <UploadPhotos state={imageState} />
           </List>
 
           <Button
+            variant="outlined"
             onClick={() => {
               navigate("/eventReview");
               addEvent();
@@ -177,7 +233,7 @@ export default function EventReview() {
             {" "}
             Create Event{" "}
           </Button>
-        </Grid>
+        </Paper>
       </div>
     </>
   );

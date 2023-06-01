@@ -51,7 +51,7 @@ function UploadPhotos(props) {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        margin: "1rem",
+        margin: "0.5rem",
       }}
     >
       <div>Upload Photo</div>
@@ -61,7 +61,7 @@ function UploadPhotos(props) {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          margin: "1rem",
+          margin: "0.5rem",
         }}
       >
         <div
@@ -92,7 +92,7 @@ function UploadPhotos(props) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            margin: "1rem",
+            margin: "0.5rem",
           }}
         >
           {imageState.map((file, i) => (
