@@ -21,7 +21,7 @@ const ShowCheckinCode = () => {
 
   useEffect(() => {
     const canvas = document.getElementById("canvas");
-    QRCode.toCanvas(canvas, event.event_registration_code, (error) => {
+    QRCode.toCanvas(canvas, event.event_checkin_code, (error) => {
       if (error) console.error(error);
     });
   }, []);
