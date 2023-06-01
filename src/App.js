@@ -47,6 +47,7 @@ import Networking from "./components/Arrival/Networking";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import Waiting from "./components/Arrival/Waiting";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
+import SeeEventsList from "./components/EventCreation/SeeEventsList";
 import EventPreRegCode from "./components/EventCreation/EventPreRegCode";
 import EventCheckInCode from "./components/EventCreation/EventCheckInCode";
 import EventAttendeesList from "./components/EventCreation/EventAttendeesList";
@@ -136,6 +137,7 @@ function App() {
             path="/organizerEventList"
             element={<OrganizerEventList />}
           />
+          <Route exact path="/seeEventsList" element={<SeeEventsList />} />
           <Route exact path="/eventAttendeesList" element={<EventAttendeesList />} />
           <Route exact path="/eventTypeMenu" element={<EventTypeMenu />} />
           <Route exact path="/eventVisibility" element={<EventVisibility />} />

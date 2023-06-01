@@ -22,6 +22,11 @@ export default function EventParticulars() {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
 
+    // const [selectedStartDate, setSelectedStartDate] = useState(retrievedEventObject && retrievedEventObject.eventStartDate ? retrievedEventObject.eventStartDate : today);
+    // const [selectedEndDate, setSelectedEndDate] = useState(retrievedEventObject && retrievedEventObject.eventEndDate ? retrievedEventObject.eventEndDate : today);
+    // const [startTime, setStartTime] = useState(retrievedEventObject && retrievedEventObject.eventStartTime ? retrievedEventObject.eventStartTime : '');
+    // const [endTime, setEndTime] = useState(retrievedEventObject && retrievedEventObject.eventEndTime ? retrievedEventObject.eventEndTime : '');
+
     const [startDateTime, setStartDateTime] = useState('');
     const [endDateTime, setEndDateTime] = useState('');
     const [end_Time, setEnd_Time] = useState('');

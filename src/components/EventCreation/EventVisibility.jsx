@@ -9,8 +9,8 @@ import FormLabel from '@mui/material/FormLabel';
 
 export default function EventVisibility() {
     const navigate = useNavigate();
-    const [eventVisibility, setEventVisibility] = useState('Public');
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
+    const [eventVisibility, setEventVisibility] = useState(retrievedEventObject && retrievedEventObject.eventVisibility ? retrievedEventObject.eventVisibility : 'Public');
 
     const handleChange = (e) => {
         setEventVisibility(e.target.value);
