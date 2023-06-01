@@ -13,9 +13,9 @@ export default function EventCapacity() {
     localStorage.getItem("event") === null
       ? {}
       : JSON.parse(localStorage.getItem("event"));
-  const [limitOption, setLimitOption] = useState("No Limit");
-  const [eventCapacity, setEventCapacity] = useState("No Limit");
-  const [disabled, setDisabled] = useState(true);
+  const [limitOption, setLimitOption] = useState(retrievedEventObject && retrievedEventObject.eventCapacity!=="No Limit" ? "Set Limit" : "No Limit");
+  const [eventCapacity, setEventCapacity] = useState(retrievedEventObject && retrievedEventObject.eventCapacity ? retrievedEventObject.eventCapacity : "No Limit");
+  const [disabled, setDisabled] = useState(retrievedEventObject && retrievedEventObject.eventCapacity!=="No Limit" ? false : true);
 
   const handleSetLimitChange = (e) => {
     setLimitOption(e.target.value);

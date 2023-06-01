@@ -5,8 +5,8 @@ import { Grid, Typography, Button, TextField } from "@mui/material";
 export default function EventTitle() {
     const navigate = useNavigate();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
-    const [eventTitle, setEventTitle] = useState('');
-    const [eventDescription, setEventDescription] = useState('');
+    const [eventTitle, setEventTitle] = useState(retrievedEventObject && retrievedEventObject.eventTitle ? retrievedEventObject.eventTitle : '');
+    const [eventDescription, setEventDescription] = useState(retrievedEventObject && retrievedEventObject.eventDescription ? retrievedEventObject.eventDescription : '');
     const handleTitleInput = (e) => {
         setEventTitle(e.target.value)
     }

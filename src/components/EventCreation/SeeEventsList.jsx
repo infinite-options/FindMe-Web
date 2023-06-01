@@ -14,7 +14,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import GroupsIcon from '@mui/icons-material/Groups';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useLocation, useNavigate } from "react-router-dom";
-import { mediumBold, xSmall, small } from "../../styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -24,21 +23,13 @@ const Img = styled("img")({
   maxWidth: "100%",
   maxHeight: "100%",
 });
-export default function OrganizerEventList() {
+export default function SeeEventsList() {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  let user = state.user;
-  let user_uid =
-    typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+  const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
   const [events, setEvents] = useState([]);
 
-  const [eventOrganizerUID, setEventOrganizerUID] = useState(user_uid);
-
-  const retrievedEventObject =
-    localStorage.getItem("event") === null
-      ? {}
-      : JSON.parse(localStorage.getItem("event"));
-
+  const [eventOrganizerUID, setEventOrganizerUID] = useState(retrievedEventObject.event_organizer_uid);
+  
   const getAllEvents = () => {
     axios
       .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`)
@@ -47,13 +38,7 @@ export default function OrganizerEventList() {
         setEvents(response.data.result);
       });
   };
-  const handleCreateEvent = () => {
-    localStorage.clear();
-    let newEvent = {};
-    newEvent["event_organizer_uid"] = eventOrganizerUID;
-    localStorage.setItem("event", JSON.stringify(newEvent));
-    navigate("/eventTypeMenu")
-  };
+  
   useEffect(() => {
     getAllEvents();
   }, []);
@@ -180,7 +165,7 @@ export default function OrganizerEventList() {
             </Grid>
           );
         })}
-        <Button onClick={()=>handleCreateEvent()}>Create Event</Button>
+        <Button onClick={()=>{navigate(-1)}}>Back</Button>
       </Paper>
     </div>
   );

@@ -11,7 +11,7 @@ export default function EventTypeMenu() {
     const navigate = useNavigate();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
 
-    const [eventType, setEventType] = useState('Business Networking');
+    const [eventType, setEventType] = useState(retrievedEventObject && retrievedEventObject.eventType ? retrievedEventObject.eventType : 'Business Networking');
     
     const handleChange = (e) => {
         setEventType(e.target.value);

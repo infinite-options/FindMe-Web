@@ -78,6 +78,55 @@ export default function EventReview() {
     //     console.log("Invalid Code");
     //   });
   };
+    
+  const updateEvent = async () => {
+    const files = imageState[0];
+    let i = 0;
+    console.log(files);
+    for (const file of imageState[0]) {
+      let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
+      if (file.file !== null) {
+        retrievedEventObject[key] = file.file;
+      } else {
+        retrievedEventObject[key] = file.image;
+      }
+    }
+    console.log(retrievedEventObject);
+    let headers = {
+      "content-type": "application/json",
+    };
+    let requestBody = JSON.stringify(retrievedEventObject);
+    if (files !== null) {
+      headers = {};
+      requestBody = new FormData();
+      for (const key of Object.keys(retrievedEventObject)) {
+        console.log(
+          typeof retrievedEventObject[key],
+          retrievedEventObject[key],
+          key
+        );
+        if (
+          typeof retrievedEventObject[key] === "object" &&
+          key !== "img_cover"
+        ) {
+          requestBody.append(key, JSON.stringify(retrievedEventObject[key]));
+        } else {
+          requestBody.append(key, retrievedEventObject[key]);
+        }
+      }
+    }
+    console.log(requestBody);
+
+    // const response = await fetch(BASE_URL + "/AddEvent", {
+    //   method: "POST",
+    //   headers: headers,
+    //   body: requestBody,
+    // });
+
+    // const data = await response.json();
+    navigate("/eventPreRegCode");
+  };
+    
   return (
     <>
       <div
@@ -110,7 +159,7 @@ export default function EventReview() {
           <List sx={{ bgcolor: "background.paper", mt: 2 }}>
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
-                Event Type : {retrievedEventObject.eventTitle}
+                Event Title : {retrievedEventObject.eventTitle}
               </Typography>
               <IconButton
                 component="span"
@@ -123,7 +172,7 @@ export default function EventReview() {
             </ListItem>
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
-                Event Type : {retrievedEventObject.eventDescription}
+                Event Description : {retrievedEventObject.eventDescription}
               </Typography>
               <IconButton
                 component="span"
@@ -175,7 +224,63 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
+            
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event Start Time : {retrievedEventObject.eventStartTime}
+              </Typography>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  navigate("/eventParticulars");
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </ListItem>
 
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event End Date : {retrievedEventObject.eventEndDate}
+              </Typography>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  navigate("/eventParticulars");
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </ListItem>
+            
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event End Time : {retrievedEventObject.eventEndTime}
+              </Typography>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  navigate("/eventParticulars");
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </ListItem>
+            
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event Capacity : {retrievedEventObject.eventCapacity}
+              </Typography>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  navigate("/eventCapacity");
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </ListItem>
+            
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Photo :
@@ -223,16 +328,26 @@ export default function EventReview() {
             <UploadPhotos state={imageState} />
           </List>
 
+        {retrievedEventObject.event_uid &&
+        <Button
+            variant="outlined"
+            onClick={() => {
+              updateEvent();
+            }}
+          >
+            Update Event
+          </Button>
+        }
+        {!retrievedEventObject.event_uid &&
           <Button
             variant="outlined"
             onClick={() => {
-              navigate("/eventReview");
               addEvent();
             }}
           >
-            {" "}
-            Create Event{" "}
+            Create Event
           </Button>
+        }
         </Paper>
       </div>
     </>

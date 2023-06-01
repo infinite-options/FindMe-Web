@@ -69,7 +69,25 @@ export default function EventDetails() {
                 Event Start Date : {retrievedEventObject.eventStartDate}
               </Typography>
             </ListItem>
+            
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event Start Time : {retrievedEventObject.eventStartTime}
+              </Typography>
+            </ListItem>
 
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event End Date : {retrievedEventObject.eventEndDate}
+              </Typography>
+            </ListItem>
+            
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event End Time : {retrievedEventObject.eventEndTime}
+              </Typography>
+            </ListItem>
+            
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Photo :
@@ -126,7 +144,7 @@ export default function EventDetails() {
           </Button>
           <Button
             onClick={() => {
-              navigate("/eventAttendees", { state: { event: event } });
+              navigate("/eventAttendeesList");
             }}
           >
             {" "}
@@ -142,7 +160,7 @@ export default function EventDetails() {
           </Button>
           <Button
             onClick={() => {
-              navigate("/eventReview");
+              navigate("/seeEventsList");
             }}
           >
             {" "}
