@@ -51,6 +51,7 @@ import SeeEventsList from "./components/EventCreation/SeeEventsList";
 import EventPreRegCode from "./components/EventCreation/EventPreRegCode";
 import EventCheckInCode from "./components/EventCreation/EventCheckInCode";
 import EventAttendeesList from "./components/EventCreation/EventAttendeesList";
+import EventByLocation from "./components/FindEvents/EventByLocation";
 
 function App() {
   const [loginState, setLoginState] = useState(LoginInitState);
@@ -218,6 +219,7 @@ function App() {
             />
             <Route exact path="/searchbox" element={<Searchbox />} />
             <Route exact path="/currentEvents" element={<CurrentEvents />} />
+            <Route exact path="/event-bylocation" element={<EventByLocation />} />
             <Route exact path="/eventDashboard" element={<EventDashboard />} />
             <Route exact path="/eventAgenda" element={<EventAgenda />} />
             <Route exact path="/eventAttendees" element={<EventAttendees />} />

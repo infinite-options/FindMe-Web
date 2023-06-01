@@ -43,8 +43,16 @@ export default function SeeEventsList() {
     getAllEvents();
   }, []);
 
+  const handleCreateEvent = () => {
+    localStorage.clear();
+    let newEvent = {};
+    newEvent["event_organizer_uid"] = eventOrganizerUID;
+    localStorage.setItem("event", JSON.stringify(newEvent));
+    navigate("/eventTypeMenu")
+  };
+    
   const saveEventObject = (event) => {
-    console.log("^^^ ", event);
+    console.log("event ", event);
     retrievedEventObject["eventCapacity"] = event.event_capacity
     retrievedEventObject["eventDescription"] = event.event_description
     retrievedEventObject["eventPhoto"] = event.event_photo
@@ -63,7 +71,7 @@ export default function SeeEventsList() {
     retrievedEventObject["eventRegCode"] = event.event_registration_code
 
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
-    console.log("66 ", retrievedEventObject);
+    console.log("retrievedEventObject ", retrievedEventObject);
   };
 
   return (
@@ -117,7 +125,7 @@ export default function SeeEventsList() {
                     border: "1px solid red",
                   }}
                 >
-                  <Img alt="complex" src="/static/images/grid/complex.jpg" />
+                  <Img alt="complex" src={JSON.parse(event.event_photo)} />
                 </ButtonBase>
               </Grid>
               <Grid item xs={8} direction="column" spacing={2}>
@@ -165,6 +173,7 @@ export default function SeeEventsList() {
             </Grid>
           );
         })}
+        <Button onClick={()=>handleCreateEvent()}>Create Event</Button>
         <Button onClick={()=>{navigate(-1)}}>Back</Button>
       </Paper>
     </div>

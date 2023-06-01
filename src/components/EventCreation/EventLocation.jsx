@@ -9,10 +9,24 @@ export default function EventLocation() {
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
     const [lat, setLat] = useState(37.236720);
     const [long, setLong] = useState(-121.887370);
+    const [address, setAddress] = useState('');
+    const [zipcode, setZipcode] = useState('');
 
     const latLongHandler = (lat, long) => {
         setLat(lat)
         setLong(long)
+    }
+    const addressHandler = (address, zipcode) => {
+        setAddress(address)
+        setZipcode(zipcode)
+    }
+    const saveEventObject = () => {
+        console.log("** ", retrievedEventObject)
+        retrievedEventObject['eventLocation'] = address;
+        retrievedEventObject['eventZip'] = zipcode;
+        localStorage.setItem('event', JSON.stringify(retrievedEventObject));
+        console.log("66 ", retrievedEventObject)
+        navigate('/eventTitle');
     }
     return (
         <>
@@ -30,12 +44,13 @@ export default function EventLocation() {
                 EventLocation
                 <Searchbox
                     latLongHandler={latLongHandler}
+                    addressHandler={addressHandler}
                 ></Searchbox>
                 <MapComponent
                     latitude={lat}
                     longitude={long}
               ></MapComponent >
-                <Button onClick={() => { navigate('/eventTitle'); }}> Next</Button>
+                <Button onClick={() => { saveEventObject() }}> Next</Button>
 
             </Grid>
         </div>

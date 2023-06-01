@@ -25,7 +25,7 @@ export default function EmailBroadcastMessage() {
                     
                 </TextField>
                 <Button>Send</Button>
-                <Button>Event Details</Button>
+                <Button onClick={() => navigate("/eventDetails")}>Event Details</Button>
                 <Button onClick={() => navigate(-1)}>Back</Button>
 
             </Grid>
