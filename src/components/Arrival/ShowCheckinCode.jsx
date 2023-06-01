@@ -53,7 +53,7 @@ const ShowCheckinCode = () => {
             {"Check-in code"}
           </Typography>
           <Typography variant="h5" gutterBottom>
-            {event.event_registration_code}
+            {event.event_checkin_code}
           </Typography>
           <StyledButton variant="contained">{"Share code"}</StyledButton>
         </Stack>
