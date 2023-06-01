@@ -66,6 +66,7 @@ export default function EventReview() {
     });
 
     const data = await response.json();
+    saveEventObject(data);
     navigate("/eventPreRegCode");
     // axios
     //   .post(BASE_URL + `/AddEvent`, retrievedEventObject)
@@ -124,8 +125,16 @@ export default function EventReview() {
     // });
 
     // const data = await response.json();
+    //   saveEventObject(data.image)
     navigate("/eventPreRegCode");
   };
+    
+  const saveEventObject = (data) => {
+        console.log("#### ", data.result)
+        // retrievedEventObject['eventPhoto'] = image;
+        // localStorage.setItem('event', JSON.stringify(retrievedEventObject));
+        console.log("66 ",retrievedEventObject)
+  }
     
   return (
     <>
@@ -205,6 +214,20 @@ export default function EventReview() {
                 component="span"
                 onClick={() => {
                   navigate("/eventVisibility");
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </ListItem>
+
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event Location : {retrievedEventObject.eventLocation}
+              </Typography>
+              <IconButton
+                component="span"
+                onClick={() => {
+                  navigate("/eventLocation");
                 }}
               >
                 <EditIcon fontSize="small" />

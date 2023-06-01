@@ -66,6 +66,12 @@ export default function EventDetails() {
 
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
+                Event Location : {retrievedEventObject.eventLocation}
+              </Typography>
+            </ListItem>
+
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
                 Event Start Date : {retrievedEventObject.eventStartDate}
               </Typography>
             </ListItem>

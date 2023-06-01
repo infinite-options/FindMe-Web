@@ -59,13 +59,15 @@ class Searchbox extends Component {
             && places.map((place) => (
               <>
               <Marker
-                key={place.id}
+                key={place.place_id}
                 text={place.name}
                 lat={place.geometry.location.lat()}
                 lng={place.geometry.location.lng()}
               />
               {this.props.latLongHandler(place.geometry.location.lat(),place.geometry.location.lng())}
-              {console.log("%%  ", place.name, " 00 ", place.id, " (( ", place)}
+              {this.props.addressHandler(place.formatted_address,place.address_components.find(addr => addr.types[0] === "postal_code").short_name)}
+              {console.log("address =  ", place.formatted_address)}
+              {console.log(" @@@@@@@ ", place.address_components.find(addr => addr.types[0] === "postal_code").short_name)};
               </>
             ))}
         </GoogleMap>

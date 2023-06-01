@@ -43,7 +43,7 @@ export default function OrganizerEventList() {
     axios
       .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`)
       .then((response) => {
-        console.log(response.data.result);
+        console.log("GetEvents result", response.data.result);
         setEvents(response.data.result);
       });
   };
@@ -62,7 +62,7 @@ export default function OrganizerEventList() {
     console.log("^^^ ", event);
     retrievedEventObject["eventCapacity"] = event.event_capacity
     retrievedEventObject["eventDescription"] = event.event_description
-    retrievedEventObject["eventPhoto"] = event.event_photo
+    retrievedEventObject["eventPhoto"] = JSON.parse(event.event_photo)
     retrievedEventObject["eventTitle"] = event.event_title
     retrievedEventObject["eventType"] = event.event_type
     retrievedEventObject["event_organizer_uid"] = event.event_organizer_uid
@@ -132,7 +132,7 @@ export default function OrganizerEventList() {
                     border: "1px solid red",
                   }}
                 >
-                  <Img alt="complex" src="/static/images/grid/complex.jpg" />
+                  <Img alt="complex" src={JSON.parse(event.event_photo)} />
                 </ButtonBase>
               </Grid>
               <Grid item xs={8} direction="column" spacing={2}>

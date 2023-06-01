@@ -43,8 +43,7 @@ import EventAgenda from "./components/Arrival/EventAgenda";
 import EventAttendees from "./components/Arrival/EventAttendees";
 import AttendeeDetails from "./components/Arrival/AttendeeDetails";
 import AttendeeCheckin from "./components/Arrival/AttendeeCheckin";
-import NetworkingDashboard from "./components/Arrival/NetworkingDashboard";
-import Networking from "./components/Arrival/Networking";
+import NetworkingActivity from "./components/Arrival/NetworkingActivity";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
 import Waiting from "./components/Arrival/Waiting";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
@@ -52,6 +51,7 @@ import SeeEventsList from "./components/EventCreation/SeeEventsList";
 import EventPreRegCode from "./components/EventCreation/EventPreRegCode";
 import EventCheckInCode from "./components/EventCreation/EventCheckInCode";
 import EventAttendeesList from "./components/EventCreation/EventAttendeesList";
+import EventByLocation from "./components/FindEvents/EventByLocation";
 
 function App() {
   const [loginState, setLoginState] = useState(LoginInitState);
@@ -219,6 +219,7 @@ function App() {
             />
             <Route exact path="/searchbox" element={<Searchbox />} />
             <Route exact path="/currentEvents" element={<CurrentEvents />} />
+            <Route exact path="/event-bylocation" element={<EventByLocation />} />
             <Route exact path="/eventDashboard" element={<EventDashboard />} />
             <Route exact path="/eventAgenda" element={<EventAgenda />} />
             <Route exact path="/eventAttendees" element={<EventAttendees />} />
@@ -232,12 +233,7 @@ function App() {
               path="/attendeeCheckin"
               element={<AttendeeCheckin />}
             />
-            <Route exact path="/networking" element={<Networking />} />
-            <Route
-              exact
-              path="/networkingDashboard"
-              element={<NetworkingDashboard />}
-            />
+            <Route exact path="/networkingActivity" element={<NetworkingActivity />} />
             <Route
               exact
               path="/showCheckinCode"

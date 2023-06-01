@@ -32,7 +32,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MUIAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const Networking = () => {
+const NetworkingActivity = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { event, user } = location.state;
@@ -151,7 +151,7 @@ const Networking = () => {
       <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
         <Snackbar
           open={showAlert}
-          autoHideDuration={5000}
+          autoHideDuration={15000}
           onClose={handleAlertClose}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           TransitionComponent={SlideTransition}
@@ -180,4 +180,4 @@ const Networking = () => {
   );
 };
 
-export default Networking;
+export default NetworkingActivity;
