@@ -16,7 +16,6 @@ export default function EventDetails() {
 
   const event = {};
   event["event_uid"] = "200-000009";
-  console.log(retrievedEventObject);
 
   return (
     <>
@@ -104,7 +103,11 @@ export default function EventDetails() {
                 Event Photo :
                 {JSON.parse(retrievedEventObject.eventPhoto) ? (
                   <img
-                    src={JSON.parse(retrievedEventObject.eventPhoto)[0]}
+                    key={Date.now()}
+                    src={`${
+                      JSON.parse(retrievedEventObject.eventPhoto)[0]
+                    }?${Date.now()}`}
+                    // src={JSON.parse(retrievedEventObject.eventPhoto)[0]}
                     style={{
                       ...tileImg,
                       objectFit: "cover",
@@ -145,7 +148,7 @@ export default function EventDetails() {
           >
             <Button
               onClick={() => {
-                navigate("/eventReview");
+                navigate("/eventReview", { state: { edit: true } });
               }}
             >
               {" "}

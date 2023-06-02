@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import List from "@mui/material/List";
@@ -13,34 +13,39 @@ const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function EventReview() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const edit = state.edit;
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
       : JSON.parse(localStorage.getItem("event"));
-  console.log(retrievedEventObject);
 
   const imageState = useState([]);
-  console.log(imageState);
+  useEffect(() => {
+    if (edit && retrievedEventObject) {
+      loadImages();
+    }
+  }, []);
 
   const loadImages = async () => {
     const files = [];
     const images = JSON.parse(retrievedEventObject.eventPhoto);
-    if (images !== null && images.length > 0) {
-      for (let i = 0; i < images.length; i++) {
-        files.push({
-          index: i,
-          image: images[i],
-          file: null,
-          coverPhoto: i === 0,
-        });
-      }
+
+    let i = 0;
+    if (images !== null) {
+      files.push({
+        index: i,
+        image: images,
+        file: null,
+        coverPhoto: i === 0,
+      });
+
       imageState[1](files);
     }
   };
   const addEvent = async () => {
     const files = imageState[0];
     let i = 0;
-    console.log(files);
     for (const file of imageState[0]) {
       let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
       if (file.file !== null) {
@@ -49,7 +54,6 @@ export default function EventReview() {
         retrievedEventObject[key] = file.image;
       }
     }
-    console.log(retrievedEventObject);
     let headers = {
       "content-type": "application/json",
     };
@@ -58,11 +62,6 @@ export default function EventReview() {
       headers = {};
       requestBody = new FormData();
       for (const key of Object.keys(retrievedEventObject)) {
-        console.log(
-          typeof retrievedEventObject[key],
-          retrievedEventObject[key],
-          key
-        );
         if (
           typeof retrievedEventObject[key] === "object" &&
           key !== "img_cover"
@@ -73,7 +72,6 @@ export default function EventReview() {
         }
       }
     }
-    console.log(requestBody);
 
     const response = await fetch(BASE_URL + "/AddEvent", {
       method: "POST",
@@ -82,25 +80,13 @@ export default function EventReview() {
     });
 
     const data = await response.json();
-    console.log(data);
     saveEventObject(data.result[0]);
     navigate("/eventPreRegCode");
-    // axios
-    //   .post(BASE_URL + `/AddEvent`, retrievedEventObject)
-    //   .then((response) => {
-    //     console.log("event created");
-    //     // navigate("/eventPreRegCode");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     console.log("Invalid Code");
-    //   });
   };
 
   const updateEvent = async () => {
     const files = imageState[0];
     let i = 0;
-    console.log(files);
     for (const file of imageState[0]) {
       let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
       if (file.file !== null) {
@@ -109,7 +95,6 @@ export default function EventReview() {
         retrievedEventObject[key] = file.image;
       }
     }
-    console.log(retrievedEventObject);
     let headers = {
       "content-type": "application/json",
     };
@@ -118,11 +103,6 @@ export default function EventReview() {
       headers = {};
       requestBody = new FormData();
       for (const key of Object.keys(retrievedEventObject)) {
-        console.log(
-          typeof retrievedEventObject[key],
-          retrievedEventObject[key],
-          key
-        );
         if (
           typeof retrievedEventObject[key] === "object" &&
           key !== "img_cover"
@@ -133,24 +113,21 @@ export default function EventReview() {
         }
       }
     }
-    console.log(requestBody);
 
-    // const response = await fetch(BASE_URL + "/AddEvent", {
-    //   method: "POST",
-    //   headers: headers,
-    //   body: requestBody,
-    // });
+    const response = await fetch(BASE_URL + "/UpdateEvent", {
+      method: "PUT",
+      headers: headers,
+      body: requestBody,
+    });
 
-    // const data = await response.json();
-    //   saveEventObject(data.image)
+    const data = await response.json();
+    saveEventObject(data.result[0]);
     navigate("/eventPreRegCode");
   };
 
   const saveEventObject = (data) => {
-    console.log("#### ", data.result);
     retrievedEventObject["eventPhoto"] = data.event_photo;
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
-    console.log("66 ", retrievedEventObject);
   };
 
   return (
@@ -369,7 +346,7 @@ export default function EventReview() {
             {/* <UploadPhotos state={imageState} /> */}
           </List>
 
-          {retrievedEventObject.event_uid && (
+          {edit || retrievedEventObject.event_uid ? (
             <Button
               variant="outlined"
               onClick={() => {
@@ -378,8 +355,7 @@ export default function EventReview() {
             >
               Update Event
             </Button>
-          )}
-          {!retrievedEventObject.event_uid && (
+          ) : (
             <Button
               variant="outlined"
               onClick={() => {

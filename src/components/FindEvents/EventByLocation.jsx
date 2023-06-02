@@ -35,13 +35,14 @@ export default function EventByLocation() {
 
   const getEventByLocation = () => {
     if (city !== "") {
-      axios
-        .get(BASE_URL + `/GetEvents?event_location=${city}`)
-        .then((response) => {
-          setEvents(response.data.result);
-          setEventCitySet(true);
-          setIsLoading(false);
-        });
+      let obj = {
+        city: city,
+      };
+      axios.post(BASE_URL + `/EventsByCity`, obj).then((response) => {
+        setEvents(response.data.result);
+        setEventZipSet(true);
+        setIsLoading(false);
+      });
     } else {
       let obj = {
         miles: miles,
@@ -192,7 +193,10 @@ export default function EventByLocation() {
                       border: "1px solid red",
                     }}
                   >
-                    <Img alt="complex" src={JSON.parse(event.event_photo)} />
+                    <Img
+                      alt="complex"
+                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                    />
                   </ButtonBase>
                 </Grid>
                 <Grid item xs={8} direction="column" spacing={2}>
