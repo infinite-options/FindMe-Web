@@ -6,7 +6,10 @@ import axios from "axios";
 export default function EventCheckInCode() {
     const navigate = useNavigate();
     const getQRcodeLink = 'https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/preEventQuestionnaire&size=150x150';
-
+    const retrievedEventObject =
+    localStorage.getItem("event") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("event"));
     return (
         <>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
@@ -20,7 +23,7 @@ export default function EventCheckInCode() {
             border={1}
             >
                 <Typography variant="h5" sx={{mt: 2}}> Check-in Code </Typography>
-                <Typography sx={{mt: 2}}> Registration Code : </Typography>
+                <Typography sx={{mt: 2}}> Check-in Code : {retrievedEventObject.eventCheckinCode}</Typography>
                 <Typography sx={{mt: 2}}> QR Code : </Typography>
                 
                 <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />

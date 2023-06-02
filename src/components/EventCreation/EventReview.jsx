@@ -143,6 +143,8 @@ export default function EventReview() {
 
   const saveEventObject = (data) => {
     retrievedEventObject["eventPhoto"] = data.event_photo;
+    retrievedEventObject["eventRegistrationCode"] = data.event_registration_code;
+    retrievedEventObject["eventCheckinCode"] = data.event_checkin_code;
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
   };
 
