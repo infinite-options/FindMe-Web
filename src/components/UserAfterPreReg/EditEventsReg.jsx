@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button, Grid, Box } from "@mui/material";
+import { Button, Grid, Box, ButtonBase } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
+const Img = styled("img")({
+  margin: "auto",
+  display: "block",
+  maxWidth: "100%",
+  maxHeight: "100%",
+});
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 export default function EditEventsReg() {
@@ -28,7 +35,7 @@ export default function EditEventsReg() {
   const UpdateEventReg = () => {
     let eventObj = {
       event_user_uid: event.event_user_uid,
-      eu_qas: questions,
+      eu_qas: JSON.stringify(questions),
     };
     axios.put(BASE_URL + "/EventUser", eventObj).then((response) => {
       console.log(response);
@@ -54,16 +61,17 @@ export default function EditEventsReg() {
         justify="center"
         border={1}
       >
-        <div
-          style={{
-            width: "50px",
-            border: "1px solid red",
-            padding: "1rem",
-            margin: "1rem 1rem",
+        <ButtonBase
+          sx={{
+            width: 128,
+            height: 128,
           }}
         >
-          img
-        </div>
+          <Img
+            alt="complex"
+            src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+          />
+        </ButtonBase>
         <div style={{ margin: "1rem 0rem" }}>{event.event_title}</div>
         <div style={{ margin: "1rem 0rem", textAlign: "center" }}>
           {event.event_description}
