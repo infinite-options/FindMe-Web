@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Grid, Button, Typography } from "@mui/material";
+import { Grid, Button, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-
+import { tileImg } from "../../styles";
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function EventDetails() {
@@ -16,6 +16,7 @@ export default function EventDetails() {
 
   const event = {};
   event["event_uid"] = "200-000009";
+  console.log(retrievedEventObject);
 
   return (
     <>
@@ -27,21 +28,25 @@ export default function EventDetails() {
           paddingTop: "5%",
         }}
       >
-        <Grid
-          container
-          direction="column"
-          margin={1}
-          style={{ height: "30rem", width: "80rem" }}
-          alignItems="center"
-          justify="center"
-          border={1}
+        <Paper
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            margin: 5,
+            flexDirection: "row",
+            flexGrow: 1,
+            border: 1,
+            backgroundColor: (theme) =>
+              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+          }}
         >
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            {" "}
-            Event Details
-          </Typography>
-
           <List sx={{ bgcolor: "background.paper", mt: 2 }}>
+            <Typography variant="h5" sx={{ mt: 2 }}>
+              {" "}
+              Event Details
+            </Typography>
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Title : {retrievedEventObject.eventTitle}
@@ -75,7 +80,7 @@ export default function EventDetails() {
                 Event Start Date : {retrievedEventObject.eventStartDate}
               </Typography>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Start Time : {retrievedEventObject.eventStartTime}
@@ -87,21 +92,28 @@ export default function EventDetails() {
                 Event End Date : {retrievedEventObject.eventEndDate}
               </Typography>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event End Time : {retrievedEventObject.eventEndTime}
               </Typography>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Photo :
-                {retrievedEventObject.eventPhoto ? (
+                {JSON.parse(retrievedEventObject.eventPhoto) ? (
                   <img
-                    src={retrievedEventObject.eventPhoto}
-                    width={250}
-                    height={250}
+                    src={JSON.parse(retrievedEventObject.eventPhoto)[0]}
+                    style={{
+                      ...tileImg,
+                      objectFit: "cover",
+                      position: "relative",
+                      minHeight: "100px",
+                      minWidth: "100px",
+                      height: "100px",
+                      width: "100px",
+                    }}
                     alt="Event Photo"
                   />
                 ) : (
@@ -123,56 +135,64 @@ export default function EventDetails() {
               </Typography>
             </ListItem>
           </List>
-
-          <Button
-            onClick={() => {
-              navigate("/eventReview");
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
             }}
           >
-            {" "}
-            Edit Event{" "}
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/eventPreRegCode");
-            }}
-          >
-            {" "}
-            Show Pre-registration Code{" "}
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/eventCheckInCode");
-            }}
-          >
-            {" "}
-            Show Event Check-In Code{" "}
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/eventAttendeesList");
-            }}
-          >
-            {" "}
-            View Attendees{" "}
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/emailBroadcastMessage");
-            }}
-          >
-            {" "}
-            Broadcast Message{" "}
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/seeEventsList");
-            }}
-          >
-            {" "}
-            See Events{" "}
-          </Button>
-        </Grid>
+            <Button
+              onClick={() => {
+                navigate("/eventReview");
+              }}
+            >
+              {" "}
+              Edit Event{" "}
+            </Button>
+            <Button
+              onClick={() => {
+                navigate("/eventPreRegCode");
+              }}
+            >
+              {" "}
+              Show Pre-registration Code{" "}
+            </Button>
+            <Button
+              onClick={() => {
+                navigate("/eventCheckInCode");
+              }}
+            >
+              {" "}
+              Show Event Check-In Code{" "}
+            </Button>
+            <Button
+              onClick={() => {
+                navigate("/eventAttendeesList");
+              }}
+            >
+              {" "}
+              View Attendees{" "}
+            </Button>
+            <Button
+              onClick={() => {
+                navigate("/emailBroadcastMessage");
+              }}
+            >
+              {" "}
+              Broadcast Message{" "}
+            </Button>
+            <Button
+              onClick={() => {
+                navigate("/seeEventsList");
+              }}
+            >
+              {" "}
+              See Events{" "}
+            </Button>
+          </div>
+        </Paper>
       </div>
     </>
   );

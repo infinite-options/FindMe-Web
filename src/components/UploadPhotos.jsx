@@ -50,17 +50,16 @@ function UploadPhotos(props) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "column",
+        flexDirection: "row ",
         margin: "0.5rem",
       }}
     >
-      <div>Upload Photo</div>
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "column",
+          flexDirection: "row ",
           margin: "0.5rem",
         }}
       >

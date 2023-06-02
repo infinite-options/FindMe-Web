@@ -21,6 +21,22 @@ export default function EventReview() {
 
   const imageState = useState([]);
   console.log(imageState);
+
+  const loadImages = async () => {
+    const files = [];
+    const images = JSON.parse(retrievedEventObject.eventPhoto);
+    if (images !== null && images.length > 0) {
+      for (let i = 0; i < images.length; i++) {
+        files.push({
+          index: i,
+          image: images[i],
+          file: null,
+          coverPhoto: i === 0,
+        });
+      }
+      imageState[1](files);
+    }
+  };
   const addEvent = async () => {
     const files = imageState[0];
     let i = 0;
@@ -66,7 +82,8 @@ export default function EventReview() {
     });
 
     const data = await response.json();
-    saveEventObject(data);
+    console.log(data);
+    saveEventObject(data.result[0]);
     navigate("/eventPreRegCode");
     // axios
     //   .post(BASE_URL + `/AddEvent`, retrievedEventObject)
@@ -79,7 +96,7 @@ export default function EventReview() {
     //     console.log("Invalid Code");
     //   });
   };
-    
+
   const updateEvent = async () => {
     const files = imageState[0];
     let i = 0;
@@ -128,14 +145,14 @@ export default function EventReview() {
     //   saveEventObject(data.image)
     navigate("/eventPreRegCode");
   };
-    
+
   const saveEventObject = (data) => {
-        console.log("#### ", data.result)
-        // retrievedEventObject['eventPhoto'] = image;
-        // localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("66 ",retrievedEventObject)
-  }
-    
+    console.log("#### ", data.result);
+    retrievedEventObject["eventPhoto"] = data.event_photo;
+    localStorage.setItem("event", JSON.stringify(retrievedEventObject));
+    console.log("66 ", retrievedEventObject);
+  };
+
   return (
     <>
       <div
@@ -247,7 +264,7 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Start Time : {retrievedEventObject.eventStartTime}
@@ -275,7 +292,7 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event End Time : {retrievedEventObject.eventEndTime}
@@ -289,7 +306,7 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Capacity : {retrievedEventObject.eventCapacity}
@@ -303,11 +320,11 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Photo :
-                {retrievedEventObject.eventPhoto ? (
+                {/* {retrievedEventObject.eventPhoto ? (
                   <img
                     src={retrievedEventObject.eventPhoto}
                     width={250}
@@ -316,16 +333,17 @@ export default function EventReview() {
                   />
                 ) : (
                   "None"
-                )}
-              </Typography>
-              <IconButton
+                )} */}
+              </Typography>{" "}
+              <UploadPhotos state={imageState} />
+              {/* <IconButton
                 component="span"
                 onClick={() => {
                   navigate("/eventPhotoUpload");
                 }}
               >
                 <EditIcon fontSize="small" />
-              </IconButton>
+              </IconButton> */}
             </ListItem>
 
             <ListItem sx={{ border: "1px solid grey" }}>
@@ -348,29 +366,29 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            <UploadPhotos state={imageState} />
+            {/* <UploadPhotos state={imageState} /> */}
           </List>
 
-        {retrievedEventObject.event_uid &&
-        <Button
-            variant="outlined"
-            onClick={() => {
-              updateEvent();
-            }}
-          >
-            Update Event
-          </Button>
-        }
-        {!retrievedEventObject.event_uid &&
-          <Button
-            variant="outlined"
-            onClick={() => {
-              addEvent();
-            }}
-          >
-            Create Event
-          </Button>
-        }
+          {retrievedEventObject.event_uid && (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                updateEvent();
+              }}
+            >
+              Update Event
+            </Button>
+          )}
+          {!retrievedEventObject.event_uid && (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                addEvent();
+              }}
+            >
+              Create Event
+            </Button>
+          )}
         </Paper>
       </div>
     </>
