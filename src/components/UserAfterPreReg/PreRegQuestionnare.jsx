@@ -48,7 +48,7 @@ export default function PreRegQuestionnare() {
     let eventObj = {
       eu_user_id: "",
       eu_event_id: event.event_uid,
-      eu_qas: questions,
+      eu_qas: JSON.stringify(questions),
     };
     if (
       document.cookie !== "" &&

@@ -19,9 +19,12 @@ const StyledButton = styled(Button)(
 
 const EventAttendeesList = () => {
   const navigate = useNavigate();
-//   const location = useLocation();
-//   const event = location.state;
-  const event = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
+  //   const location = useLocation();
+  //   const event = location.state;
+  const event =
+    localStorage.getItem("event") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("event"));
   const [attendees, setAttendees] = useState([]);
 
   const handleClickAttendee = (attendee) => {
@@ -37,15 +40,14 @@ const EventAttendeesList = () => {
       `${BASE_URL}/eventAttendees?eventId=${event.event_uid}`
     );
     const data = response["data"];
+    console.log(data);
     setAttendees(data["attendees"]);
   };
 
   useEffect(() => {
-    if(event && event.event_uid)
-    {
-        fetchAttendees();
-    }
-    else setAttendees([])
+    if (event && event.event_uid) {
+      fetchAttendees();
+    } else setAttendees([]);
   }, []);
 
   return (

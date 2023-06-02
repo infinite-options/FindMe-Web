@@ -142,7 +142,10 @@ export default function EventByType() {
                       border: "1px solid red",
                     }}
                   >
-                    <Img alt="complex" src="/static/images/grid/complex.jpg" />
+                    <Img
+                      alt="complex"
+                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                    />
                   </ButtonBase>
                 </Grid>
                 <Grid item xs={8} direction="column" spacing={2}>

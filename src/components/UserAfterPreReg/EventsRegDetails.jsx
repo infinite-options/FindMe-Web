@@ -1,12 +1,20 @@
 import React from "react";
-import { Button, Grid, Box } from "@mui/material";
+import { Button, Grid, Box, ButtonBase } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
+const Img = styled("img")({
+  margin: "auto",
+  display: "block",
+  maxWidth: "100%",
+  maxHeight: "100%",
+});
+
 export default function EventsRegDetails() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const event = state.event;
   console.log(event);
-  console.log(event.eu_qas[0]);
+  console.log(JSON.parse(event.eu_qas));
   return (
     <div
       style={{
@@ -28,16 +36,17 @@ export default function EventsRegDetails() {
         <div style={{ textTransform: "uppercase", fontSize: "20px" }}>
           Registration Confirmation
         </div>
-        <div
-          style={{
-            width: "50px",
-            border: "1px solid red",
-            padding: "1rem",
-            margin: "1rem 1rem",
+        <ButtonBase
+          sx={{
+            width: 128,
+            height: 128,
           }}
         >
-          img
-        </div>
+          <Img
+            alt="complex"
+            src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+          />
+        </ButtonBase>
         <div style={{ margin: "1rem 0rem" }}>{event.event_title}</div>
         <div style={{ margin: "1rem 0rem", textAlign: "center" }}>
           {event.event_description}

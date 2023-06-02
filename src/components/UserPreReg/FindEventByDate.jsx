@@ -97,7 +97,9 @@ export default function FindEventByDate() {
                         >
                           <Img
                             alt="complex"
-                            src="/static/images/grid/complex.jpg"
+                            src={`${JSON.parse(
+                              event.event_photo
+                            )}?${Date.now()}`}
                           />
                         </ButtonBase>
                       </Grid>

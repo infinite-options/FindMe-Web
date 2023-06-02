@@ -11,8 +11,8 @@ import {
 } from "@mui/material";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import GroupsIcon from '@mui/icons-material/Groups';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import GroupsIcon from "@mui/icons-material/Groups";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
@@ -25,20 +25,25 @@ const Img = styled("img")({
 });
 export default function SeeEventsList() {
   const navigate = useNavigate();
-  const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
+  const retrievedEventObject =
+    localStorage.getItem("event") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("event"));
   const [events, setEvents] = useState([]);
 
-  const [eventOrganizerUID, setEventOrganizerUID] = useState(retrievedEventObject.event_organizer_uid);
-  
+  const [eventOrganizerUID, setEventOrganizerUID] = useState(
+    retrievedEventObject.event_organizer_uid
+  );
+
   const getAllEvents = () => {
     axios
       .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`)
       .then((response) => {
-        console.log(response.data.result);
+        // console.log(response.data.result);
         setEvents(response.data.result);
       });
   };
-  
+
   useEffect(() => {
     getAllEvents();
   }, []);
@@ -48,30 +53,33 @@ export default function SeeEventsList() {
     let newEvent = {};
     newEvent["event_organizer_uid"] = eventOrganizerUID;
     localStorage.setItem("event", JSON.stringify(newEvent));
-    navigate("/eventTypeMenu")
+    navigate("/eventTypeMenu");
   };
-    
+
   const saveEventObject = (event) => {
-    console.log("event ", event);
-    retrievedEventObject["eventCapacity"] = event.event_capacity
-    retrievedEventObject["eventDescription"] = event.event_description
-    retrievedEventObject["eventPhoto"] = event.event_photo
-    retrievedEventObject["eventTitle"] = event.event_title
-    retrievedEventObject["eventType"] = event.event_type
-    retrievedEventObject["event_organizer_uid"] = event.event_organizer_uid
-    retrievedEventObject["preEventQuestionnaire"] = JSON.parse(event.pre_event_questionnaire)
-    retrievedEventObject["eventVisibility"] = event.event_visibility
-    retrievedEventObject["eventStartDate"] = event.event_start_date
-    retrievedEventObject["eventStartTime"] = event.event_start_time
-    retrievedEventObject["eventEndDate"] = event.event_end_date
-    retrievedEventObject["eventEndTime"] = event.event_end_time
-    retrievedEventObject["event_uid"] = event.event_uid
-    retrievedEventObject["eventLocation"] = event.event_location
-    retrievedEventObject["eventZip"] = event.event_zip
-    retrievedEventObject["eventRegCode"] = event.event_registration_code
+    // console.log("event ", event);
+    retrievedEventObject["eventCapacity"] = event.event_capacity;
+    retrievedEventObject["eventDescription"] = event.event_description;
+    retrievedEventObject["eventPhoto"] = event.event_photo;
+    retrievedEventObject["eventTitle"] = event.event_title;
+    retrievedEventObject["eventType"] = event.event_type;
+    retrievedEventObject["event_organizer_uid"] = event.event_organizer_uid;
+    retrievedEventObject["preEventQuestionnaire"] = JSON.parse(
+      event.pre_event_questionnaire
+    );
+    retrievedEventObject["eventVisibility"] = event.event_visibility;
+    retrievedEventObject["eventStartDate"] = event.event_start_date;
+    retrievedEventObject["eventStartTime"] = event.event_start_time;
+    retrievedEventObject["eventEndDate"] = event.event_end_date;
+    retrievedEventObject["eventEndTime"] = event.event_end_time;
+    retrievedEventObject["event_uid"] = event.event_uid;
+    retrievedEventObject["eventLocation"] = event.event_location;
+    retrievedEventObject["eventZip"] = event.event_zip;
+    retrievedEventObject["eventRegistrationCode"] = event.event_registration_code;
+    retrievedEventObject["eventCheckinCode"] = event.event_checkin_code;
 
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
-    console.log("retrievedEventObject ", retrievedEventObject);
+    // console.log("retrievedEventObject ", retrievedEventObject);
   };
 
   return (
@@ -103,7 +111,7 @@ export default function SeeEventsList() {
         </Typography>
 
         {events.map((event) => {
-          console.log("event ", event);
+          // console.log("event ", event);
           return (
             <Grid
               container
@@ -125,7 +133,10 @@ export default function SeeEventsList() {
                     border: "1px solid red",
                   }}
                 >
-                  <Img alt="complex" src={JSON.parse(event.event_photo)} />
+                  <Img
+                    alt="complex"
+                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                  />
                 </ButtonBase>
               </Grid>
               <Grid item xs={8} direction="column" spacing={2}>
@@ -146,8 +157,8 @@ export default function SeeEventsList() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  saveEventObject(event)
-                  navigate("/eventReview");
+                  saveEventObject(event);
+                  navigate("/eventReview", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -155,7 +166,7 @@ export default function SeeEventsList() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  saveEventObject(event)
+                  saveEventObject(event);
                   navigate("/eventAttendeesList");
                 }}
               >
@@ -164,7 +175,7 @@ export default function SeeEventsList() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  saveEventObject(event)
+                  saveEventObject(event);
                   navigate("/eventDetails");
                 }}
               >
@@ -173,8 +184,14 @@ export default function SeeEventsList() {
             </Grid>
           );
         })}
-        <Button onClick={()=>handleCreateEvent()}>Create Event</Button>
-        <Button onClick={()=>{navigate(-1)}}>Back</Button>
+        <Button onClick={() => handleCreateEvent()}>Create Event</Button>
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Back
+        </Button>
       </Paper>
     </div>
   );

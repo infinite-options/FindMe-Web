@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import List from "@mui/material/List";
@@ -13,18 +13,55 @@ const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function EventReview() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const edit = state.edit;
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
       : JSON.parse(localStorage.getItem("event"));
-  console.log(retrievedEventObject);
 
   const imageState = useState([]);
-  console.log(imageState);
+  useEffect(() => {
+    if (edit && retrievedEventObject) {
+      loadImages();
+    }
+  }, []);
+
+  const loadImages = async () => {
+    const files = [];
+    if (typeof retrievedEventObject.eventPhoto === "string") {
+      const images = JSON.parse(retrievedEventObject.eventPhoto);
+      console.log(images);
+      let i = 0;
+      if (images !== null) {
+        files.push({
+          index: i,
+          image: images,
+          file: null,
+          coverPhoto: i === 0,
+        });
+
+        imageState[1](files);
+      }
+    } else {
+      const images = retrievedEventObject.eventPhoto;
+      console.log(images);
+      let i = 0;
+      if (images !== null) {
+        files.push({
+          index: i,
+          image: images,
+          file: null,
+          coverPhoto: i === 0,
+        });
+
+        imageState[1](files);
+      }
+    }
+  };
   const addEvent = async () => {
     const files = imageState[0];
     let i = 0;
-    console.log(files);
     for (const file of imageState[0]) {
       let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
       if (file.file !== null) {
@@ -33,7 +70,6 @@ export default function EventReview() {
         retrievedEventObject[key] = file.image;
       }
     }
-    console.log(retrievedEventObject);
     let headers = {
       "content-type": "application/json",
     };
@@ -42,11 +78,6 @@ export default function EventReview() {
       headers = {};
       requestBody = new FormData();
       for (const key of Object.keys(retrievedEventObject)) {
-        console.log(
-          typeof retrievedEventObject[key],
-          retrievedEventObject[key],
-          key
-        );
         if (
           typeof retrievedEventObject[key] === "object" &&
           key !== "img_cover"
@@ -57,7 +88,6 @@ export default function EventReview() {
         }
       }
     }
-    console.log(requestBody);
 
     const response = await fetch(BASE_URL + "/AddEvent", {
       method: "POST",
@@ -66,24 +96,13 @@ export default function EventReview() {
     });
 
     const data = await response.json();
-    saveEventObject(data);
+    saveEventObject(data.result[0]);
     navigate("/eventPreRegCode");
-    // axios
-    //   .post(BASE_URL + `/AddEvent`, retrievedEventObject)
-    //   .then((response) => {
-    //     console.log("event created");
-    //     // navigate("/eventPreRegCode");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     console.log("Invalid Code");
-    //   });
   };
-    
+
   const updateEvent = async () => {
     const files = imageState[0];
     let i = 0;
-    console.log(files);
     for (const file of imageState[0]) {
       let key = file.coverPhoto ? "img_cover" : `img_${i++}`;
       if (file.file !== null) {
@@ -92,7 +111,6 @@ export default function EventReview() {
         retrievedEventObject[key] = file.image;
       }
     }
-    console.log(retrievedEventObject);
     let headers = {
       "content-type": "application/json",
     };
@@ -101,11 +119,6 @@ export default function EventReview() {
       headers = {};
       requestBody = new FormData();
       for (const key of Object.keys(retrievedEventObject)) {
-        console.log(
-          typeof retrievedEventObject[key],
-          retrievedEventObject[key],
-          key
-        );
         if (
           typeof retrievedEventObject[key] === "object" &&
           key !== "img_cover"
@@ -116,26 +129,25 @@ export default function EventReview() {
         }
       }
     }
-    console.log(requestBody);
 
-    // const response = await fetch(BASE_URL + "/AddEvent", {
-    //   method: "POST",
-    //   headers: headers,
-    //   body: requestBody,
-    // });
+    const response = await fetch(BASE_URL + "/UpdateEvent", {
+      method: "PUT",
+      headers: headers,
+      body: requestBody,
+    });
 
-    // const data = await response.json();
-    //   saveEventObject(data.image)
+    const data = await response.json();
+    saveEventObject(data.result[0]);
     navigate("/eventPreRegCode");
   };
-    
+
   const saveEventObject = (data) => {
-        console.log("#### ", data.result)
-        // retrievedEventObject['eventPhoto'] = image;
-        // localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("66 ",retrievedEventObject)
-  }
-    
+    retrievedEventObject["eventPhoto"] = data.event_photo;
+    retrievedEventObject["eventRegistrationCode"] = data.event_registration_code;
+    retrievedEventObject["eventCheckinCode"] = data.event_checkin_code;
+    localStorage.setItem("event", JSON.stringify(retrievedEventObject));
+  };
+
   return (
     <>
       <div
@@ -247,7 +259,7 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Start Time : {retrievedEventObject.eventStartTime}
@@ -275,7 +287,7 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event End Time : {retrievedEventObject.eventEndTime}
@@ -289,7 +301,7 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Capacity : {retrievedEventObject.eventCapacity}
@@ -303,11 +315,11 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            
+
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Photo :
-                {retrievedEventObject.eventPhoto ? (
+                {/* {retrievedEventObject.eventPhoto ? (
                   <img
                     src={retrievedEventObject.eventPhoto}
                     width={250}
@@ -316,16 +328,17 @@ export default function EventReview() {
                   />
                 ) : (
                   "None"
-                )}
-              </Typography>
-              <IconButton
+                )} */}
+              </Typography>{" "}
+              <UploadPhotos state={imageState} />
+              {/* <IconButton
                 component="span"
                 onClick={() => {
                   navigate("/eventPhotoUpload");
                 }}
               >
                 <EditIcon fontSize="small" />
-              </IconButton>
+              </IconButton> */}
             </ListItem>
 
             <ListItem sx={{ border: "1px solid grey" }}>
@@ -348,29 +361,28 @@ export default function EventReview() {
                 <EditIcon fontSize="small" />
               </IconButton>
             </ListItem>
-            <UploadPhotos state={imageState} />
+            {/* <UploadPhotos state={imageState} /> */}
           </List>
 
-        {retrievedEventObject.event_uid &&
-        <Button
-            variant="outlined"
-            onClick={() => {
-              updateEvent();
-            }}
-          >
-            Update Event
-          </Button>
-        }
-        {!retrievedEventObject.event_uid &&
-          <Button
-            variant="outlined"
-            onClick={() => {
-              addEvent();
-            }}
-          >
-            Create Event
-          </Button>
-        }
+          {edit || retrievedEventObject.event_uid ? (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                updateEvent();
+              }}
+            >
+              Update Event
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                addEvent();
+              }}
+            >
+              Create Event
+            </Button>
+          )}
         </Paper>
       </div>
     </>
