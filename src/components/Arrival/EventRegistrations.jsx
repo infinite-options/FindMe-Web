@@ -67,8 +67,8 @@ const EventRegistrations = () => {
               {registration.first_name + " " + registration.last_name}
             </Button>
           ))}
-          {registrations.length() < 1 && (
-            <Typography align="center" variant="h4" gutterBottom>
+          {registrations.length < 1 && (
+            <Typography align="center" variant="h6" gutterBottom>
               {"No registrations"}
             </Typography>
           )}
