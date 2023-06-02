@@ -77,7 +77,7 @@ export default function CurrentRSVPs() {
                 <ButtonBase
                   sx={{ width: 128, height: 128, border: "1px solid red" }}
                 >
-                  <Img alt="complex" src="/static/images/grid/complex.jpg" />
+                  <Img alt="complex" src={JSON.parse(event.event_photo)} />
                 </ButtonBase>
               </Grid>
               <Grid item xs={8} direction="column" spacing={2}>
