@@ -40,7 +40,7 @@ import EventsRegDetails from "./components/UserAfterPreReg/EventsRegDetails";
 import CurrentEvents from "./components/Arrival/CurrentEvents";
 import EventDashboard from "./components/Arrival/EventDashboard";
 import EventAgenda from "./components/Arrival/EventAgenda";
-import EventAttendees from "./components/Arrival/EventAttendees";
+import EventRegistrations from "./components/Arrival/EventRegistrations";
 import AttendeeDetails from "./components/Arrival/AttendeeDetails";
 import AttendeeCheckin from "./components/Arrival/AttendeeCheckin";
 import NetworkingActivity from "./components/Arrival/NetworkingActivity";
@@ -222,7 +222,7 @@ function App() {
             <Route exact path="/event-bylocation" element={<EventByLocation />} />
             <Route exact path="/eventDashboard" element={<EventDashboard />} />
             <Route exact path="/eventAgenda" element={<EventAgenda />} />
-            <Route exact path="/eventAttendees" element={<EventAttendees />} />
+            <Route exact path="/eventRegistrations" element={<EventRegistrations />} />
             <Route
               exact
               path="/attendeeDetails"

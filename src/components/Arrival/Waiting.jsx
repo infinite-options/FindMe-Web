@@ -6,6 +6,15 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+
+const StyledButton = styled(Button)(
+  () => `
+      width: 200px;
+      align-self: center;
+    `
+);
 
 const Waiting = () => {
   const navigate = useNavigate();
@@ -16,13 +25,25 @@ const Waiting = () => {
   const event = location.state
     ? location.state.event
     : JSON.parse(localStorage.getItem("event"));
+  const channel = ably.channels.get(`FindMe/${event.event_uid}`);
+
+  const handleCancel = () => {
+    channel.presence.leaveClient(user.user_uid, {
+      user_uid: user.user_uid,
+      name: user.first_name + " " + user.last_name,
+    });
+    navigate(-1);
+  };
 
   const joinSubscribe = () => {
-    const channel = ably.channels.get(`FindMe/${event.event_uid}`);
     channel.subscribe((e) => {
       if (e.data.message === "Event started") {
         navigate("/networkingActivity", { state: { event, user } });
       }
+    });
+    channel.presence.enterClient(user.user_uid, {
+      user_uid: user.user_uid,
+      name: user.first_name + " " + user.last_name,
     });
   };
 
@@ -45,6 +66,9 @@ const Waiting = () => {
             {"Waiting for host to start activity..."}
           </Typography>
           <CircularProgress disableShrink />
+          <StyledButton variant="contained" onClick={handleCancel}>
+            {"Cancel"}
+          </StyledButton>
         </Stack>
       </Box>
     </Container>
