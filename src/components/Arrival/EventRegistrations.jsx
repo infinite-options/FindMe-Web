@@ -17,11 +17,11 @@ const StyledButton = styled(Button)(
     `
 );
 
-const EventAttendees = () => {
+const EventRegistrations = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const event = location.state;
-  const [attendees, setAttendees] = useState([]);
+  const [registrations, setRegistrations] = useState([]);
 
   const handleClickAttendee = (attendee) => {
     navigate("/attendeeDetails", { state: attendee });
@@ -31,23 +31,23 @@ const EventAttendees = () => {
     navigate(-1);
   };
 
-  const fetchAttendees = async () => {
+  const fetchRegistrations = async () => {
     const response = await axios.get(
       `${BASE_URL}/eventAttendees?eventId=${event.event_uid}`
     );
     const data = response["data"];
-    setAttendees(data["attendees"]);
+    setRegistrations(data["attendees"]);
   };
 
   useEffect(() => {
-    fetchAttendees();
+    fetchRegistrations();
   }, []);
 
   return (
     <Container maxWidth="sm">
       <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
         <Typography align="center" variant="h4" gutterBottom>
-          {"Attendees"}
+          {"Registrations"}
         </Typography>
         <Stack
           sx={{
@@ -58,18 +58,18 @@ const EventAttendees = () => {
           }}
           direction="column"
         >
-          {attendees.map((attendee) => (
+          {registrations.map((registration) => (
             <Button
-              key={attendee.user_uid}
+              key={registration.user_uid}
               variant="text"
-              onClick={() => handleClickAttendee(attendee)}
+              onClick={() => handleClickAttendee(registration)}
             >
-              {attendee.first_name + " " + attendee.last_name}
+              {registration.first_name + " " + registration.last_name}
             </Button>
           ))}
-          {!attendees && (
+          {registrations.length() < 1 && (
             <Typography align="center" variant="h4" gutterBottom>
-              {"No attendees"}
+              {"No registrations"}
             </Typography>
           )}
         </Stack>
@@ -83,4 +83,4 @@ const EventAttendees = () => {
   );
 };
 
-export default EventAttendees;
+export default EventRegistrations;

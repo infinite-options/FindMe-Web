@@ -170,9 +170,9 @@ const NetworkingActivity = () => {
           <HighchartsReact highcharts={Highcharts} options={options} />
           <StyledButton
             variant="contained"
-            onClick={() => navigate("/eventAttendees", { state: event })}
+            onClick={() => navigate("/eventRegistrations", { state: event })}
           >
-            {"See other attendees"}
+            {"See registrations"}
           </StyledButton>
         </Stack>
       </Box>
