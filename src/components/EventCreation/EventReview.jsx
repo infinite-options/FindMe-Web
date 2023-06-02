@@ -29,18 +29,34 @@ export default function EventReview() {
 
   const loadImages = async () => {
     const files = [];
-    const images = JSON.parse(retrievedEventObject.eventPhoto);
+    if (typeof retrievedEventObject.eventPhoto === "string") {
+      const images = JSON.parse(retrievedEventObject.eventPhoto);
+      console.log(images);
+      let i = 0;
+      if (images !== null) {
+        files.push({
+          index: i,
+          image: images,
+          file: null,
+          coverPhoto: i === 0,
+        });
 
-    let i = 0;
-    if (images !== null) {
-      files.push({
-        index: i,
-        image: images,
-        file: null,
-        coverPhoto: i === 0,
-      });
+        imageState[1](files);
+      }
+    } else {
+      const images = retrievedEventObject.eventPhoto;
+      console.log(images);
+      let i = 0;
+      if (images !== null) {
+        files.push({
+          index: i,
+          image: images,
+          file: null,
+          coverPhoto: i === 0,
+        });
 
-      imageState[1](files);
+        imageState[1](files);
+      }
     }
   };
   const addEvent = async () => {

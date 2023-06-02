@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,18 @@ export default function EventDetails() {
 
   const event = {};
   event["event_uid"] = "200-000009";
+  console.log(retrievedEventObject);
+  console.log(retrievedEventObject.eventPhoto);
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+    if (retrievedEventObject) {
+      if (typeof retrievedEventObject.eventPhoto === "string") {
+        setImages(JSON.parse(retrievedEventObject.eventPhoto));
+      } else {
+        setImages(retrievedEventObject.eventPhoto);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -101,12 +113,10 @@ export default function EventDetails() {
             <ListItem sx={{ border: "1px solid grey" }}>
               <Typography>
                 Event Photo :
-                {JSON.parse(retrievedEventObject.eventPhoto) ? (
+                {images ? (
                   <img
                     key={Date.now()}
-                    src={`${
-                      JSON.parse(retrievedEventObject.eventPhoto)[0]
-                    }?${Date.now()}`}
+                    src={`${images[0]}?${Date.now()}`}
                     // src={JSON.parse(retrievedEventObject.eventPhoto)[0]}
                     style={{
                       ...tileImg,
