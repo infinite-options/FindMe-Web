@@ -75,7 +75,8 @@ export default function SeeEventsList() {
     retrievedEventObject["event_uid"] = event.event_uid;
     retrievedEventObject["eventLocation"] = event.event_location;
     retrievedEventObject["eventZip"] = event.event_zip;
-    retrievedEventObject["eventRegCode"] = event.event_registration_code;
+    retrievedEventObject["eventRegistrationCode"] = event.event_registration_code;
+    retrievedEventObject["eventCheckinCode"] = event.event_checkin_code;
 
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
     // console.log("retrievedEventObject ", retrievedEventObject);
