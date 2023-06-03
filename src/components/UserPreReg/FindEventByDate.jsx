@@ -126,7 +126,7 @@ export default function FindEventByDate() {
                   );
                 })
               ) : (
-                `No events available for ${selectedDate}`
+                <div>No events available for {selectedDate}</div>
               )
             ) : (
               ""
@@ -152,7 +152,7 @@ export default function FindEventByDate() {
                     value={selectedDate}
                     inputFormat="MM-DD-YYYY"
                     onChange={(d) => {
-                      setSelectedDate(d.format("M/D/YYYY"));
+                      setSelectedDate(d.format("MM/DD/YYYY"));
                     }}
                   />
                 </DemoContainer>

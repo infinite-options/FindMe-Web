@@ -97,6 +97,11 @@ export default function EventReview() {
 
     const data = await response.json();
     saveEventObject(data.result[0]);
+    let event = data.result[0];
+    console.log(event);
+    axios.post(BASE_URL + "/SendEventDetails", event).then((res) => {
+      console.log(res);
+    });
     navigate("/eventPreRegCode");
   };
 
@@ -143,7 +148,8 @@ export default function EventReview() {
 
   const saveEventObject = (data) => {
     retrievedEventObject["eventPhoto"] = data.event_photo;
-    retrievedEventObject["eventRegistrationCode"] = data.event_registration_code;
+    retrievedEventObject["eventRegistrationCode"] =
+      data.event_registration_code;
     retrievedEventObject["eventCheckinCode"] = data.event_checkin_code;
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
   };
