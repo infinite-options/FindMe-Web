@@ -1,12 +1,14 @@
 import React, { Component, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Typography, Button, TextField } from "@mui/material";
 
 export default function EventTitle() {
     const navigate = useNavigate();
+    const location = useLocation();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
     const [eventTitle, setEventTitle] = useState(retrievedEventObject && retrievedEventObject.eventTitle ? retrievedEventObject.eventTitle : '');
     const [eventDescription, setEventDescription] = useState(retrievedEventObject && retrievedEventObject.eventDescription ? retrievedEventObject.eventDescription : '');
+    
     const handleTitleInput = (e) => {
         setEventTitle(e.target.value)
     }
@@ -46,7 +48,16 @@ export default function EventTitle() {
                 variant="outlined" sx={{ width: '30%', mt: 2}} 
                 value={eventDescription}
                 onChange={handleDescInput}/>
-                <Button onClick={() => { navigate('/eventCapacity'); saveEventObject()}}> Next</Button>
+                
+                <Button onClick={() => {
+                    saveEventObject()
+                    if(location.state && location.state.edit){
+                        navigate(-1);
+                    }
+                    else{
+                        navigate('/eventCapacity');
+                    }
+                }}> Next</Button>
 
                 </Grid>
         </div>

@@ -11,6 +11,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 export default function EventParticulars() {
     const navigate = useNavigate();
+    const location = useLocation();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
     
     const today = dayjs();
@@ -156,7 +157,16 @@ export default function EventParticulars() {
                     </Grid>
                 </DemoContainer>
                 </LocalizationProvider>
-                    <Button onClick={() => { navigate('/eventLocation'); saveEventObject() }}> Next</Button>
+                
+                <Button onClick={() => {
+                    saveEventObject()
+                    if(location.state && location.state.edit){
+                        navigate(-1);
+                    }
+                    else{
+                        navigate('/eventLocation');
+                    }
+                }}> Next</Button>
             </Grid>
         </div>
         </>

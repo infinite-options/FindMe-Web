@@ -1,11 +1,12 @@
 import React, { Component, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Typography, Button, TextField } from "@mui/material";
 import Searchbox from './Searchbox';
 import MapComponent from './MapComponent';
 
 export default function EventLocation() {
     const navigate = useNavigate();
+    const location = useLocation();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
     const [lat, setLat] = useState(37.236720);
     const [long, setLong] = useState(-121.887370);
@@ -26,7 +27,6 @@ export default function EventLocation() {
         retrievedEventObject['eventZip'] = zipcode;
         localStorage.setItem('event', JSON.stringify(retrievedEventObject));
         console.log("66 ", retrievedEventObject)
-        navigate('/eventTitle');
     }
     return (
         <>
@@ -49,8 +49,16 @@ export default function EventLocation() {
                 <MapComponent
                     latitude={lat}
                     longitude={long}
-              ></MapComponent >
-                <Button onClick={() => { saveEventObject() }}> Next</Button>
+                ></MapComponent >
+                <Button onClick={() => {
+                    saveEventObject()
+                    if(location.state && location.state.edit){
+                        navigate(-1);
+                    }
+                    else{
+                        navigate('/eventTitle');
+                    }
+                }}> Next</Button>
 
             </Grid>
         </div>

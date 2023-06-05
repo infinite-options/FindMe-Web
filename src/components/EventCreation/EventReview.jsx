@@ -192,7 +192,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventTitle");
+                  navigate("/eventTitle", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -205,7 +205,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventTitle");
+                  navigate("/eventTitle", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -218,7 +218,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventTypeMenu");
+                  navigate("/eventTypeMenu", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -232,7 +232,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventVisibility");
+                  navigate("/eventVisibility", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -246,7 +246,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventLocation");
+                  navigate("/eventLocation", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -260,7 +260,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventParticulars");
+                  navigate("/eventParticulars", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -274,7 +274,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventParticulars");
+                  navigate("/eventParticulars", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -288,7 +288,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventParticulars");
+                  navigate("/eventParticulars", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -302,7 +302,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventParticulars");
+                  navigate("/eventParticulars", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -316,7 +316,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/eventCapacity");
+                  navigate("/eventCapacity", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />
@@ -362,7 +362,7 @@ export default function EventReview() {
               <IconButton
                 component="span"
                 onClick={() => {
-                  navigate("/preEventQuestionnaire");
+                  navigate("/preEventQuestionnaire", { state: { edit: true } });
                 }}
               >
                 <EditIcon fontSize="small" />

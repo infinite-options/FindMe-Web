@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Typography, Button } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -9,6 +9,7 @@ import FormLabel from '@mui/material/FormLabel';
 
 export default function EventVisibility() {
     const navigate = useNavigate();
+    const location = useLocation();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
     const [eventVisibility, setEventVisibility] = useState(retrievedEventObject && retrievedEventObject.eventVisibility ? retrievedEventObject.eventVisibility : 'Public');
 
@@ -51,7 +52,16 @@ export default function EventVisibility() {
                 </RadioGroup>
                 </FormControl>
                 <footer>Pubic events can be found in search and attended by anyone who has the registration code. <br/> Private events are by invitation only</footer>
-                    <Button onClick={() => { navigate('/eventParticulars'); saveEventObject() }}> Next</Button>
+                
+                <Button onClick={() => {
+                    saveEventObject()
+                    if(location.state && location.state.edit){
+                        navigate(-1);
+                    }
+                    else{
+                        navigate('/eventParticulars');
+                    }
+                }}> Next</Button>
             </Grid>
         </div>
         </>

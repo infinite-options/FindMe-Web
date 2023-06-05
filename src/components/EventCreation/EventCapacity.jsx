@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Typography, Button, TextField } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -9,6 +9,7 @@ import FormLabel from "@mui/material/FormLabel";
 
 export default function EventCapacity() {
   const navigate = useNavigate();
+  const location = useLocation();
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
@@ -95,8 +96,13 @@ export default function EventCapacity() {
           />
           <Button
             onClick={() => {
-              navigate("/preEventQuestionnaire");
-              saveEventObject();
+              saveEventObject()
+              if(location.state && location.state.edit){
+                  navigate(-1);
+              }
+              else{
+                  navigate("/preEventQuestionnaire");
+              }
             }}
           >
             {" "}
