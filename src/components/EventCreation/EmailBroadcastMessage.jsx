@@ -29,7 +29,7 @@ export default function EmailBroadcastMessage() {
       ? {}
       : JSON.parse(localStorage.getItem("event"));
   const [attendeesEmails, setAttendeesEmails] = useState([]);
-
+  console.log(event);
   const handleClickAttendee = (attendee) => {
     navigate("/attendeeDetails", { state: attendee });
   };
@@ -62,6 +62,8 @@ export default function EmailBroadcastMessage() {
       subject: subject,
       message: message,
     };
+    let newstate = Object.assign(obj, event);
+    console.log(newstate);
     setShowDialogSendingEmail(true);
     axios.post(BASE_URL + "/SendEmailAttendee", obj).then((response) => {
       setShowDialogSendingEmail(false);
