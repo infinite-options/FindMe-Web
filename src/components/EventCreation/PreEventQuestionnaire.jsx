@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Typography, Button, TextField } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import List from "@mui/material/List";
@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function PreEventQuestionnaire() {
   const navigate = useNavigate();
+  const location = useLocation();
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
@@ -157,8 +158,13 @@ export default function PreEventQuestionnaire() {
           </FormControl>
           <Button
             onClick={() => {
-              navigate("/eventReview", { state: { edit: false } });
-              saveEventObject();
+            saveEventObject()
+            if(location.state && location.state.edit){
+                navigate(-1);
+            }
+            else{
+                navigate("/eventReview", { state: { edit: false } });
+            }
             }}
           >
             {" "}
