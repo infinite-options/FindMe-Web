@@ -24,7 +24,7 @@ export default function RegCode() {
           // navigate("/eventProfile", {
           //   state: { event: response.data.result.result[0] },
           // });
-          navigate("/preregistration-event", {
+          navigate("/preregistration-event/"+regCode, {
             state: { event: response.data.result.result[0] },
           });
         } else {

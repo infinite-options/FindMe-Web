@@ -1,11 +1,12 @@
 import React, { Component, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Typography, Button } from "@mui/material";
+import QRCode from '../QRCode/QRCode';
 import axios from "axios";
 
 export default function EventPreRegCode() {
     const navigate = useNavigate();
-    const getQRcodeLink = 'https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/preEventQuestionnaire&size=150x150';
+    // const getQRcodeLink = 'https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/preEventQuestionnaire&size=150x150';
     const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
@@ -26,9 +27,15 @@ export default function EventPreRegCode() {
                 <Typography sx={{mt: 2}}> Registration Code : {retrievedEventObject.eventRegistrationCode} </Typography>
                 <Typography sx={{mt: 2}}> QR Code : </Typography>
                 
-                <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />
+                {/* <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />
 
+                <footer> Confirmation sent to 'email/mobile' </footer> */}
+                <QRCode 
+                    route = {"/preregistration-event/"}
+                    event_registration_code = {retrievedEventObject.eventRegistrationCode}
+                ></QRCode>
                 <footer> Confirmation sent to 'email/mobile' </footer>
+
                 <Button onClick={() => { navigate('/eventCheckInCode'); }}>Next</Button>
 
             </Grid>

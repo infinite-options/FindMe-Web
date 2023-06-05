@@ -8,6 +8,7 @@ import ListItem from "@mui/material/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import UploadPhotos from "../UploadPhotos";
+import QRCode from "../QRCode/QRCode";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -362,6 +363,16 @@ export default function EventReview() {
               </IconButton>
             </ListItem>
             {/* <UploadPhotos state={imageState} /> */}
+            
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event Registration QR code :
+                <QRCode 
+                    route = {"/preregistration-event/"}
+                    event_registration_code = {retrievedEventObject.eventRegistrationCode}
+                ></QRCode>
+              </Typography>
+            </ListItem>
           </List>
 
           {edit || retrievedEventObject.event_uid ? (

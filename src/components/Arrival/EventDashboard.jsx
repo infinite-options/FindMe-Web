@@ -63,7 +63,7 @@ const EventDashboard = () => {
       eventId: event.event_uid,
     });
     if (!response.data.hasRegistered)
-      navigate("/preregistration-event", { state: { event } });
+      navigate("/preregistration-event/"+event.event_registration_code, { state: { event } });
     else {
       localStorage.setItem("event", JSON.stringify(event));
       localStorage.setItem("user", JSON.stringify(user));
