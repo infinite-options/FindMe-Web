@@ -128,7 +128,7 @@ function App() {
             />
             <Route
               exact
-              path="/preregistration-event"
+              path="/preregistration-event/:id"
               element={<PreRegistration />}
             />
             <Route

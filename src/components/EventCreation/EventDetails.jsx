@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { tileImg } from "../../styles";
+
+import QRCode from "../QRCode/QRCode";
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function EventDetails() {
@@ -145,6 +147,16 @@ export default function EventDetails() {
                     }
                   }
                 )}
+              </Typography>
+            </ListItem>
+
+            <ListItem sx={{ border: "1px solid grey" }}>
+              <Typography>
+                Event Registration QR code :
+                <QRCode 
+                    route = {"/preregistration-event/"}
+                    event_registration_code = {retrievedEventObject.eventRegistrationCode}
+                ></QRCode>
               </Typography>
             </ListItem>
           </List>

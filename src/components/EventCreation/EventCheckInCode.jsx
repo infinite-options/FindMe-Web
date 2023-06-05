@@ -2,6 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Typography, Button } from "@mui/material";
 import axios from "axios";
+import QRCode from '../QRCode/QRCode';
 
 export default function EventCheckInCode() {
     const navigate = useNavigate();
@@ -25,10 +26,11 @@ export default function EventCheckInCode() {
                 <Typography variant="h5" sx={{mt: 2}}> Check-in Code </Typography>
                 <Typography sx={{mt: 2}}> Check-in Code : {retrievedEventObject.eventCheckinCode}</Typography>
                 <Typography sx={{mt: 2}}> QR Code : </Typography>
-                
-                <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />
+                <QRCode></QRCode>
 
-                <footer> Confirmation sent to 'email/mobile' </footer>
+                {/* <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />
+
+                <footer> Confirmation sent to 'email/mobile' </footer> */}
                 <Button onClick={() => { navigate('/seeEventsList'); }}>See Events</Button>
                 <Button onClick={() => { navigate('/eventDetails'); }}>Event Details</Button>
 

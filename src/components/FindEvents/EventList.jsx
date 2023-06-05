@@ -64,7 +64,7 @@ export default function EventList() {
                 border: 1,
               }}
               onClick={() => {
-                navigate("/preregistration-event", {
+                navigate("/preregistration-event/"+event.event_registration_code, {
                   state: { event: event },
                 });
               }}

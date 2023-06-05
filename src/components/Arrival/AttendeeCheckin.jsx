@@ -45,7 +45,7 @@ const AttendeeCheckin = () => {
         eventId: event.event_uid,
       });
       if (!response.data.hasRegistered)
-        navigate("/preregistration-event", { state: { event } });
+        navigate("/preregistration-event/"+event.event_registration_code, { state: { event } });
       else navigate("/waiting", { state: { event, user } });
     } catch (error) {
       setError(true);
