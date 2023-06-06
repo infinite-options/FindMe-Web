@@ -1,35 +1,34 @@
 import React, { Component, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Grid, Typography, Button } from "@mui/material";
 import QRCode from '../QRCode/QRCode';
 import axios from "axios";
 
+const APP_URL = process.env.REACT_APP_CLIENT_BASE_URI;
+
 export default function EventPreRegCode() {
     const navigate = useNavigate();
-    // const getQRcodeLink = 'https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/preEventQuestionnaire&size=150x150';
-    const retrievedEventObject =
-    localStorage.getItem("event") === null
-      ? {}
-      : JSON.parse(localStorage.getItem("event"));
+    const retrievedEventObject = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
+    const link_path = APP_URL + "/preregistration-event/" + retrievedEventObject.eventRegistrationCode;
+    
     return (
         <>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
             <Grid
             container
             direction="column"
-            margin={1}
             style={{ height: "30rem" , width: "80rem" }}
             alignItems="center"
             justify="center"
-            border={1}
             >
                 <Typography variant="h5" sx={{mt: 2}}> Registration Code </Typography>
-                <Typography sx={{mt: 2}}> Registration Code : {retrievedEventObject.eventRegistrationCode} </Typography>
+                <Typography sx={{mt: 2}}> Registration Code : 
+                    <Link to={link_path}>
+                        {retrievedEventObject.eventRegistrationCode}
+                    </Link>
+                </Typography>
                 <Typography sx={{mt: 2}}> QR Code : </Typography>
                 
-                {/* <img src={getQRcodeLink} alt="QR code unavailable" title="QR code" />
-
-                <footer> Confirmation sent to 'email/mobile' </footer> */}
                 <QRCode 
                     route = {"/preregistration-event/"}
                     event_registration_code = {retrievedEventObject.eventRegistrationCode}

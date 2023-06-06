@@ -9,6 +9,7 @@ import {
   ButtonBase,
   Button,
 } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -60,7 +61,7 @@ export default function OrganizerEventList() {
   }, []);
 
   const saveEventObject = (event) => {
-    // console.log("^^^ ", event);
+    // console.log("event - ", event);
     retrievedEventObject["eventCapacity"] = event.event_capacity;
     retrievedEventObject["eventDescription"] = event.event_description;
     retrievedEventObject["eventPhoto"] = JSON.parse(event.event_photo);
@@ -103,29 +104,40 @@ export default function OrganizerEventList() {
           margin: 5,
           flexDirection: "column",
           flexGrow: 1,
-          border: 1,
           backgroundColor: (theme) =>
             theme.palette.mode === "dark" ? "#1A2027" : "#fff",
         }}
       >
         <Typography variant="h5" sx={{ mt: 2 }}>
-          {" "}
-          Events List{" "}
+          Create
+        </Typography>
+        <Button onClick={() => handleCreateEvent()}>Create Event</Button>
+        <Typography variant="h5" sx={{ mt: 2 }}>
+          Edit
         </Typography>
 
         {events.map((event) => {
           // console.log("event ", event);
           return (
+            <>
+            <Stack
+            sx={{
+              bgcolor: "background.paper",
+              border: 1,
+              borderColor: "primary.main",
+              borderRadius: "15px",
+            }}
+            direction="column"
+          >
             <Grid
               container
               spacing={2}
-              margin={2}
+              // margin={2}
               sx={{
                 p: 1,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                border: 1,
               }}
             >
               <Grid item>
@@ -149,8 +161,11 @@ export default function OrganizerEventList() {
                 <Typography variant="body2" gutterBottom>
                   {event.event_description}
                 </Typography>
+                <Typography variant="body2" gutterBottom>
+                  {event.event_location.split(',')[0]}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {event.event_start_date}
+                  {new Date(event.event_start_date).toLocaleString('default', { month: 'short', day: 'numeric' })}
                 </Typography>
 
                 <Typography variant="body2" color="text.secondary">
@@ -185,9 +200,11 @@ export default function OrganizerEventList() {
                 <MoreHorizIcon fontSize="medium" />
               </IconButton>
             </Grid>
+            </Stack>            
+            <br></br>
+            </>
           );
         })}
-        <Button onClick={() => handleCreateEvent()}>Create Event</Button>
       </Paper>
     </div>
   );
