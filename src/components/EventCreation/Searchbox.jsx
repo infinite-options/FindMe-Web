@@ -66,8 +66,8 @@ class Searchbox extends Component {
               />
               {this.props.latLongHandler(place.geometry.location.lat(),place.geometry.location.lng())}
               {this.props.addressHandler(place.formatted_address,place.address_components.find(addr => addr.types[0] === "postal_code").short_name)}
-              {console.log("address =  ", place.formatted_address)}
-              {console.log(" @@@@@@@ ", place.address_components.find(addr => addr.types[0] === "postal_code").short_name)};
+              {/* {console.log("address =  ", place.formatted_address)}
+              {console.log(" zip code ", place.address_components.find(addr => addr.types[0] === "postal_code").short_name)}; */}
               </>
             ))}
         </GoogleMap>

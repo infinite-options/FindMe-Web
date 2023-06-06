@@ -32,9 +32,8 @@ export default function EventTitle() {
             style={{ height: "20rem" , width: "80rem" }}
             alignItems="center"
             justify="center"
-            border={1}
             >
-                <Typography variant="h5" sx={{mt: 2}}> {retrievedEventObject.eventType} </Typography>
+                <Typography variant="h5" sx={{mt: 2}}> Create </Typography>
                 <TextField 
                 id="outlined-basic" 
                 label="Enter Event Title" 

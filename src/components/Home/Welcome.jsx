@@ -23,7 +23,6 @@ export default function Welcome() {
             margin: 5,
             flexDirection: "column",
             flexGrow: 1,
-            border: 1,
             backgroundColor: (theme) =>
               theme.palette.mode === "dark" ? "#1A2027" : "#fff",
           }}

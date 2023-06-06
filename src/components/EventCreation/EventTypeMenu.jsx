@@ -34,11 +34,11 @@ export default function EventTypeMenu() {
             style={{ height: "30rem" , width: "80rem" }}
             alignItems="center"
             justify="center"
-            border={1}
             >
                 <FormControl>
                 <FormLabel id="demo-radio-buttons-group-label">
-                    <Typography variant="h5" sx={{mt: 2}}> What type of event do you want to create ? </Typography>
+                    <Typography variant="h5" sx={{mt: 2}}> Create </Typography>
+                    <Typography sx={{mt: 2}}> Event Type </Typography>
                 </FormLabel>
                 <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
