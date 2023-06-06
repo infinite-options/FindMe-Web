@@ -18,7 +18,8 @@ export default function EventList() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const getAllEvents = () => {
-    axios.get(BASE_URL + "/GetEvents").then((response) => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    axios.get(BASE_URL + `/GetEvents?timeZone=${user_timezone}`).then((response) => {
       setEvents(response.data.result);
     });
   };

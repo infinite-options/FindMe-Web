@@ -61,7 +61,8 @@ const CurrentEvents = () => {
   };
 
   const fetchEventsByOrganizer = async () => {
-    const response = await axios.get(`${BASE_URL}/currentEvents`);
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const response = await axios.get(`${BASE_URL}/currentEvents?timeZone=${user_timezone}`);
     setEvents(response.data.events);
   };
 
