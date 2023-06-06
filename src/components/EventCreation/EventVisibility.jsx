@@ -17,10 +17,10 @@ export default function EventVisibility() {
         setEventVisibility(e.target.value);
     }
     const saveEventObject = () => {
-        console.log("** ", retrievedEventObject)
+        console.log("retrievedEventObject - ", retrievedEventObject)
         retrievedEventObject['eventVisibility'] = eventVisibility;
         localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("66 ",retrievedEventObject)
+        console.log("retrievedEventObject - ",retrievedEventObject)
     }
     return (
         <>
@@ -34,11 +34,10 @@ export default function EventVisibility() {
             justify="center"
             border={1}
             >
-                <Typography variant="h5" sx={{mt: 2}}> {retrievedEventObject.eventType} </Typography>
+                <Typography variant="h5" sx={{mt: 2}}> Create </Typography>
                 <FormControl>
                 <FormLabel id="demo-radio-buttons-group-label">
-                            Event Type
-                            Is this a Public or Private event?
+                            Event Accessibility
                 </FormLabel>
                 <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
@@ -48,10 +47,15 @@ export default function EventVisibility() {
                     onChange={handleChange}                    
                 >
                     <FormControlLabel value="Public" control={<Radio />} label="Public" />
+                    <footer>Event is searchable and anyone can attend</footer>
+
+                    <br></br>
+                    
                     <FormControlLabel value="Private" control={<Radio />} label="Private" />
+                    <footer>Event is by Invitation Only</footer>
+
                 </RadioGroup>
                 </FormControl>
-                <footer>Pubic events can be found in search and attended by anyone who has the registration code. <br/> Private events are by invitation only</footer>
                 
                 <Button onClick={() => {
                     saveEventObject()

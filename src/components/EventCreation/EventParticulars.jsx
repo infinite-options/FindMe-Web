@@ -33,13 +33,13 @@ export default function EventParticulars() {
     const [end_Time, setEnd_Time] = useState('');
 
     const saveEventObject = () => {
-        console.log("** ", retrievedEventObject)
+        console.log("retrievedEventObject - ", retrievedEventObject)
         retrievedEventObject['eventStartDate'] = new Date(selectedStartDate).toLocaleDateString("en-US");
         retrievedEventObject['eventEndDate'] = new Date(selectedEndDate).toLocaleDateString("en-US");
-        retrievedEventObject['eventStartTime'] = new Date(startTime).toLocaleTimeString("en-US");;
-        retrievedEventObject['eventEndTime'] = new Date(endTime).toLocaleTimeString("en-US");;
+        retrievedEventObject['eventStartTime'] = new Date(startTime).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });;
+        retrievedEventObject['eventEndTime'] = new Date(endTime).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });;
         localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("66 ",retrievedEventObject)
+        console.log("retrievedEventObject - ",retrievedEventObject)
     }
 
     return (
@@ -52,10 +52,9 @@ export default function EventParticulars() {
             style={{ height: "30rem" , width: "80rem" }}
             alignItems="center"
             justify="center"
-            border={1}
             >
-                <Typography variant="h4" sx={{mt: 2}}> {retrievedEventObject.eventType} </Typography>
-                <Typography variant="poster" sx={{mt: 2}}> Event Particulars </Typography>
+                <Typography variant="h4" sx={{mt: 2}}> Create </Typography>
+                <Typography sx={{mt: 2}}> Event Date and Time </Typography>
                                 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DatePicker', 'TimePicker']}>
@@ -84,7 +83,6 @@ export default function EventParticulars() {
                         //     setSelectedEndDate(day_after_startDate);
                         //     setEndDateTime(new Date(day_after_startDate + ' ' + end_Time))
                         // }
-
                     }}
                     />
                     <DatePicker

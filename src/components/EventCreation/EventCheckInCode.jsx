@@ -17,11 +17,9 @@ export default function EventCheckInCode() {
             <Grid
             container
             direction="column"
-            margin={1}
             style={{ height: "30rem" , width: "80rem" }}
             alignItems="center"
             justify="center"
-            border={1}
             >
                 <Typography variant="h5" sx={{mt: 2}}> Check-in Code </Typography>
                 <Typography sx={{mt: 2}}> Check-in Code : {retrievedEventObject.eventCheckinCode}</Typography>

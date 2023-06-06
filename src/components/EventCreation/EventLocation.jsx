@@ -22,11 +22,10 @@ export default function EventLocation() {
         setZipcode(zipcode)
     }
     const saveEventObject = () => {
-        console.log("** ", retrievedEventObject)
         retrievedEventObject['eventLocation'] = address;
         retrievedEventObject['eventZip'] = zipcode;
         localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("66 ", retrievedEventObject)
+        console.log("retrievedEventObject - ", retrievedEventObject)
     }
     return (
         <>
@@ -38,10 +37,9 @@ export default function EventLocation() {
             style={{ height: "80rem" , width: "80rem" }}
             alignItems="center"
             justify="center"
-            border={1}
             >
-                <Typography variant="h5" sx={{mt: 2}}> {retrievedEventObject.eventType} </Typography>
-                EventLocation
+                <Typography variant="h5" sx={{mt: 2}}> Create </Typography>
+                Event Location
                 <Searchbox
                     latLongHandler={latLongHandler}
                     addressHandler={addressHandler}
