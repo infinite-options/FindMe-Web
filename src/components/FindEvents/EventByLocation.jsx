@@ -34,11 +34,12 @@ export default function EventByLocation() {
   const [isLoading, setIsLoading] = useState(true);
 
   const getEventByLocation = () => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     if (city !== "") {
       let obj = {
         city: city,
       };
-      axios.post(BASE_URL + `/EventsByCity`, obj).then((response) => {
+      axios.post(BASE_URL + `/EventsByCity?timeZone=${user_timezone}`, obj).then((response) => {
         setEvents(response.data.result);
         setEventZipSet(true);
         setIsLoading(false);
@@ -48,7 +49,7 @@ export default function EventByLocation() {
         miles: miles,
         zip_code: zipCode,
       };
-      axios.post(BASE_URL + `/EventsByZipCodes`, obj).then((response) => {
+      axios.post(BASE_URL + `/EventsByZipCodes?timeZone=${user_timezone}`, obj).then((response) => {
         setEvents(response.data.result);
         setEventZipSet(true);
         setIsLoading(false);

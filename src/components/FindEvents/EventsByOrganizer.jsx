@@ -37,8 +37,9 @@ export default function EventByOrganizer() {
   };
 
   const getEventsByOrganizer = (id) => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     axios
-      .get(BASE_URL + `/GetEvents?event_organizer_uid=${id}`)
+      .get(BASE_URL + `/GetEvents?event_organizer_uid=${id}&timeZone=${user_timezone}`)
       .then((response) => {
         setEvents(response.data.result);
         setEventOrganizerSet(true);

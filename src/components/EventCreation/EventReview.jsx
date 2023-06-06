@@ -61,6 +61,8 @@ export default function EventReview() {
     }
   };
   const addEvent = async () => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    retrievedEventObject["user_timezone"] = user_timezone;
     const files = imageState[0];
     let i = 0;
     for (const file of imageState[0]) {
@@ -107,6 +109,8 @@ export default function EventReview() {
   };
 
   const updateEvent = async () => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    retrievedEventObject["user_timezone"] = user_timezone;
     const files = imageState[0];
     let i = 0;
     for (const file of imageState[0]) {

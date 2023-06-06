@@ -27,8 +27,9 @@ export default function EventByType() {
   const [eventTypeSet, setEventTypeSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const getEventsByType = () => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     axios
-      .get(BASE_URL + `/GetEvents?event_type=${eventType}`)
+      .get(BASE_URL + `/GetEvents?event_type=${eventType}&timeZone=${user_timezone}`)
       .then((response) => {
         setEvents(response.data.result);
         setIsLoading(false);

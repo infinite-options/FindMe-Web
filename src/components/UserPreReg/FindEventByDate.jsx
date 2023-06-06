@@ -33,8 +33,9 @@ export default function FindEventByDate() {
 
   const getEventsByDate = () => {
     setEventDateSet(true);
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     axios
-      .get(BASE_URL + `/GetEvents?event_start_date=${selectedDate}`)
+      .get(BASE_URL + `/GetEvents?event_start_date=${selectedDate}&timeZone=${user_timezone}`)
       .then((response) => {
         setEvents(response.data.result);
         setIsLoading(false);

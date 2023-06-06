@@ -36,8 +36,9 @@ export default function SeeEventsList() {
   );
 
   const getAllEvents = () => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     axios
-      .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`)
+      .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}&timeZone=${user_timezone}`)
       .then((response) => {
         // console.log(response.data.result);
         setEvents(response.data.result);

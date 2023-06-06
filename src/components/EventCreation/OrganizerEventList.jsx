@@ -40,8 +40,9 @@ export default function OrganizerEventList() {
       : JSON.parse(localStorage.getItem("event"));
 
   const getAllEvents = () => {
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     axios
-      .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}`)
+      .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}&timeZone=${user_timezone}`)
       .then((response) => {
         // console.log("GetEvents result", response.data.result);
         setEvents(response.data.result);
