@@ -1,142 +1,141 @@
-import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Typography, Button, Paper } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import useStyles from "../../theming/styles";
 
 export default function Welcome() {
   const navigate = useNavigate();
+  const classes = useStyles();
+
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "5%",
-        }}
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start">
+        <Typography variant="h1" className={classes.whiteText}>
+          {"biz"}
+        </Typography>
+        <Typography variant="h1" className={classes.blueText}>
+          {"buz"}
+        </Typography>
+      </Stack>
+      <Stack direction="row" justifyContent="flex-end">
+        <Typography variant="h3" className={classes.blueText}>
+          {"by"}&nbsp;
+        </Typography>
+        <Typography variant="h3" className={classes.whiteText}>
+          {"design"}
+        </Typography>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 12 }}
       >
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: 5,
-            flexDirection: "column",
-            flexGrow: 1,
-            border: 1,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+        <Button
+          className={classes.button}
+          onClick={() => navigate("/pre-registration")}
+        >
+          {"Register for an event"}
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={() => navigate("/find-event")}
+        >
+          {"Find an Event"}
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={() => {
+            if (
+              document.cookie !== "" &&
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("loggedIn=")) !== undefined
+            ) {
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("loggedIn="))
+                .split("=")[1] === "true"
+                ? navigate("/currentEvents", {
+                    state: {
+                      email: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_email="))
+                        .split("=")[1],
+                      user: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_details="))
+                        .split("=")[1],
+                    },
+                  })
+                : navigate("/login", {
+                    state: { path: "/currentEvents" },
+                  });
+            } else {
+              navigate("/login", {
+                state: { path: "/currentEvents" },
+              });
+            }
           }}
         >
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            {" "}
-            Welcome to Find Me!{" "}
-          </Typography>
-          <Typography sx={{ mt: 2 }}> What do you want to do : </Typography>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => navigate("/pre-registration")}
-          >
-            {" "}
-            Pre-register{" "}
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => {
-              if (
-                document.cookie !== "" &&
-                document.cookie
-                  .split("; ")
-                  .find((row) => row.startsWith("loggedIn=")) !== undefined
-              ) {
-                document.cookie
-                  .split("; ")
-                  .find((row) => row.startsWith("loggedIn="))
-                  .split("=")[1] === "true"
-                  ? navigate("/currentEvents", {
-                      state: {
-                        email: document.cookie
-                          .split("; ")
-                          .find((row) => row.startsWith("user_email="))
-                          .split("=")[1],
-                        user: document.cookie
-                          .split("; ")
-                          .find((row) => row.startsWith("user_details="))
-                          .split("=")[1],
-                      },
-                    })
-                  : navigate("/login", {
-                      state: { path: "/currentEvents" },
-                    });
-              } else {
-                navigate("/login", {
-                  state: { path: "/currentEvents" },
-                });
-              }
-            }}
-          >
-            {" "}
-            Arrive at Event{" "}
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => navigate("/find-event")}
-          >
-            {" "}
-            Find an Event{" "}
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => {
-              if (
-                document.cookie !== "" &&
-                document.cookie
-                  .split("; ")
-                  .find((row) => row.startsWith("loggedIn=")) !== undefined
-              ) {
-                document.cookie
-                  .split("; ")
-                  .find((row) => row.startsWith("loggedIn="))
-                  .split("=")[1] === "true"
-                  ? navigate("/organizerEventList", {
-                      state: {
-                        email: document.cookie
-                          .split("; ")
-                          .find((row) => row.startsWith("user_email="))
-                          .split("=")[1],
-                        user: document.cookie
-                          .split("; ")
-                          .find((row) => row.startsWith("user_details="))
-                          .split("=")[1],
-                      },
-                    })
-                  : navigate("/login", {
-                      state: { path: "/organizerEventList" },
-                    });
-              } else {
-                navigate("/login", {
-                  state: { path: "/organizerEventList" },
-                });
-              }
-            }}
-          >
-            {" "}
-            Create/Edit an Event{" "}
-          </Button>
-          <Typography variant="small" sx={{ mt: 2 }}>
-            {" "}
-            Disclaimer : We use cookies{" "}
-          </Typography>
-        </Paper>
-      </div>
-    </>
+          {"Attend an Event"}
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={() => {
+            if (
+              document.cookie !== "" &&
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("loggedIn=")) !== undefined
+            ) {
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("loggedIn="))
+                .split("=")[1] === "true"
+                ? navigate("/organizerEventList", {
+                    state: {
+                      email: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_email="))
+                        .split("=")[1],
+                      user: document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("user_details="))
+                        .split("=")[1],
+                    },
+                  })
+                : navigate("/login", {
+                    state: { path: "/organizerEventList" },
+                  });
+            } else {
+              navigate("/login", {
+                state: { path: "/organizerEventList" },
+              });
+            }
+          }}
+        >
+          {"Create/Edit an Event"}
+        </Button>
+      </Stack>
+      <Typography
+        variant="h6"
+        align="center"
+        className={classes.whiteText}
+        sx={{ mt: 10 }}
+      >
+        {"We use cookies!"}
+      </Typography>
+      <Typography
+        variant="h3"
+        align="center"
+        className={classes.blueText}
+        sx={{ mt: 10 }}
+      >
+        {"bizbuz.design"}
+      </Typography>
+    </Box>
   );
 }

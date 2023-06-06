@@ -1,10 +1,18 @@
 import { createTheme } from "@material-ui/core/styles";
+import drKabelotf from "./DrKabel.otf";
+
+const drKabel = {
+  fontFamily: '"Dr Kabel"',
+  src: `
+    local('"Dr Kabel"'),
+    url(${drKabelotf}) format('opentype')
+  `,
+};
 
 const theme = createTheme({
   palette: {
     background: {
       default: "#0A23A6",
-      paper: "#0A23A6",
     },
     primary: {
       main: "#FFFFFF",
@@ -16,10 +24,8 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontSize: 14,
-    htmlFontSize: 16,
     fontFamily: [
-      "Dr Kabel",
+      '"Dr Kabel"',
       "-apple-system",
       "BlinkMacSystemFont",
       '"Segoe UI"',
@@ -31,6 +37,13 @@ const theme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(","),
+  },
+  overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        "@font-face": [drKabel],
+      },
+    },
   },
 });
 

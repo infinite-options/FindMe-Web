@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Button, Grid, Paper, TextField } from "@mui/material";
 import LoginContext, { LoginInitState } from "./LoginContext";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import PreRegMenu from "./components/UserPreReg/PreRegMenu";
@@ -55,13 +53,7 @@ import EventPreRegCode from "./components/EventCreation/EventPreRegCode";
 import EventCheckInCode from "./components/EventCreation/EventCheckInCode";
 import EventAttendeesList from "./components/EventCreation/EventAttendeesList";
 import EventByLocation from "./components/FindEvents/EventByLocation";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.background.default,
-    height: "100vh",
-  },
-}));
+import useStyles from "./theming/styles";
 
 function App() {
   const [loginState, setLoginState] = useState(LoginInitState);
@@ -83,7 +75,7 @@ function App() {
   );
 
   return (
-    <Container maxWidth="sm" classes={{root: classes.root}}>
+    <Container maxWidth="sm" className={classes.container}>
       <Box>
         <Router>
           <LoginContext.Provider
