@@ -48,6 +48,47 @@ const useStyles = makeStyles((theme) => ({
   hidden: {
     visibility: "hidden",
   },
+  eventContainer: {
+    display: "flex",
+    width: "100%",
+    padding: "10px",
+    overflow: "hidden",
+  },
+  events: {
+    postion: "relative",
+    width: "314px",
+    height: "116px",
+    background: "#FFFFFF",
+    borderRadius: "30px",
+    zIndex: 2,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    padding: "20px 20px 20px 40px",
+  },
+  eventText: {
+    fontfamily: "Inter",
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontSize: "24px",
+    lineHeight: "29px",
+    display: "flex",
+    justifyContent: "left",
+    alignItems: "left",
+    textAlign: "center",
+    color: " #000000",
+  },
+  ellipse: {
+    background: "#D9D9D9",
+    zIndex: 10,
+    float: "right",
+    width: "100px",
+    height: "100px",
+    borderRadius: "50%",
+    marginLeft: "-50px",
+    marginTop: "8px",
+  },
 }));
 
 export default useStyles;

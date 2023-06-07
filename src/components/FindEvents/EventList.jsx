@@ -1,104 +1,95 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Box, Paper, ButtonBase, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Stack, Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { mediumBold, xSmall, small } from "../../styles";
+import useStyles from "../../theming/styles";
+import Back from "../../Icons/Back.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
-const Img = styled("img")({
-  margin: "auto",
-  display: "block",
-  maxWidth: "100%",
-  maxHeight: "100%",
-});
-
 export default function EventList() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const [events, setEvents] = useState([]);
   const getAllEvents = () => {
-    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    axios.get(BASE_URL + `/GetEvents?timeZone=${user_timezone}`).then((response) => {
-      setEvents(response.data.result);
-    });
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    axios
+      .get(BASE_URL + `/GetEvents?timeZone=${user_timezone}`)
+      .then((response) => {
+        setEvents(response.data.result);
+      });
   };
   useEffect(() => {
     getAllEvents();
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Paper
-        sx={{
-          p: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 5,
-          flexDirection: "column",
-          flexGrow: 1,
-          border: 1,
-          backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        }}
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          all
+        </Typography>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        All Events
         {events.map((event) => {
           return (
-            <Grid
-              container
-              spacing={2}
-              margin={2}
-              sx={{
-                p: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                border: 1,
-              }}
+            <Box
+              className={classes.eventContainer}
               onClick={() => {
-                navigate("/preregistration-event/"+event.event_registration_code, {
-                  state: { event: event },
-                });
+                navigate(
+                  "/preregistration-event/" + event.event_registration_code,
+                  {
+                    state: { event: event },
+                  }
+                );
               }}
             >
-              <Grid item>
-                <ButtonBase
-                  sx={{ width: 128, height: 128, border: "1px solid red" }}
-                >
-                  <Img
-                    alt="complex"
-                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                  />
-                </ButtonBase>
-              </Grid>
-              <Grid item xs={8} direction="column" spacing={2}>
-                <Typography gutterBottom variant="subtitle1" component="div">
+              <div direction="column" spacing={2} className={classes.events}>
+                <Typography className={classes.eventText}>
                   {event.event_title}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
+                  <br />
                   {event.event_description}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
+                  <br />
                   {event.event_start_date}
-                </Typography>
-
-                <Typography variant="body2" color="text.secondary">
+                  <br />
                   {event.event_start_time} - {event.event_end_time}
                 </Typography>
-              </Grid>
-            </Grid>
+              </div>
+              <div className={classes.ellipse}>
+                <img
+                  className={classes.ellipse}
+                  src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                />
+              </div>
+            </Box>
           );
         })}
-      </Paper>
-    </div>
+      </Stack>
+      {events ? (
+        <Stack
+          direction="column"
+          justifyContent="center"
+          spacing={2}
+          sx={{ mt: 12 }}
+        >
+          <Button
+            className={classes.button}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <img src={Back} style={{ width: "2rem" }} />
+            &nbsp; &nbsp;Back
+          </Button>
+        </Stack>
+      ) : (
+        ""
+      )}
+    </Box>
   );
 }
