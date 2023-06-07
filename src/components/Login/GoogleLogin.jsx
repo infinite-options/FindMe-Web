@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LoginContext from "../../LoginContext";
 
@@ -34,102 +35,102 @@ function GoogleLogin(props) {
     codeClient.requestCode();
   }
 
-  function handleCallBackResponse(response) {
-    var userObject = jwt_decode(response.credential);
-    if (userObject) {
-      let email = userObject.email;
-      setEmail(email);
-      let user_id = "";
-      let user = [];
-      axios
-        .get(
-          `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserSocialLogin/FINDME/${email}`
-        )
-        .then((response) => {
-          if (response["data"]["message"] === "Email ID doesnt exist") {
-            // setUserDoesntExist(true);
-            getAuthorizationCode();
+  // function handleCallBackResponse(response) {
+  //   var userObject = jwt_decode(response.credential);
+  //   if (userObject) {
+  //     let email = userObject.email;
+  //     setEmail(email);
+  //     let user_id = "";
+  //     let user = [];
+  //     axios
+  //       .get(
+  //         `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserSocialLogin/FINDME/${email}`
+  //       )
+  //       .then((response) => {
+  //         if (response["data"]["message"] === "Email ID doesnt exist") {
+  //           // setUserDoesntExist(true);
+  //           getAuthorizationCode();
 
-            return;
-          } else if (response["data"]["message"] === "Login with email") {
-            setErrorMessage(response["data"]["message"]);
-          } else {
-            user = response.data.result;
-            setAccessToken(response.data.result.google_auth_token);
+  //           return;
+  //         } else if (response["data"]["message"] === "Login with email") {
+  //           setErrorMessage(response["data"]["message"]);
+  //         } else {
+  //           user = response.data.result;
+  //           setAccessToken(response.data.result.google_auth_token);
 
-            user_id = response.data.result.user_uid;
-            var old_at = response.data.result.google_auth_token;
-            var refreshToken = response.data.result.google_refresh_token;
+  //           user_id = response.data.result.user_uid;
+  //           var old_at = response.data.result.google_auth_token;
+  //           var refreshToken = response.data.result.google_refresh_token;
 
-            fetch(
-              `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`,
-              {
-                method: "GET",
-              }
-            )
-              .then((response) => {
-                if (response["status"] === 400) {
-                  let authorization_url =
-                    "https://accounts.google.com/o/oauth2/token";
+  //           fetch(
+  //             `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`,
+  //             {
+  //               method: "GET",
+  //             }
+  //           )
+  //             .then((response) => {
+  //               if (response["status"] === 400) {
+  //                 let authorization_url =
+  //                   "https://accounts.google.com/o/oauth2/token";
 
-                  var details = {
-                    refresh_token: refreshToken,
-                    client_id: CLIENT_ID,
-                    client_secret: CLIENT_SECRET,
-                    grant_type: "refresh_token",
-                  };
+  //                 var details = {
+  //                   refresh_token: refreshToken,
+  //                   client_id: CLIENT_ID,
+  //                   client_secret: CLIENT_SECRET,
+  //                   grant_type: "refresh_token",
+  //                 };
 
-                  var formBody = [];
-                  for (var property in details) {
-                    var encodedKey = encodeURIComponent(property);
-                    var encodedValue = encodeURIComponent(details[property]);
-                    formBody.push(encodedKey + "=" + encodedValue);
-                  }
-                  formBody = formBody.join("&");
+  //                 var formBody = [];
+  //                 for (var property in details) {
+  //                   var encodedKey = encodeURIComponent(property);
+  //                   var encodedValue = encodeURIComponent(details[property]);
+  //                   formBody.push(encodedKey + "=" + encodedValue);
+  //                 }
+  //                 formBody = formBody.join("&");
 
-                  fetch(authorization_url, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type":
-                        "application/x-www-form-urlencoded;charset=UTF-8",
-                    },
-                    body: formBody,
-                  })
-                    .then((response) => {
-                      return response.json();
-                    })
-                    .then((responseData) => {
-                      return responseData;
-                    })
-                    .then((data) => {
-                      let at = data["access_token"];
-                      setAccessToken(at);
-                      let url = `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UpdateAccessToken/FINDME/${user_id}`;
-                      axios
-                        .post(url, {
-                          google_auth_token: at,
-                        })
-                        .then((response) => {})
-                        .catch((err) => {
-                          console.log(err);
-                        });
-                      return accessToken;
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                } else {
-                  setAccessToken(old_at);
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            socialGoogle(email, user);
-          }
-        });
-    }
-  }
+  //                 fetch(authorization_url, {
+  //                   method: "POST",
+  //                   headers: {
+  //                     "Content-Type":
+  //                       "application/x-www-form-urlencoded;charset=UTF-8",
+  //                   },
+  //                   body: formBody,
+  //                 })
+  //                   .then((response) => {
+  //                     return response.json();
+  //                   })
+  //                   .then((responseData) => {
+  //                     return responseData;
+  //                   })
+  //                   .then((data) => {
+  //                     let at = data["access_token"];
+  //                     setAccessToken(at);
+  //                     let url = `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UpdateAccessToken/FINDME/${user_id}`;
+  //                     axios
+  //                       .post(url, {
+  //                         google_auth_token: at,
+  //                       })
+  //                       .then((response) => {})
+  //                       .catch((err) => {
+  //                         console.log(err);
+  //                       });
+  //                     return accessToken;
+  //                   })
+  //                   .catch((err) => {
+  //                     console.log(err);
+  //                   });
+  //               } else {
+  //                 setAccessToken(old_at);
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               console.log(err);
+  //             });
+  //           socialGoogle(email, user);
+  //         }
+  //       });
+  //   }
+  // }
   const socialGoogle = async (e, u) => {
     document.cookie = "user_uid=" + u.user_uid;
     document.cookie = "user_email=" + e;
@@ -152,26 +153,26 @@ function GoogleLogin(props) {
     });
   };
 
-  useEffect(() => {
-    /* global google */
+  // useEffect(() => {
+  //   /* global google */
 
-    if (window.google) {
-      //  initializes the Sign In With Google client based on the configuration object
-      google.accounts.id.initialize({
-        client_id: CLIENT_ID,
-        callback: handleCallBackResponse,
-      });
-      //    method renders a Sign In With Google button in your web pages.
-      google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-        type: "icon",
-        theme: "outline",
-        size: "large",
-        text: "signin_with",
-        shape: "circle",
-      });
-      // access tokens
-    }
-  }, []);
+  //   if (window.google) {
+  //     //  initializes the Sign In With Google client based on the configuration object
+  //     google.accounts.id.initialize({
+  //       client_id: CLIENT_ID,
+  //       callback: handleCallBackResponse,
+  //     });
+  //     //    method renders a Sign In With Google button in your web pages.
+  //     google.accounts.id.renderButton(document.getElementById("signInDiv"), {
+  //       type: "icon",
+  //       theme: "outline",
+  //       size: "large",
+  //       text: "signin_with",
+  //       shape: "circle",
+  //     });
+  //     // access tokens
+  //   }
+  // }, []);
   useEffect(() => {
     /* global google */
     console.log(codeClient);
@@ -234,28 +235,120 @@ function GoogleLogin(props) {
                   setEmail(e);
 
                   setSocialId(si);
-                  const socialGoogle = async () => {
-                    const user = {
-                      email: e,
-                      password: GOOGLE_LOGIN,
-                      first_name: data["given_name"],
-                      last_name: data["family_name"],
-                      role: "",
-                      phone_number: phoneNumber,
-                      google_auth_token: at,
-                      google_refresh_token: rt,
-                      social_id: si,
-                      access_expires_in: ax,
-                    };
-                    navigate("/google-signup-form", {
-                      state: {
-                        user: user,
-                        path: path,
-                        eventObj: eventObj,
-                      },
+
+                  axios
+                    .get(
+                      `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UserSocialLogin/FINDME/${e}`
+                    )
+                    .then((response) => {
+                      if (
+                        response["data"]["message"] === "Email ID doesnt exist"
+                      ) {
+                        const socialGoogle = async () => {
+                          const user = {
+                            email: e,
+                            password: GOOGLE_LOGIN,
+                            first_name: data["given_name"],
+                            last_name: data["family_name"],
+                            role: "",
+                            phone_number: phoneNumber,
+                            google_auth_token: at,
+                            google_refresh_token: rt,
+                            social_id: si,
+                            access_expires_in: ax,
+                          };
+                          navigate("/google-signup-form", {
+                            state: {
+                              user: user,
+                              path: path,
+                              eventObj: eventObj,
+                            },
+                          });
+                        };
+                        socialGoogle();
+                        return;
+                      } else if (
+                        response["data"]["message"] === "Login with email"
+                      ) {
+                        setErrorMessage(response["data"]["message"]);
+                      } else {
+                        let user = response.data.result;
+                        setAccessToken(response.data.result.google_auth_token);
+
+                        let user_id = response.data.result.user_uid;
+                        var old_at = response.data.result.google_auth_token;
+                        var refreshToken =
+                          response.data.result.google_refresh_token;
+
+                        fetch(
+                          `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`,
+                          {
+                            method: "GET",
+                          }
+                        )
+                          .then((response) => {
+                            if (response["status"] === 400) {
+                              let authorization_url =
+                                "https://accounts.google.com/o/oauth2/token";
+
+                              var details = {
+                                refresh_token: refreshToken,
+                                client_id: CLIENT_ID,
+                                client_secret: CLIENT_SECRET,
+                                grant_type: "refresh_token",
+                              };
+
+                              var formBody = [];
+                              for (var property in details) {
+                                var encodedKey = encodeURIComponent(property);
+                                var encodedValue = encodeURIComponent(
+                                  details[property]
+                                );
+                                formBody.push(encodedKey + "=" + encodedValue);
+                              }
+                              formBody = formBody.join("&");
+
+                              fetch(authorization_url, {
+                                method: "POST",
+                                headers: {
+                                  "Content-Type":
+                                    "application/x-www-form-urlencoded;charset=UTF-8",
+                                },
+                                body: formBody,
+                              })
+                                .then((response) => {
+                                  return response.json();
+                                })
+                                .then((responseData) => {
+                                  return responseData;
+                                })
+                                .then((data) => {
+                                  let at = data["access_token"];
+                                  setAccessToken(at);
+                                  let url = `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UpdateAccessToken/FINDME/${user_id}`;
+                                  axios
+                                    .post(url, {
+                                      google_auth_token: at,
+                                    })
+                                    .then((response) => {})
+                                    .catch((err) => {
+                                      console.log(err);
+                                    });
+                                  return accessToken;
+                                })
+                                .catch((err) => {
+                                  console.log(err);
+                                });
+                            } else {
+                              setAccessToken(old_at);
+                            }
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
+                        socialGoogle(email, user);
+                      }
                     });
-                  };
-                  socialGoogle();
                 })
                 .catch((error) => {
                   console.log(error);
@@ -280,7 +373,28 @@ function GoogleLogin(props) {
         margin: "2rem",
       }}
     >
-      <div id="signInDiv"></div>
+      <div className="w-100">
+        <div></div>
+        <div>
+          <div></div>
+          <div id="signUpDiv">
+            <Button
+              onClick={() => getAuthorizationCode()}
+              role="button"
+              style={{ textTransform: "none", borderRadius: "50px" }}
+            >
+              <img
+                style={{
+                  width: "2rem",
+                }}
+                alt="Google sign-up"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+              />
+            </Button>
+          </div>
+        </div>
+        <div></div>
+      </div>
     </div>
   );
 }
