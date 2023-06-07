@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Button, Typography, Paper } from "@mui/material";
+import { Grid, Button, Typography, Paper, Box, Stack, ButtonBase } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { tileImg } from "../../styles";
+import useStyles from "../../theming/styles";
+import { styled } from "@mui/material/styles";
 
 import QRCode from "../QRCode/QRCode";
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
+const Img = styled("img")({
+  margin: "auto",
+  display: "block",
+  maxWidth: "100%",
+  maxHeight: "100%",
+});
+
 export default function EventDetails() {
+  const classes = useStyles();
   const navigate = useNavigate();
   const retrievedEventObject =
     localStorage.getItem("event") === null
@@ -33,192 +43,98 @@ export default function EventDetails() {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "5%",
-        }}
-      >
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            margin: 5,
-            flexDirection: "row",
-            flexGrow: 1,
-            border: 1,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-          }}
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
         >
-          <List sx={{ bgcolor: "background.paper", mt: 2 }}>
-            <Typography variant="h5" sx={{ mt: 2 }}>
-              {" "}
-              Event Details
-            </Typography>
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Title : {retrievedEventObject.eventTitle}
-              </Typography>
-            </ListItem>
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Description : {retrievedEventObject.eventDescription}
-              </Typography>
-            </ListItem>
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Type : {retrievedEventObject.eventType}
-              </Typography>
-            </ListItem>
+        <Typography variant="h2" className={classes.whiteText}>
+            edit
+        </Typography>
+        </Stack>
 
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Visibility : {retrievedEventObject.eventVisibility}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Location : {retrievedEventObject.eventLocation}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Start Date : {retrievedEventObject.eventStartDate}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Start Time : {retrievedEventObject.eventStartTime}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event End Date : {retrievedEventObject.eventEndDate}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event End Time : {retrievedEventObject.eventEndTime}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Photo :
-                {images ? (
-                  <img
-                    key={Date.now()}
-                    src={`${images[0]}?${Date.now()}`}
-                    // src={JSON.parse(retrievedEventObject.eventPhoto)[0]}
-                    style={{
-                      ...tileImg,
-                      objectFit: "cover",
-                      position: "relative",
-                      minHeight: "100px",
-                      minWidth: "100px",
-                      height: "100px",
-                      width: "100px",
-                    }}
-                    alt="Event Photo"
-                  />
-                ) : (
-                  "None"
-                )}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Pre-Event Questionnaire :
-                {retrievedEventObject.preEventQuestionnaire.map(
-                  (question, index) => {
-                    {
-                      return <ListItem>{question.question}</ListItem>;
-                    }
-                  }
-                )}
-              </Typography>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Registration QR code :
-                <QRCode 
-                    route = {"/preregistration-event/"}
-                    event_registration_code = {retrievedEventObject.eventRegistrationCode}
-                ></QRCode>
-              </Typography>
-            </ListItem>
-          </List>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
+        <Stack
+          direction="row"
+          justifyContent="center"
+          sx={{ mt :2}}
+        >
+          <Typography variant="h4" className={classes.whiteText}>
+            {retrievedEventObject.eventTitle}
+          </Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          justifyContent="center"
+        >
+          <Typography variant="h5" className={classes.whiteText}>
+            {new Date(retrievedEventObject.eventStartDate).toLocaleString('default', { month: 'short', day: 'numeric' })}
+          </Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          justifyContent="center"
+        >
+          <Typography variant="h5" className={classes.whiteText}>
+            {retrievedEventObject.eventStartTime} - {retrievedEventObject.eventEndTime}
+          </Typography>
+        </Stack>
+        
+          <Stack
+            direction="column"
+            justifyContent="center"
+            spacing={2}
+            sx={{ mt: 3 }}
           >
             <Button
-              onClick={() => {
-                navigate("/eventReview", { state: { edit: true } });
-              }}
+            className={classes.button}
+            onClick={() => {
+              navigate("/eventPreRegCode");
+            }}
             >
-              {" "}
-              Edit Event{" "}
+              Registration Code
             </Button>
             <Button
-              onClick={() => {
-                navigate("/eventPreRegCode");
-              }}
+            className={classes.button}
+            onClick={() => {
+              navigate("/eventCheckInCode");
+            }}
             >
-              {" "}
-              Show Pre-registration Code{" "}
+              Check In Code
             </Button>
             <Button
-              onClick={() => {
-                navigate("/eventCheckInCode");
-              }}
+            className={classes.button}
+            onClick={() => {
+              navigate("/eventAttendeesList");
+            }}
             >
-              {" "}
-              Show Event Check-In Code{" "}
+              View Attendees
             </Button>
             <Button
-              onClick={() => {
-                navigate("/eventAttendeesList");
-              }}
+            className={classes.button}
+            onClick={() => {
+              navigate("/emailBroadcastMessage");
+            }}
             >
-              {" "}
-              View Attendees{" "}
+              Broadcast Message
             </Button>
             <Button
-              onClick={() => {
-                navigate("/emailBroadcastMessage");
-              }}
+            className={classes.button}
+            onClick={() => {
+              navigate("/organizerEventList");
+            }}
             >
-              {" "}
-              Broadcast Message{" "}
+              See Event List
             </Button>
             <Button
-              onClick={() => {
-                navigate("/seeEventsList");
-              }}
+            className={classes.button}
+            onClick={() => {
+              navigate("/eventReview", { state: { edit: true } });
+            }}
             >
-              {" "}
-              See Events{" "}
+              Edit Event
             </Button>
-          </div>
-        </Paper>
-      </div>
+          </Stack>
+        </Box>
     </>
   );
 }

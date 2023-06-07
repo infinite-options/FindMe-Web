@@ -4,6 +4,7 @@ import LoginContext, { LoginInitState } from "./LoginContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import PreRegMenu from "./components/UserPreReg/PreRegMenu";
 import RegCode from "./components/UserPreReg/RegCode";
 import EventProfile from "./components/UserPreReg/EventProfile";
@@ -40,9 +41,8 @@ import EditEventsReg from "./components/UserAfterPreReg/EditEventsReg";
 import EventsRegDetails from "./components/UserAfterPreReg/EventsRegDetails";
 import CurrentEvents from "./components/Arrival/CurrentEvents";
 import EventDashboard from "./components/Arrival/EventDashboard";
-import EventAgenda from "./components/Arrival/EventAgenda";
 import EventRegistrations from "./components/Arrival/EventRegistrations";
-import AttendeeDetails from "./components/Arrival/AttendeeDetails";
+import RegistrantDetails from "./components/Arrival/RegistrantDetails";
 import AttendeeCheckin from "./components/Arrival/AttendeeCheckin";
 import NetworkingActivity from "./components/Arrival/NetworkingActivity";
 import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
@@ -76,7 +76,7 @@ function App() {
 
   return (
     <Container maxWidth="sm" className={classes.container}>
-      <Box>
+      <Box className={classes.box}>
         <Router>
           <LoginContext.Provider
             value={{
@@ -225,12 +225,11 @@ function App() {
               <Route exact path="/currentEvents" element={<CurrentEvents />} />
               <Route exact path="/event-bylocation" element={<EventByLocation />} />
               <Route exact path="/eventDashboard" element={<EventDashboard />} />
-              <Route exact path="/eventAgenda" element={<EventAgenda />} />
               <Route exact path="/eventRegistrations" element={<EventRegistrations />} />
               <Route
                 exact
-                path="/attendeeDetails"
-                element={<AttendeeDetails />}
+                path="/registrantDetails"
+                element={<RegistrantDetails />}
               />
               <Route
                 exact
@@ -248,6 +247,9 @@ function App() {
           </LoginContext.Provider>
         </Router>
       </Box>
+      <Typography variant="h3" align="center" className={classes.blueText}>
+        {"bizbuz.design"}
+      </Typography>
     </Container>
   );
 }

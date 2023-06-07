@@ -1,21 +1,14 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import QRCode from "qrcode";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-
-const StyledButton = styled(Button)(
-  () => `
-      width: 200px;
-      align-self: center;
-    `
-);
+import useStyles from "../../theming/styles";
 
 const ShowCheckinCode = () => {
+  const classes = useStyles();
   const location = useLocation();
   const event = location.state
     ? location.state.event
@@ -29,38 +22,35 @@ const ShowCheckinCode = () => {
   }, []);
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          {event.event_title}
+    <Box>
+      <Typography variant="h2" className={classes.whiteText} gutterBottom>
+        {"attend"}
+      </Typography>
+      <Typography variant="h4" className={classes.whiteText} align="center">
+        {event.event_title}
+      </Typography>
+      <Stack
+        spacing={5}
+        direction="column"
+        align="center"
+        sx={{
+          pt: 5,
+        }}
+      >
+        <Typography variant="h5" className={classes.whiteText} gutterBottom>
+          {"Check-in QR"}
         </Typography>
-        <Stack
-          spacing={2}
-          direction="column"
-          align="center"
-          sx={{
-            bgcolor: "background.paper",
-            border: 1,
-            borderColor: "primary.main",
-            borderRadius: "15px",
-            padding: "10px",
-          }}
-        >
-          <Typography variant="h5" gutterBottom>
-            {"Check-in QR"}
-          </Typography>
-          <canvas id="canvas" style={{ alignSelf: "center" }} />
-          <StyledButton variant="contained">{"Share QR"}</StyledButton>
-          <Typography variant="h5" gutterBottom>
-            {"Check-in code"}
-          </Typography>
-          <Typography variant="h5" gutterBottom>
-            {event.event_checkin_code}
-          </Typography>
-          <StyledButton variant="contained">{"Share code"}</StyledButton>
-        </Stack>
-      </Box>
-    </Container>
+        <canvas id="canvas" style={{ alignSelf: "center" }} />
+        <Button className={classes.button}>{"Share QR"}</Button>
+        <Typography variant="h5" className={classes.whiteText} gutterBottom>
+          {"Check-in code"}
+        </Typography>
+        <Typography variant="h5" className={classes.whiteText} gutterBottom>
+          {event.event_checkin_code}
+        </Typography>
+        <Button className={classes.button}>{"Share code"}</Button>
+      </Stack>
+    </Box>
   );
 };
 
