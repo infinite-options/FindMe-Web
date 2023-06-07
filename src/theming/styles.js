@@ -108,6 +108,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "-50px",
     marginTop: "8px",
   },
+  circularImage: {
+    clipPath: "circle()",
+  },
 }));
 
 export default useStyles;

@@ -105,6 +105,16 @@ const CurrentEvents = () => {
             {event.event_title + " " + event.event_start_date}
           </Button>
         ))}
+        {events.length < 1 && (
+          <Typography
+            align="center"
+            variant="h6"
+            className={classes.whiteText}
+            gutterBottom
+          >
+            {"No current events"}
+          </Typography>
+        )}
       </Stack>
     </Box>
   );
