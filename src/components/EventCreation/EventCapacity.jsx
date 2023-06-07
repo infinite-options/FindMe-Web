@@ -1,13 +1,15 @@
 import React, { Component, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Grid, Typography, Button, TextField } from "@mui/material";
+import { Grid, Typography, Button, TextField, Box, Stack } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import useStyles from '../../theming/styles';
 
 export default function EventCapacity() {
+  const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const retrievedEventObject =
@@ -40,33 +42,34 @@ export default function EventCapacity() {
   };
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "5%",
-        }}
-      >
-        <Grid
-          container
-          direction="column"
-          margin={1}
-          style={{ height: "20rem", width: "80rem" }}
-          alignItems="center"
-          justify="center"
-          border={1}
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
         >
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            {" "}
-            {retrievedEventObject.eventType}{" "}
-          </Typography>
-          <Typography>Event Capacity</Typography>
-
-          <FormControl sx={{ mt: 2 }}>
-            <FormLabel id="demo-radio-buttons-group-label">
-              Select Maximum Event Capacity
-            </FormLabel>
+        <Typography variant="h2" className={classes.whiteText}>
+            create
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt: 5 }}
+        >
+        <Typography variant="h4" className={classes.whiteText}>
+            Event Capacity
+        </Typography>
+        </Stack>
+          
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}
+        >
+          <FormControl>
+            {/* <FormLabel id="demo-radio-buttons-group-label">
+              <Typography className={classes.whiteText}>Select Maximum Event Capacity</Typography>
+            </FormLabel> */}
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
               defaultValue="female"
@@ -77,24 +80,37 @@ export default function EventCapacity() {
               <FormControlLabel
                 value="No Limit"
                 control={<Radio />}
-                label="No Limit"
+                label={<Typography variant="h5" className={classes.whiteText}>No Limit</Typography>}
               />
               <FormControlLabel
                 value="Set Limit"
                 control={<Radio />}
-                label="Set Limit"
+                label={<Typography variant="h5" className={classes.whiteText}>Set Limit</Typography>}
               />
             </RadioGroup>
           </FormControl>
-          <TextField
-            label="Event Capacity"
-            type="number"
-            value={eventCapacity}
-            disabled={disabled}
-            onChange={handleCapacityChange}
-            sx={{ mt: 2 }}
-          />
+          </Stack>
+          <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}
+          >
+            <TextField
+              label="Event Capacity"
+              type="number"
+              value={eventCapacity}
+              disabled={disabled}
+              onChange={handleCapacityChange}
+              sx={{ mt: 2 }}
+            />
+          </Stack>
+          <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}
+          >
           <Button
+            className={classes.button}
             onClick={() => {
               saveEventObject()
               if(location.state && location.state.edit){
@@ -108,8 +124,8 @@ export default function EventCapacity() {
             {" "}
             Next
           </Button>
-        </Grid>
-      </div>
+        </Stack>
+      </Box>
     </>
   );
 }

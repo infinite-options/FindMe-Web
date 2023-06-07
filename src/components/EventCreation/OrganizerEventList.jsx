@@ -16,6 +16,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useLocation, useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
+import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -26,19 +27,25 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 export default function OrganizerEventList() {
+  const classes = useStyles();
   const navigate = useNavigate();
   const { state } = useLocation();
-  let user = state.user;
-  let user_uid =
-    typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+  const retrievedEventObject = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
+  
+  var user_uid;
+  useEffect(() => {
+    if (state !== null) {
+      let user = state.user;
+      user_uid = typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+    }
+    else {
+      user_uid = retrievedEventObject.event_organizer_uid;
+    }
+    setEventOrganizerUID(user_uid)
+  },[])
+  
   const [events, setEvents] = useState([]);
-
   const [eventOrganizerUID, setEventOrganizerUID] = useState(user_uid);
-
-  const retrievedEventObject =
-    localStorage.getItem("event") === null
-      ? {}
-      : JSON.parse(localStorage.getItem("event"));
 
   const getAllEvents = () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -58,13 +65,13 @@ export default function OrganizerEventList() {
   };
   useEffect(() => {
     getAllEvents();
-  }, []);
+  }, [eventOrganizerUID]);
 
   const saveEventObject = (event) => {
     // console.log("event - ", event);
     retrievedEventObject["eventCapacity"] = event.event_capacity;
     retrievedEventObject["eventDescription"] = event.event_description;
-    retrievedEventObject["eventPhoto"] = JSON.parse(event.event_photo);
+    retrievedEventObject["eventPhoto"] = event.event_photo;
     retrievedEventObject["eventTitle"] = event.event_title;
     retrievedEventObject["eventType"] = event.event_type;
     retrievedEventObject["event_organizer_uid"] = event.event_organizer_uid;
@@ -83,64 +90,64 @@ export default function OrganizerEventList() {
     retrievedEventObject["eventCheckinCode"] = event.event_checkin_code;
 
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
-    // console.log("66 ", retrievedEventObject);
+    // console.log("retrievedEventObject ", retrievedEventObject);
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Paper
-        sx={{
-          p: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 5,
-          flexDirection: "column",
-          flexGrow: 1,
-          backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        }}
+    <>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack 
+        direction="row"
+        justifyContent="flex-start"
       >
-        <Typography variant="h5" sx={{ mt: 2 }}>
-          Create
+      <Typography variant="h2" className={classes.whiteText}>
+          create
+      </Typography>
+      </Stack>
+        <Button
+          className={classes.button}
+          onClick={() => handleCreateEvent()}>
+          Create an Event
+        </Button>
+      <Stack 
+      direction="row"
+      justifyContent="flex-start"
+      >
+        <Typography variant="h2" className={classes.whiteText}>
+          edit
         </Typography>
-        <Button onClick={() => handleCreateEvent()}>Create Event</Button>
-        <Typography variant="h5" sx={{ mt: 2 }}>
-          Edit
-        </Typography>
-
+        </Stack>
         {events.map((event) => {
           // console.log("event ", event);
           return (
             <>
             <Stack
+            direction="column"
+            align="center"
+            justifyContent="center"
             sx={{
               bgcolor: "background.paper",
               border: 1,
               borderColor: "primary.main",
-              borderRadius: "15px",
+              borderRadius: "30px",
+              mt: 2
             }}
-            direction="column"
           >
             <Grid
               container
-              spacing={2}
-              // margin={2}
               sx={{
                 p: 1,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
+              onClick={()=>{
+                saveEventObject(event);
+                navigate("/eventDetails", { state: { edit: true } });
+              }
+              }
             >
-              <Grid item>
+              <Grid item xs={6} md={6}>
                 <ButtonBase
                   sx={{
                     width: 128,
@@ -154,7 +161,7 @@ export default function OrganizerEventList() {
                   />
                 </ButtonBase>
               </Grid>
-              <Grid item xs={8} direction="column" spacing={2}>
+              <Grid xs={6} md={6} direction="column" spacing={2}>
                 <Typography gutterBottom variant="subtitle1" component="div">
                   {event.event_title}
                 </Typography>
@@ -172,7 +179,7 @@ export default function OrganizerEventList() {
                   {event.event_start_time} - {event.event_end_time}
                 </Typography>
               </Grid>
-              <IconButton
+              {/* <IconButton
                 component="span"
                 onClick={() => {
                   saveEventObject(event);
@@ -180,8 +187,8 @@ export default function OrganizerEventList() {
                 }}
               >
                 <EditIcon fontSize="small" />
-              </IconButton>
-              <IconButton
+              </IconButton> */}
+              {/* <IconButton
                 component="span"
                 onClick={() => {
                   saveEventObject(event);
@@ -189,8 +196,8 @@ export default function OrganizerEventList() {
                 }}
               >
                 <GroupsIcon fontSize="medium" />
-              </IconButton>
-              <IconButton
+              </IconButton> */}
+              {/* <IconButton
                 component="span"
                 onClick={() => {
                   saveEventObject(event);
@@ -198,14 +205,13 @@ export default function OrganizerEventList() {
                 }}
               >
                 <MoreHorizIcon fontSize="medium" />
-              </IconButton>
+              </IconButton> */}
             </Grid>
             </Stack>            
-            <br></br>
             </>
           );
         })}
-      </Paper>
-    </div>
+        </Box>
+      </>
   );
 }

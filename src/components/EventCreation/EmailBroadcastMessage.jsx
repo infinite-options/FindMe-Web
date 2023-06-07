@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Button,
-  FormControl,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, FormControl, Paper, TextField, Typography, Box, Stack } from "@mui/material";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -14,9 +8,12 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import ThreeDots from "../../Icons/Threedots.gif";
+import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
-export default function EmailBroadcastMessage() {
+
+export default function EmailBroadcastMessage() {      
+  const classes = useStyles();
   const navigate = useNavigate();
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -179,38 +176,33 @@ export default function EmailBroadcastMessage() {
   };
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "5%",
-        }}
-      >
-        {" "}
         {DialogSendingEmail()}
         {DialogSendingFailed()}
         {DialogSendingSuccess()}
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: 5,
-            flexDirection: "column",
-            flexGrow: 1,
-            border: 1,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-          }}
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
         >
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            {" "}
-            Broadcast Message{" "}
+        <Typography variant="h2" className={classes.whiteText}>
+            broadcast
+        </Typography>
+        </Stack>
+
+        <Stack
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt :2}}
+        >
+          <Typography variant="h4" className={classes.whiteText}>
+            Title
           </Typography>
-          <Typography sx={{ mt: 2 }}> What Do you want to say? </Typography>
-          <TextField
+        </Stack>
+        <Stack
+        direction="row"
+        justifyContent="center"
+        sx={{ mt :2}}>
+            <TextField
             style={{ borderRadius: 0 }}
             type="email"
             value={subject}
@@ -221,8 +213,20 @@ export default function EmailBroadcastMessage() {
             onChange={(e) => setSubject(e.target.value)}
             fullWidth
           />
-
-          <TextField
+        </Stack>
+        <Stack
+          direction="row"
+          justifyContent="flex-start"
+        >
+          <Typography variant="h4" className={classes.whiteText}>
+            Message
+          </Typography>
+        </Stack>
+        <Stack
+        direction="row"
+        justifyContent="center"
+        sx={{ mt :2}}>
+            <TextField
             style={{ borderRadius: 0 }}
             type="email"
             value={message}
@@ -233,26 +237,31 @@ export default function EmailBroadcastMessage() {
             fullWidth
             multiline
           />
+        </Stack>
 
-          <Button variant="outlined" sx={{ mt: 2 }} onClick={sendMessages}>
-            Send
+          <Button 
+            className={classes.button} 
+            variant="outlined" 
+            sx={{ mt: 2 }} 
+            onClick={()=>{}}>
+            Send Text
+          </Button>
+          <Button 
+            className={classes.button} 
+            variant="outlined" 
+            sx={{ mt: 2 }} 
+            onClick={sendMessages}>
+            Send Email
           </Button>
           <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            onClick={() => navigate("/eventDetails")}
-          >
-            Event Details
-          </Button>
-          <Button
+            className={classes.button}
             variant="outlined"
             sx={{ mt: 2 }}
             onClick={() => navigate(-1)}
           >
             Back
           </Button>
-        </Paper>
-      </div>
+          </Box>
     </>
   );
 }

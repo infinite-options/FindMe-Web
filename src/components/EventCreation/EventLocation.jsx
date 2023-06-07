@@ -1,10 +1,12 @@
 import React, { Component, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Grid, Typography, Button, TextField } from "@mui/material";
+import { Grid, Typography, Button, TextField, Box, Stack } from "@mui/material";
 import Searchbox from './Searchbox';
 import MapComponent from './MapComponent';
+import useStyles from '../../theming/styles';
 
 export default function EventLocation() {
+    const classes = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
@@ -29,26 +31,51 @@ export default function EventLocation() {
     }
     return (
         <>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
-            <Grid
-            container
-            direction="column"
-            margin={1}
-            style={{ height: "80rem" , width: "80rem" }}
-            alignItems="center"
-            justify="center"
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+        >
+        <Typography variant="h2" className={classes.whiteText}>
+            create
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+        >
+        <Typography variant="h4" className={classes.whiteText}>
+            Event Location
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+        >
+        <Grid
+        container
+        direction="column"
+        margin={1}
+        style={{ height: "80rem" , width: "80rem" }}
+        alignItems="center"
+        justify="center"
+        >
+            <Searchbox
+                latLongHandler={latLongHandler}
+                addressHandler={addressHandler}
+            ></Searchbox>
+            <MapComponent
+                latitude={lat}
+                longitude={long}
+            ></MapComponent >
+            <Stack 
+            direction="row"
+            justifyContent="flex-start"
+            sx={{mt:2}}
             >
-                <Typography variant="h5" sx={{mt: 2}}> Create </Typography>
-                Event Location
-                <Searchbox
-                    latLongHandler={latLongHandler}
-                    addressHandler={addressHandler}
-                ></Searchbox>
-                <MapComponent
-                    latitude={lat}
-                    longitude={long}
-                ></MapComponent >
-                <Button onClick={() => {
+                <Button
+                className={classes.button}
+                onClick={() => {
                     saveEventObject()
                     if(location.state && location.state.edit){
                         navigate(-1);
@@ -57,9 +84,10 @@ export default function EventLocation() {
                         navigate('/eventTitle');
                     }
                 }}> Next</Button>
-
-            </Grid>
-        </div>
+            </Stack>
+        </Grid>
+        </Stack>
+        </Box>
         </>
     )
 }
