@@ -3,7 +3,11 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   container: {
     background: theme.palette.background.default,
-    height: "100vh",
+    minHeight: "100vh",
+  },
+  box: {
+    minHeight: "90vh",
+    marginTop: "16px",
   },
   whiteText: {
     color: theme.palette.primary.main,
@@ -103,6 +107,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "50%",
     marginLeft: "-50px",
     marginTop: "8px",
+  },
+  circularImage: {
+    clipPath: "circle()",
   },
 }));
 

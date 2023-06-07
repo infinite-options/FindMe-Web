@@ -30,14 +30,14 @@ export default function Welcome() {
       <Stack
         direction="column"
         justifyContent="center"
-        spacing={2}
+        spacing={5}
         sx={{ mt: 12 }}
       >
         <Button
           className={classes.button}
           onClick={() => navigate("/pre-registration")}
         >
-          {"Register for an event"}
+          {"Register for an Event"}
         </Button>
         <Button
           className={classes.button}
@@ -126,15 +126,7 @@ export default function Welcome() {
         className={classes.whiteText}
         sx={{ mt: 10 }}
       >
-        {"We use cookies!"}
-      </Typography>
-      <Typography
-        variant="h3"
-        align="center"
-        className={classes.blueText}
-        sx={{ mt: 10 }}
-      >
-        {"bizbuz.design"}
+        {"We use Cookies!"}
       </Typography>
     </Box>
   );

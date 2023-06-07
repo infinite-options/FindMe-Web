@@ -1,22 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ably from "../../config/ably";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-
-const StyledButton = styled(Button)(
-  () => `
-      width: 200px;
-      align-self: center;
-    `
-);
+import useStyles from "../../theming/styles";
 
 const Waiting = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const user = location.state
@@ -28,11 +21,11 @@ const Waiting = () => {
   const channel = ably.channels.get(`FindMe/${event.event_uid}`);
 
   const handleCancel = () => {
-    channel.presence.leaveClient(user.user_uid, {
+    channel.presence.leaveClient(user.user_uid + event.event_uid, {
       user_uid: user.user_uid,
       name: user.first_name + " " + user.last_name,
     });
-    navigate(-1);
+    navigate(-1, { state: { event } });
   };
 
   const joinSubscribe = () => {
@@ -41,7 +34,7 @@ const Waiting = () => {
         navigate("/networkingActivity", { state: { event, user } });
       }
     });
-    channel.presence.enterClient(user.user_uid, {
+    channel.presence.enterClient(user.user_uid + event.event_uid, {
       user_uid: user.user_uid,
       name: user.first_name + " " + user.last_name,
     });
@@ -52,26 +45,38 @@ const Waiting = () => {
   }, []);
 
   return (
-    <Container maxWidth="sm">
-      <Box component="form" noValidate autoComplete="off" sx={{ my: 4 }}>
-        <Stack
-          spacing={4}
-          direction="column"
-          sx={{ my: 4, justifyContent: "center", alignItems: "center" }}
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack
+        direction="column"
+        sx={{ justifyContent: "center", alignItems: "center" }}
+      >
+        <Typography variant="h5" className={classes.whiteText} align="center">
+          {event.event_title}
+        </Typography>
+        <Typography variant="h6" className={classes.whiteText} align="center">
+          {event.event_start_date}
+        </Typography>
+        <Typography variant="h6" className={classes.whiteText} align="center">
+          {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
+        </Typography>
+        <Typography
+          variant="h5"
+          className={classes.whiteText}
+          align="center"
+          sx={{ my: 4 }}
         >
-          <Typography variant="h4" gutterBottom>
-            {event.event_title}
-          </Typography>
-          <Typography variant="h5" gutterBottom>
-            {"Waiting for host to start activity..."}
-          </Typography>
-          <CircularProgress disableShrink />
-          <StyledButton variant="contained" onClick={handleCancel}>
-            {"Cancel"}
-          </StyledButton>
-        </Stack>
-      </Box>
-    </Container>
+          {"Waiting for host to start activity..."}
+        </Typography>
+        <CircularProgress disableShrink />
+        <Button
+          className={classes.button}
+          onClick={handleCancel}
+          sx={{ my: 4 }}
+        >
+          {"Cancel"}
+        </Button>
+      </Stack>
+    </Box>
   );
 };
 

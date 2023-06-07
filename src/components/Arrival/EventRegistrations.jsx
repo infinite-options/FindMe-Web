@@ -1,34 +1,30 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
+import Back from "../../Icons/Back.png";
+import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
-const StyledButton = styled(Button)(
-  () => `
-      width: 200px;
-      align-self: center;
-    `
-);
-
 const EventRegistrations = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
-  const event = location.state;
+  const { event, user } = location.state;
   const [registrations, setRegistrations] = useState([]);
 
-  const handleClickAttendee = (attendee) => {
-    navigate("/attendeeDetails", { state: attendee });
+  const handleClickRegistration = (registration) => {
+    navigate("/registrantDetails", {
+      state: { event, user, registrantId: registration.user_uid },
+    });
   };
 
   const handleBack = () => {
-    navigate(-1);
+    navigate(-1, { state: { event } });
   };
 
   const fetchRegistrations = async () => {
@@ -44,42 +40,54 @@ const EventRegistrations = () => {
   }, []);
 
   return (
-    <Container maxWidth="sm">
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Typography variant="h4" className={classes.whiteText} gutterBottom>
+        {"registrations"}
+      </Typography>
+      <Typography variant="h4" className={classes.whiteText} align="center">
+        {event.event_title}
+      </Typography>
+      <Stack
+        sx={{
+          mt: 5,
+        }}
+        direction="column"
+      >
+        {registrations.map((registration) => (
+          <Typography
+            key={registration.user_uid}
+            align="center"
+            variant="h6"
+            className={classes.whiteText}
+            onClick={() => handleClickRegistration(registration)}
+            gutterBottom
+          >
+            {registration.first_name +
+              " " +
+              registration.last_name +
+              "(" +
+              registration.role +
+              ")"}
+          </Typography>
+        ))}
+        {registrations.length < 1 && (
+          <Typography
+            align="center"
+            variant="h6"
+            className={classes.whiteText}
+            gutterBottom
+          >
+            {"No registrations"}
+          </Typography>
+        )}
+      </Stack>
       <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
-        <Typography align="center" variant="h4" gutterBottom>
-          {"Registrations"}
-        </Typography>
-        <Stack
-          sx={{
-            bgcolor: "background.paper",
-            border: 1,
-            borderColor: "primary.main",
-            borderRadius: "15px",
-          }}
-          direction="column"
-        >
-          {registrations.map((registration) => (
-            <Button
-              key={registration.user_uid}
-              variant="text"
-              onClick={() => handleClickAttendee(registration)}
-            >
-              {registration.first_name + " " + registration.last_name}
-            </Button>
-          ))}
-          {registrations.length < 1 && (
-            <Typography align="center" variant="h6" gutterBottom>
-              {"No registrations"}
-            </Typography>
-          )}
-        </Stack>
-        <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
-          <StyledButton variant="contained" align="center" onClick={handleBack}>
-            {"Back"}
-          </StyledButton>
-        </Box>
+        <Button className={classes.button} align="center" onClick={handleBack}>
+          <img src={Back} style={{ width: "2rem" }} alt="back" />
+          {"Back"}
+        </Button>
       </Box>
-    </Container>
+    </Box>
   );
 };
 
