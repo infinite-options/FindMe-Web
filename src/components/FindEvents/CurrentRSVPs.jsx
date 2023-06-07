@@ -30,7 +30,7 @@ export default function CurrentRSVPs() {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
         <Typography variant="h2" className={classes.whiteText}>
-          currentRSVPs
+          currentRSVP
         </Typography>
       </Stack>
       <Stack

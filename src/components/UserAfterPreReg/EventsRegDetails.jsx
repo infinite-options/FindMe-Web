@@ -1,82 +1,83 @@
 import React from "react";
-import { Button, Grid, Box, ButtonBase } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Grid, Button, Box, Stack, Typography, TextField } from "@mui/material";
+import useStyles from "../../theming/styles";
 import { useLocation, useNavigate } from "react-router-dom";
-const Img = styled("img")({
-  margin: "auto",
-  display: "block",
-  maxWidth: "100%",
-  maxHeight: "100%",
-});
 
 export default function EventsRegDetails() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const { state } = useLocation();
   const event = state.event;
   console.log(event);
   console.log(JSON.parse(event.eu_qas));
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Grid
-        container
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          details
+        </Typography>
+      </Stack>
+      <Stack
         direction="column"
-        margin={5}
-        // style={{ height: "30rem", width: "80rem" }}
+        justifyContent="center"
         alignItems="center"
-        justify="center"
-        border={1}
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        <div style={{ textTransform: "uppercase", fontSize: "20px" }}>
-          Registration Confirmation
-        </div>
-        <ButtonBase
-          sx={{
-            width: 128,
-            height: 128,
+        <img
+          src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+          style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            margin: "2rem 0rem",
           }}
         >
-          <Img
-            alt="complex"
-            src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-          />
-        </ButtonBase>
-        <div style={{ margin: "1rem 0rem" }}>{event.event_title}</div>
-        <div style={{ margin: "1rem 0rem", textAlign: "center" }}>
-          {event.event_description}
+          <Typography variant="h4" className={classes.whiteText}>
+            {event.event_title}
+          </Typography>
+          <Typography variant="h5" className={classes.whiteText}>
+            {new Date(event.event_start_date).toLocaleString("default", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </Typography>
+          <Typography variant="h5" className={classes.whiteText}>
+            {event.event_start_time} - {event.event_end_time}
+          </Typography>
         </div>
-        {event.event_start_time} - {event.event_end_time}
         {JSON.parse(event.eu_qas).map((quest, i) => {
           return (
             <div style={{ margin: "5px" }}>
-              <div>
-                <p style={{ maxWidth: "250px", wordWrap: "break-word" }}>
+              <div sx={{ m: 1 }}>
+                <Typography
+                  className={classes.whiteText}
+                  style={{ maxWidth: "250px", wordWrap: "break-word" }}
+                >
                   {quest.question}
-                </p>
+                </Typography>
               </div>
               <div>
-                <Box
-                  style={{
-                    width: "15rem",
-                    border: "1px solid black",
-                    padding: "5px",
-                  }}
-                  //   onChange={(e) => handleChangeLater(e, i)}
-                >
-                  {quest.answer}
-                </Box>
+                <Box className={classes.events}>{quest.answer}</Box>
               </div>
             </div>
           );
         })}
+      </Stack>{" "}
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 8 }}
+      >
+        {" "}
         <Button
-          variant="outlined"
+          className={classes.button}
           sx={{ my: 1 }}
           onClick={() =>
             navigate("/edit-event", {
@@ -88,7 +89,17 @@ export default function EventsRegDetails() {
         >
           Edit Answers
         </Button>
-      </Grid>
-    </div>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 8, mb: 2 }}
+      >
+        <Button className={classes.button} onClick={() => navigate("/")}>
+          Homepage
+        </Button>
+      </Stack>
+    </Box>
   );
 }
