@@ -53,9 +53,11 @@ export default function EventList() {
                 <Typography className={classes.eventText}>
                   {event.event_title}
                   <br />
-                  {event.event_description}
-                  <br />
-                  {event.event_start_date}
+                  {new Date(event.event_start_date).toLocaleString("default", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
                   <br />
                   {event.event_start_time} - {event.event_end_time}
                 </Typography>

@@ -41,6 +41,21 @@ const useStyles = makeStyles((theme) => ({
       underline: "none",
     },
   },
+  textfieldMulti: {
+    width: "314px",
+    marginTop: "1rem",
+    color: `${theme.palette.primary.contrastText} !important`,
+    backgroundColor: `${theme.palette.primary.main} !important`,
+    borderRadius: "30px",
+    "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+      underline: "none",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+      underline: "none",
+    },
+  },
   error: {
     fontSize: "small",
     color: "red",
