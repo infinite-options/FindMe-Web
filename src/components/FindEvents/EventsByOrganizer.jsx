@@ -1,28 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { styled } from "@mui/material/styles";
-import {
-  Grid,
-  Box,
-  Paper,
-  Typography,
-  ButtonBase,
-  Button,
-} from "@mui/material";
+import { Stack, Box, Paper, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { mediumBold, xSmall, small } from "../../styles";
+import useStyles from "../../theming/styles";
+import Back from "../../Icons/Back.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
-const Img = styled("img")({
-  margin: "auto",
-  display: "block",
-  maxWidth: "100%",
-  maxHeight: "100%",
-});
-
 export default function EventByOrganizer() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const [events, setEvents] = useState([]);
   const [organizers, setOrganizers] = useState("");
   const [eventOrganizer, setEventOrganizer] = useState("");
@@ -37,9 +24,12 @@ export default function EventByOrganizer() {
   };
 
   const getEventsByOrganizer = (id) => {
-    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     axios
-      .get(BASE_URL + `/GetEvents?event_organizer_uid=${id}&timeZone=${user_timezone}`)
+      .get(
+        BASE_URL +
+          `/GetEvents?event_organizer_uid=${id}&timeZone=${user_timezone}`
+      )
       .then((response) => {
         setEvents(response.data.result);
         setEventOrganizerSet(true);
@@ -50,29 +40,18 @@ export default function EventByOrganizer() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Paper
-        sx={{
-          p: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 5,
-          flexDirection: "column",
-          flexGrow: 1,
-          border: 1,
-          backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        }}
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          byOrganizer
+        </Typography>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        Events By Organizer {eventOrganizerSet ? `: ${eventOrganizer}` : ""}
         {!eventOrganizerSet ? (
           <div
             style={{
@@ -87,18 +66,8 @@ export default function EventByOrganizer() {
               organizers.map((organizer) => {
                 return (
                   <Box
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      border: "1px solid black",
-                      borderRadius: "5px",
-                      margin: "1rem 0rem",
-                      padding: "1rem",
-                      width: "400px",
-                      cursor: "pointer",
-                    }}
+                    sx={{ m: 1, p: 1 }}
+                    className={classes.button}
                     onClick={() => {
                       setEventOrganizer(
                         organizer.first_name + " " + organizer.last_name
@@ -114,59 +83,76 @@ export default function EventByOrganizer() {
         ) : !isLoading ? (
           events.map((event) => {
             return (
-              <Grid
-                container
-                spacing={2}
-                margin={2}
-                sx={{
-                  p: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border: 1,
-                }}
+              <Box
+                className={classes.eventContainer}
                 onClick={() => {
-                  navigate("/preregistration-event/"+event.event_registration_code, {
-                    state: { event: event },
-                  });
+                  navigate(
+                    "/preregistration-event/" + event.event_registration_code,
+                    {
+                      state: { event: event },
+                    }
+                  );
                 }}
               >
-                <Grid item>
-                  <ButtonBase
-                    sx={{
-                      width: 128,
-                      height: 128,
-                      border: "1px solid red",
-                    }}
-                  >
-                    <Img
-                      alt="complex"
-                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                    />
-                  </ButtonBase>
-                </Grid>
-                <Grid item xs={8} direction="column" spacing={2}>
-                  <Typography gutterBottom variant="subtitle1" component="div">
+                <div direction="column" spacing={2} className={classes.events}>
+                  <Typography className={classes.eventText}>
                     {event.event_title}
-                  </Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {event.event_description}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {event.event_start_date}
-                  </Typography>
-
-                  <Typography variant="body2" color="text.secondary">
+                    <br />
+                    {new Date(event.event_start_date).toLocaleString(
+                      "default",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }
+                    )}
+                    <br />
                     {event.event_start_time} - {event.event_end_time}
                   </Typography>
-                </Grid>
-              </Grid>
+                </div>
+                <div className={classes.ellipse}>
+                  <img
+                    className={classes.ellipse}
+                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                  />
+                </div>
+              </Box>
             );
           })
         ) : (
           `No events of type ${eventOrganizer}`
         )}
-      </Paper>
-    </div>
+      </Stack>
+
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 12 }}
+      >
+        {!eventOrganizerSet ? (
+          <Button
+            className={classes.button}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <img src={Back} style={{ width: "2rem" }} />
+            &nbsp; &nbsp;Back
+          </Button>
+        ) : (
+          <Button
+            className={classes.button}
+            onClick={() => {
+              setEventOrganizerSet(false);
+              setEventOrganizer("");
+            }}
+          >
+            <img src={Back} style={{ width: "2rem" }} />
+            &nbsp; &nbsp;Back
+          </Button>
+        )}
+      </Stack>
+    </Box>
   );
 }

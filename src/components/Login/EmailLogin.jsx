@@ -1,23 +1,41 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import LoginContext from "../../LoginContext";
-import { Grid, Button, FormControl, FormGroup, TextField } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Stack,
+  Button,
+  FormControl,
+  FormGroup,
+  TextField,
+  FormControlLabel,
+  InputLabel,
+} from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import PasswordModal from "./PasswordModal";
-import EmailLogin2 from "../../Icons/EmailLogin2.png";
+import Email from "../../Icons/Email.png";
 import { red, pillButton, boldSmall, hidden, small } from "../../styles";
+import useStyles from "../../theming/styles";
 
 export default function EmailLogin(props) {
   const navigate = useNavigate();
+  const classes = useStyles();
   const loginContext = useContext(LoginContext);
 
-  const { userDoesntExist, setUserDoesntExist, path, showForm, setShowForm } =
-    props;
+  const {
+    userDoesntExist,
+    setUserDoesntExist,
+    path,
+    showForm,
+    setShowForm,
+    errorMessage,
+    setErrorMessage,
+  } = props;
   const eventObj = props.eventObj !== undefined ? props.eventObj : "";
   const [passModal, setpassModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   // const [showSpinner, setShowSpinner] = useState(false);
   // const [userDoesntExist, setUserDoesntExist] = useState(false);
   function submitForm() {
@@ -37,6 +55,14 @@ export default function EmailLogin(props) {
         let saltObject = res;
         if (res.data.message == "Email doesn't exist") {
           setUserDoesntExist(true);
+          navigate("/email-signup", {
+            state: {
+              path: path,
+              eventObj: eventObj,
+              email: email,
+              password: password,
+            },
+          });
         }
         if (saltObject.data.code === 200) {
           let hashAlg = saltObject.data.result[0].password_algorithm;
@@ -164,67 +190,49 @@ export default function EmailLogin(props) {
       ""
     );
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <PasswordModal isOpen={passModal} onCancel={onCancel} />
       {showForm ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: "5%",
-          }}
+        <Stack
+          direction="column"
+          justifyContent="center"
+          spacing={2}
+          sx={{ mt: 2 }}
         >
           <FormControl>
-            <FormGroup className="mx-2 my-3">
+            <FormGroup>
+              <Typography variant="h5" className={classes.whiteText}>
+                Username
+              </Typography>
               <TextField
-                style={{ borderRadius: 0 }}
-                // placeholder="Email"
+                className={classes.textfield}
                 type="email"
                 value={email}
                 margin="normal"
-                label="Email Address"
-                InputLabelProps={{ shrink: true }}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </FormGroup>
-            <FormGroup className="mx-2 my-3">
+            <FormGroup>
+              <Typography variant="h5" className={classes.whiteText}>
+                Password
+              </Typography>
               <TextField
-                style={{ borderRadius: 0 }}
-                // placeholder="Password"
+                className={classes.textfield}
                 type="password"
                 value={password}
                 margin="normal"
-                label="Pasword"
-                InputLabelProps={{ shrink: true }}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </FormGroup>
           </FormControl>
           <div className="text-center pt-1 pb-2">
-            <div className="text-center mb-4">
-              <p style={{ ...boldSmall, cursor: "pointer" }} onClick={onReset}>
+            <div className="text-center mb-2">
+              <p className={classes.whiteText} onClick={onReset}>
                 Forgot Password?
               </p>
             </div>
-
-            <Button
-              variant="outlined"
-              color="info"
-              onClick={() => submitForm()}
-            >
-              Login
-            </Button>
           </div>
           <div
             className="text-center"
@@ -232,14 +240,23 @@ export default function EmailLogin(props) {
           >
             <p style={{ ...red, ...small }}>{errorMessage || "error"}</p>
           </div>
-        </div>
+        </Stack>
       ) : (
         <img
-          src={EmailLogin2}
-          style={{ width: "2.7rem", margin: "2rem" }}
+          src={Email}
+          style={{ width: "2.7rem", margin: "2rem", cursor: "pointer" }}
           onClick={() => setShowForm(true)}
         />
       )}
-    </div>
+      <Stack sx={{ mt: 8 }}>
+        {showForm ? (
+          <Button className={classes.button} onClick={() => submitForm()}>
+            Enter
+          </Button>
+        ) : (
+          ""
+        )}
+      </Stack>
+    </Box>
   );
 }

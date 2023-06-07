@@ -1,30 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { styled } from "@mui/material/styles";
 import {
-  Grid,
+  Stack,
   Box,
-  Paper,
   Typography,
-  ButtonBase,
   Button,
   FormGroup,
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { mediumBold, xSmall, small } from "../../styles";
+import useStyles from "../../theming/styles";
+import Back from "../../Icons/Back.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
-const Img = styled("img")({
-  margin: "auto",
-  display: "block",
-  maxWidth: "100%",
-  maxHeight: "100%",
-});
 export default function EventByLocation() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const [city, setCity] = useState("");
   const [miles, setMiles] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -34,26 +27,30 @@ export default function EventByLocation() {
   const [isLoading, setIsLoading] = useState(true);
 
   const getEventByLocation = () => {
-    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (city !== "") {
       let obj = {
         city: city,
       };
-      axios.post(BASE_URL + `/EventsByCity?timeZone=${user_timezone}`, obj).then((response) => {
-        setEvents(response.data.result);
-        setEventZipSet(true);
-        setIsLoading(false);
-      });
+      axios
+        .post(BASE_URL + `/EventsByCity?timeZone=${user_timezone}`, obj)
+        .then((response) => {
+          setEvents(response.data.result);
+          setEventZipSet(true);
+          setIsLoading(false);
+        });
     } else {
       let obj = {
         miles: miles,
         zip_code: zipCode,
       };
-      axios.post(BASE_URL + `/EventsByZipCodes?timeZone=${user_timezone}`, obj).then((response) => {
-        setEvents(response.data.result);
-        setEventZipSet(true);
-        setIsLoading(false);
-      });
+      axios
+        .post(BASE_URL + `/EventsByZipCodes?timeZone=${user_timezone}`, obj)
+        .then((response) => {
+          setEvents(response.data.result);
+          setEventZipSet(true);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -71,29 +68,18 @@ export default function EventByLocation() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Paper
-        sx={{
-          p: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 5,
-          flexDirection: "column",
-          flexGrow: 1,
-          border: 1,
-          backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        }}
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          byLocation
+        </Typography>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        Event By Location
         {!eventCitySet && !eventZipSet ? (
           <div
             style={{
@@ -104,20 +90,19 @@ export default function EventByLocation() {
             }}
           >
             {" "}
-            <FormGroup className="mx-2 my-3">
+            <FormGroup>
+              <Typography className={classes.whiteText}>City</Typography>
               <TextField
-                style={{ borderRadius: 0 }}
                 // placeholder="Email"
                 type="email"
                 value={city}
                 margin="normal"
-                label="City"
-                InputLabelProps={{ shrink: true }}
+                className={classes.textfield}
                 onChange={(e) => setCity(e.target.value)}
                 fullWidth
               />
             </FormGroup>
-            OR
+            <Typography className={classes.whiteText}>OR</Typography>
             <div
               style={{
                 display: "flex",
@@ -125,41 +110,41 @@ export default function EventByLocation() {
                 alignItems: "center",
               }}
             >
-              <FormGroup className="mx-2 my-3">
+              <FormGroup>
                 <TextField
-                  style={{ borderRadius: 0, width: 80 }}
+                  style={{ width: 80 }}
                   type="email"
                   value={miles}
                   margin="normal"
-                  label="Miles"
-                  InputLabelProps={{ shrink: true }}
+                  className={classes.textfield}
                   onChange={(e) => setMiles(e.target.value)}
                 />
               </FormGroup>
-              &nbsp;mile radius from
+              <Typography className={classes.whiteText}>
+                &nbsp;mile radius from
+              </Typography>
             </div>
-            <FormGroup className="mx-2 my-3">
+            <FormGroup>
+              <Typography className={classes.whiteText}>Zip Code</Typography>
               <TextField
-                style={{ borderRadius: 0 }}
                 // placeholder="Email"
                 type="email"
                 value={zipCode}
                 margin="normal"
-                label="Zip Code"
-                InputLabelProps={{ shrink: true }}
+                className={classes.textfield}
                 onChange={(e) => setZipCode(e.target.value)}
                 fullWidth
               />
             </FormGroup>
             <Button
-              variant="outlined"
+              className={classes.button}
               sx={{ mt: 1 }}
               onClick={() => getCurrentLocation()}
             >
               Current Location
             </Button>
             <Button
-              variant="outlined"
+              className={classes.button}
               sx={{ my: 1 }}
               onClick={() => getEventByLocation()}
             >
@@ -169,59 +154,78 @@ export default function EventByLocation() {
         ) : !isLoading ? (
           events.map((event) => {
             return (
-              <Grid
-                container
-                spacing={2}
-                margin={2}
-                sx={{
-                  p: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border: 1,
-                }}
+              <Box
+                className={classes.eventContainer}
                 onClick={() => {
-                  navigate("/preregistration-event/"+event.event_registration_code, {
-                    state: { event: event },
-                  });
+                  navigate(
+                    "/preregistration-event/" + event.event_registration_code,
+                    {
+                      state: { event: event },
+                    }
+                  );
                 }}
               >
-                <Grid item>
-                  <ButtonBase
-                    sx={{
-                      width: 128,
-                      height: 128,
-                      border: "1px solid red",
-                    }}
-                  >
-                    <Img
-                      alt="complex"
-                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                    />
-                  </ButtonBase>
-                </Grid>
-                <Grid item xs={8} direction="column" spacing={2}>
-                  <Typography gutterBottom variant="subtitle1" component="div">
+                <div direction="column" spacing={2} className={classes.events}>
+                  <Typography className={classes.eventText}>
                     {event.event_title}
-                  </Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {event.event_description}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {event.event_start_date}
-                  </Typography>
-
-                  <Typography variant="body2" color="text.secondary">
+                    <br />
+                    {new Date(event.event_start_date).toLocaleString(
+                      "default",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }
+                    )}
+                    <br />
                     {event.event_start_time} - {event.event_end_time}
                   </Typography>
-                </Grid>
-              </Grid>
+                </div>
+                <div className={classes.ellipse}>
+                  <img
+                    className={classes.ellipse}
+                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                  />
+                </div>
+              </Box>
             );
           })
         ) : (
           `No events in the ${city} ${zipCode}`
         )}
-      </Paper>
-    </div>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 12 }}
+      >
+        {eventCitySet || eventZipSet ? (
+          <Button
+            className={classes.button}
+            onClick={() => {
+              setEventCitySet(false);
+              setEventZipSet(false);
+              setCity("");
+              setZipCode("");
+              setMiles("");
+            }}
+          >
+            <img src={Back} style={{ width: "2rem" }} />
+            &nbsp; &nbsp;Back
+          </Button>
+        ) : (
+          <Button
+            className={classes.button}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <img src={Back} style={{ width: "2rem" }} />
+            &nbsp; &nbsp;Back
+          </Button>
+        )}
+      </Stack>
+    </Box>
   );
 }

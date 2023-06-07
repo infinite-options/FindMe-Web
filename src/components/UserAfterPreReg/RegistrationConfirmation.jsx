@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Grid, Button, Box } from "@mui/material";
+import { Button, Box, Stack, Typography, TextField } from "@mui/material";
 import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
-import { small } from "../../styles";
+import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function RegistrationConfirmation() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const [showCreateCard, setShowCreateCard] = useState(false);
   const [showEditCard, setShowEditCard] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -105,26 +106,43 @@ export default function RegistrationConfirmation() {
     );
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Grid
-        container
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          confirmed
+        </Typography>
+      </Stack>
+      <Stack
         direction="column"
-        margin={5}
+        justifyContent="center"
         alignItems="center"
-        justify="center"
-        border={1}
+        spacing={2}
+        sx={{ mt: 2 }}
       >
         {alreadyRegistered()}
-        <div style={{ margin: "1rem 0rem", fontSize: "18px" }}>
-          {" "}
-          Registration Confirmation
+        <Typography className={classes.whiteText}>You're going to</Typography>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            margin: "2rem 0rem",
+          }}
+        >
+          <Typography variant="h4" className={classes.whiteText}>
+            {event.event_title}
+          </Typography>
+          <Typography variant="h5" className={classes.whiteText}>
+            {new Date(event.event_start_date).toLocaleString("default", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </Typography>
+          <Typography variant="h5" className={classes.whiteText}>
+            {event.event_start_time} - {event.event_end_time}
+          </Typography>
         </div>
         {showCreateCard ? (
           <Box
@@ -137,8 +155,7 @@ export default function RegistrationConfirmation() {
             }}
           >
             <Button
-              variant="contained"
-              color="primary"
+              className={classes.button}
               onClick={() =>
                 navigate("/create-card", {
                   state: { email: email, user: userDetails, edit: false },
@@ -148,7 +165,9 @@ export default function RegistrationConfirmation() {
               {" "}
               Create FindMe Card
             </Button>
-            <p style={small}>Better than a business card</p>
+            <Typography className={classes.whiteText}>
+              Make it easy to share your contact info by making a Free bizCard
+            </Typography>
           </Box>
         ) : (
           ""
@@ -164,8 +183,7 @@ export default function RegistrationConfirmation() {
             }}
           >
             <Button
-              variant="contained"
-              color="primary"
+              className={classes.button}
               onClick={() =>
                 navigate("/create-card", {
                   state: { email: email, user: userDetails, edit: true },
@@ -195,15 +213,24 @@ export default function RegistrationConfirmation() {
             style={{ textDecoration: "none" }}
           >
             {" "}
-            <Button variant="contained" color="warning">
-              {" "}
-              Create Skedul
-            </Button>
+            <Button className={classes.button}> Create Skedul</Button>
           </a>
 
-          <p style={small}>Make it easy to Meet with you</p>
+          <Typography className={classes.whiteText}>
+            Make it easy to Meet with you
+          </Typography>
         </Box>
-      </Grid>
-    </div>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 8 }}
+      >
+        <Button className={classes.button} onClick={() => navigate("/")}>
+          Homepage
+        </Button>
+      </Stack>
+    </Box>
   );
 }
