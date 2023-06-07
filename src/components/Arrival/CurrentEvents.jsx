@@ -53,12 +53,17 @@ const CurrentEvents = () => {
     }
   };
 
-  const fetchEventsByOrganizer = async () => {
+  const fetchEvents = async () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const date = new Date();
+    const hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+    const amOrPm = date.getHours() >= 12 ? " PM" : " AM";
     const response = await axios.get(
-      `${BASE_URL}/currentEvents?timeZone=${user_timezone}`
+      `${BASE_URL}/GetEvents?event_start_date=${date.toLocaleDateString()} ${
+        hours + ":" + date.getMinutes() + amOrPm
+      }&timeZone=${user_timezone}`
     );
-    setEvents(response.data.events);
+    setEvents(response.data.result);
   };
 
   const handleAlertClose = (event, reason) => {
@@ -69,7 +74,7 @@ const CurrentEvents = () => {
   };
 
   useEffect(() => {
-    fetchEventsByOrganizer();
+    fetchEvents();
   }, []);
 
   return (
@@ -102,7 +107,12 @@ const CurrentEvents = () => {
             className={classes.button}
             sx={{ py: 5 }}
           >
-            {event.event_title + " " + event.event_start_date}
+            {event.event_title}
+            <br />
+            {`${event.event_start_time.slice(
+              0,
+              -2
+            )} - ${event.event_end_time.slice(0, -2)}`}
           </Button>
         ))}
         {events.length < 1 && (

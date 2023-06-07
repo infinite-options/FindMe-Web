@@ -160,7 +160,12 @@ const NetworkingActivity = () => {
       <Typography variant="h6" className={classes.whiteText} align="center">
         {event.event_start_date}
       </Typography>
-      <Typography variant="h6" className={classes.whiteText} align="center">
+      <Typography
+        variant="h6"
+        className={classes.whiteText}
+        align="center"
+        sx={{ fontKerning: "none" }}
+      >
         {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
       </Typography>
       <Stack spacing={2} direction="column">
