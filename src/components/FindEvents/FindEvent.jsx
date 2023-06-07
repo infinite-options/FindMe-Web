@@ -8,7 +8,11 @@ export default function FindEvent() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => navigate(-1)}
+        >
           find
         </Typography>
       </Stack>
@@ -52,7 +56,7 @@ export default function FindEvent() {
             className={classes.button}
             onClick={() => navigate("/event-bylocation")}
           >
-            Events in your location
+            Events in Your Location
           </Button>{" "}
           <Button
             sx={{ mt: 2 }}

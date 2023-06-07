@@ -42,104 +42,116 @@ export default function EventByOrganizer() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => navigate(-1)}
+        >
           byOrganizer
         </Typography>
       </Stack>
       <Stack
         direction="column"
         justifyContent="center"
+        alignItems="center"
         spacing={2}
         sx={{ mt: 2 }}
       >
-        {!eventOrganizerSet ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              margin: "2rem 0rem",
-            }}
-          >
-            {organizers &&
-              organizers.map((organizer) => {
-                return (
-                  <Box
-                    sx={{ m: 1, p: 1 }}
-                    className={classes.button}
-                    onClick={() => {
-                      setEventOrganizer(
-                        organizer.first_name + " " + organizer.last_name
-                      );
-                      getEventsByOrganizer(organizer.user_uid);
-                    }}
-                  >
-                    {organizer.first_name} {organizer.last_name}
-                  </Box>
-                );
-              })}
-          </div>
-        ) : !isLoading ? (
-          events.map((event) => {
-            return (
-              <Box
-                className={classes.eventContainer}
-                onClick={() => {
-                  navigate(
-                    "/preregistration-event/" + event.event_registration_code,
-                    {
-                      state: { event: event },
-                    }
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          {" "}
+          {!eventOrganizerSet ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                margin: "2rem 0rem",
+              }}
+            >
+              {organizers &&
+                organizers.map((organizer) => {
+                  return (
+                    <Box
+                      sx={{ m: 1, p: 1 }}
+                      className={classes.button}
+                      onClick={() => {
+                        setEventOrganizer(
+                          organizer.first_name + " " + organizer.last_name
+                        );
+                        getEventsByOrganizer(organizer.user_uid);
+                      }}
+                    >
+                      {organizer.first_name} {organizer.last_name}
+                    </Box>
                   );
-                }}
-              >
-                <div direction="column" spacing={2} className={classes.events}>
-                  <Typography className={classes.eventText}>
-                    {event.event_title}
-                    <br />
-                    {new Date(event.event_start_date).toLocaleString(
-                      "default",
+                })}
+            </div>
+          ) : !isLoading ? (
+            events.map((event) => {
+              return (
+                <Box
+                  className={classes.eventContainer}
+                  onClick={() => {
+                    navigate(
+                      "/preregistration-event/" + event.event_registration_code,
                       {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
+                        state: { event: event },
                       }
-                    )}
-                    <br />
-                    {event.event_start_time} - {event.event_end_time}
-                  </Typography>
-                </div>
-                <div className={classes.ellipse}>
-                  <img
-                    className={classes.ellipse}
-                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                  />
-                </div>
-              </Box>
-            );
-          })
-        ) : (
-          `No events of type ${eventOrganizer}`
-        )}
+                    );
+                  }}
+                >
+                  <div
+                    direction="column"
+                    spacing={2}
+                    className={classes.events}
+                  >
+                    <Typography className={classes.eventText}>
+                      {event.event_title}
+                      <br />
+                      {new Date(event.event_start_date).toLocaleString(
+                        "default",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        }
+                      )}
+                      <br />
+                      {event.event_start_time} - {event.event_end_time}
+                    </Typography>
+                  </div>
+                  <div className={classes.ellipse}>
+                    <img
+                      className={classes.ellipseImg}
+                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                    />
+                  </div>
+                </Box>
+              );
+            })
+          ) : (
+            `No events of type ${eventOrganizer}`
+          )}
+        </div>
       </Stack>
 
       <Stack
         direction="column"
         justifyContent="center"
+        alignItems="center"
         spacing={2}
         sx={{ mt: 12 }}
       >
         {!eventOrganizerSet ? (
-          <Button
-            className={classes.button}
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            <img src={Back} style={{ width: "2rem" }} />
-            &nbsp; &nbsp;Back
-          </Button>
+          ""
         ) : (
           <Button
             className={classes.button}

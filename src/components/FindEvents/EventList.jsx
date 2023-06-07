@@ -26,53 +26,73 @@ export default function EventList() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           all
         </Typography>
       </Stack>
       <Stack
         direction="column"
         justifyContent="center"
+        alignItems="center"
         spacing={2}
         sx={{ mt: 2 }}
       >
-        {events.map((event) => {
-          return (
-            <Box
-              className={classes.eventContainer}
-              onClick={() => {
-                navigate(
-                  "/preregistration-event/" + event.event_registration_code,
-                  {
-                    state: { event: event },
-                  }
-                );
-              }}
-            >
-              <div direction="column" spacing={2} className={classes.events}>
-                <Typography className={classes.eventText}>
-                  {event.event_title}
-                  <br />
-                  {new Date(event.event_start_date).toLocaleString("default", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                  <br />
-                  {event.event_start_time} - {event.event_end_time}
-                </Typography>
-              </div>
-              <div className={classes.ellipse}>
-                <img
-                  className={classes.ellipse}
-                  src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                />
-              </div>
-            </Box>
-          );
-        })}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          {" "}
+          {events.map((event) => {
+            return (
+              <Box
+                className={classes.eventContainer}
+                onClick={() => {
+                  navigate(
+                    "/preregistration-event/" + event.event_registration_code,
+                    {
+                      state: { event: event },
+                    }
+                  );
+                }}
+              >
+                <div direction="column" spacing={2} className={classes.events}>
+                  <Typography className={classes.eventText}>
+                    {event.event_title}
+                    <br />
+                    {new Date(event.event_start_date).toLocaleString(
+                      "default",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }
+                    )}
+                    <br />
+                    {event.event_start_time} - {event.event_end_time}
+                  </Typography>
+                </div>
+                <div className={classes.ellipse}>
+                  <img
+                    className={classes.ellipseImg}
+                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                  />
+                </div>
+              </Box>
+            );
+          })}
+        </div>
       </Stack>
-      {events ? (
+      {/* {events ? (
         <Stack
           direction="column"
           justifyContent="center"
@@ -91,7 +111,7 @@ export default function EventList() {
         </Stack>
       ) : (
         ""
-      )}
+      )} */}
     </Box>
   );
 }

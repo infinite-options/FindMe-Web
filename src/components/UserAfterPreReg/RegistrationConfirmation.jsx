@@ -154,6 +154,9 @@ export default function RegistrationConfirmation() {
               margin: "2rem 0rem",
             }}
           >
+            <Typography className={classes.whiteText}>
+              Make it easy to share your contact info by making a Free bizCard
+            </Typography>
             <Button
               className={classes.button}
               onClick={() =>
@@ -163,11 +166,8 @@ export default function RegistrationConfirmation() {
               }
             >
               {" "}
-              Create FindMe Card
+              Create bizCard
             </Button>
-            <Typography className={classes.whiteText}>
-              Make it easy to share your contact info by making a Free bizCard
-            </Typography>
           </Box>
         ) : (
           ""
@@ -191,7 +191,7 @@ export default function RegistrationConfirmation() {
               }
             >
               {" "}
-              Edit FindMe Card
+              Edit bizCard
             </Button>
           </Box>
         ) : (
@@ -206,6 +206,9 @@ export default function RegistrationConfirmation() {
             margin: "2rem 0rem",
           }}
         >
+          <Typography className={classes.whiteText}>
+            Make it easy to Meet with you
+          </Typography>
           <a
             href="https://skedul.online"
             target="_blank"
@@ -215,10 +218,6 @@ export default function RegistrationConfirmation() {
             {" "}
             <Button className={classes.button}> Create Skedul</Button>
           </a>
-
-          <Typography className={classes.whiteText}>
-            Make it easy to Meet with you
-          </Typography>
         </Box>
       </Stack>
       <Stack

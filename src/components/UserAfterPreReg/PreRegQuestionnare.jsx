@@ -99,9 +99,33 @@ export default function PreRegQuestionnare() {
       <Stack
         direction="column"
         justifyContent="center"
+        alignItems="center"
         spacing={2}
         sx={{ mt: 2 }}
       >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            margin: "2rem 0rem",
+          }}
+        >
+          <Typography variant="h4" className={classes.whiteText}>
+            {event.event_title}
+          </Typography>
+          <Typography variant="h5" className={classes.whiteText}>
+            {new Date(event.event_start_date).toLocaleString("default", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </Typography>
+          <Typography variant="h5" className={classes.whiteText}>
+            {event.event_start_time} - {event.event_end_time}
+          </Typography>
+        </div>
         {showAllQuestions ? (
           <div
             style={{
@@ -121,32 +145,6 @@ export default function PreRegQuestionnare() {
                     alignItems: "center",
                   }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "column",
-                      margin: "2rem 0rem",
-                    }}
-                  >
-                    <Typography variant="h4" className={classes.whiteText}>
-                      {event.event_title}
-                    </Typography>
-                    <Typography variant="h5" className={classes.whiteText}>
-                      {new Date(event.event_start_date).toLocaleString(
-                        "default",
-                        {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        }
-                      )}
-                    </Typography>
-                    <Typography variant="h5" className={classes.whiteText}>
-                      {event.event_start_time} - {event.event_end_time}
-                    </Typography>
-                  </div>
                   <div>
                     <Typography
                       className={classes.whiteText}
@@ -192,29 +190,6 @@ export default function PreRegQuestionnare() {
               alignItems: "center",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                margin: "2rem 0rem",
-              }}
-            >
-              <Typography variant="h4" className={classes.whiteText}>
-                {event.event_title}
-              </Typography>
-              <Typography variant="h5" className={classes.whiteText}>
-                {new Date(event.event_start_date).toLocaleString("default", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </Typography>
-              <Typography variant="h5" className={classes.whiteText}>
-                {event.event_start_time} - {event.event_end_time}
-              </Typography>
-            </div>
             <div sx={{ m: 1 }}>
               <Typography className={classes.whiteText}>
                 {current.question}

@@ -19,7 +19,7 @@ export default function EventByLocation() {
   const navigate = useNavigate();
   const classes = useStyles();
   const [city, setCity] = useState("");
-  const [miles, setMiles] = useState("");
+  const [miles, setMiles] = useState(5);
   const [zipCode, setZipCode] = useState("");
   const [events, setEvents] = useState([]);
   const [eventCitySet, setEventCitySet] = useState(false);
@@ -70,7 +70,11 @@ export default function EventByLocation() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => navigate(-1)}
+        >
           byLocation
         </Typography>
       </Stack>
@@ -103,39 +107,61 @@ export default function EventByLocation() {
               />
             </FormGroup>
             <Typography className={classes.whiteText}>OR</Typography>
-            <div
+            <Box
               style={{
                 display: "flex",
+                flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
+                margin: "2rem 0rem",
               }}
             >
-              <FormGroup>
-                <TextField
-                  style={{ width: 80 }}
-                  type="email"
-                  value={miles}
-                  margin="normal"
-                  className={classes.textfield}
-                  onChange={(e) => setMiles(e.target.value)}
-                />
-              </FormGroup>
-              <Typography className={classes.whiteText}>
-                &nbsp;mile radius from
-              </Typography>
-            </div>
-            <FormGroup>
-              <Typography className={classes.whiteText}>Zip Code</Typography>
-              <TextField
-                // placeholder="Email"
-                type="email"
-                value={zipCode}
-                margin="normal"
-                className={classes.textfield}
-                onChange={(e) => setZipCode(e.target.value)}
-                fullWidth
-              />
-            </FormGroup>
+              {" "}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <FormGroup>
+                  <Typography style={{ color: "#0A23A6" }}>Miles</Typography>
+                  <TextField
+                    style={{ width: 50 }}
+                    type="email"
+                    value={miles}
+                    margin="normal"
+                    className={classes.textfield}
+                    onChange={(e) => setMiles(e.target.value)}
+                  />
+                </FormGroup>
+                <Typography className={classes.whiteText}>
+                  &nbsp;miles radius from
+                </Typography>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <FormGroup>
+                  <Typography className={classes.whiteText}>
+                    Zip Code
+                  </Typography>
+                  <TextField
+                    // placeholder="Email"
+                    type="email"
+                    value={zipCode}
+                    margin="normal"
+                    className={classes.textfield}
+                    onChange={(e) => setZipCode(e.target.value)}
+                    fullWidth
+                  />
+                </FormGroup>
+              </div>
+            </Box>
             <Button
               className={classes.button}
               sx={{ mt: 1 }}
@@ -183,7 +209,7 @@ export default function EventByLocation() {
                 </div>
                 <div className={classes.ellipse}>
                   <img
-                    className={classes.ellipse}
+                    className={classes.ellipseImg}
                     src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
                   />
                 </div>
@@ -215,15 +241,7 @@ export default function EventByLocation() {
             &nbsp; &nbsp;Back
           </Button>
         ) : (
-          <Button
-            className={classes.button}
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            <img src={Back} style={{ width: "2rem" }} />
-            &nbsp; &nbsp;Back
-          </Button>
+          ""
         )}
       </Stack>
     </Box>

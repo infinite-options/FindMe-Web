@@ -10,7 +10,11 @@ export default function PreRegMenu() {
     <>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-          <Typography variant="h2" className={classes.whiteText}>
+          <Typography
+            variant="h2"
+            className={classes.whiteText}
+            onClick={() => navigate(-1)}
+          >
             register
           </Typography>
         </Stack>
@@ -66,7 +70,7 @@ export default function PreRegMenu() {
               onClick={() => navigate("/event-bylocation")}
             >
               {" "}
-              See Events in your location{" "}
+              See Events in Your Location{" "}
             </Button>
           </div>
         </Stack>
