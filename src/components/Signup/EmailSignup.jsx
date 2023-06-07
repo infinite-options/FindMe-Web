@@ -6,46 +6,52 @@ import {
   Button,
   FormControl,
   FormGroup,
+  Typography,
+  Box,
+  Stack,
   FormControlLabel,
   TextField,
   FormLabel,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserAlreadyExistsModal from "./UserAlreadyExistsModal";
-import { formatPhoneNumber } from "../../helper";
-import { red, boldSmall } from "../../styles";
+import useStyles from "../../theming/styles";
+import Back from "../../Icons/Back.png";
 
 export default function EmailSignup() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const { state } = useLocation();
   const path = state.path;
+  const email = state.email;
+  const password = state.password;
   const eventObj = state.eventObj !== undefined ? state.eventObj : "";
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
-  const [signupSuccessful, setSignupSuccessful] = useState(false);
   const [userAlreadyExists, setUserAlreadyExists] = useState(false);
   const onCancel = () => {
     setUserAlreadyExists(false);
   };
   const required =
     errorMessage === "Please fill out all fields" ? (
-      <span style={red} className="ms-1">
-        *
-      </span>
+      <span className={classes.error}>*</span>
     ) : (
       ""
     );
   const submitForm = async () => {
+    console.log("in submit form");
     if (email === "" || password === "" || confirmPassword === "") {
       setErrorMessage("Please fill out all fields");
+      console.log("error");
       return;
     }
 
     if (password !== confirmPassword) {
+      console.log(password, confirmPassword);
       setErrorMessage("Passwords must match");
+      console.log("error");
       return;
     } else if (password === confirmPassword) {
       setErrorMessage("");
@@ -59,6 +65,7 @@ export default function EmailSignup() {
       password: password,
       role: "",
     };
+    console.log(user);
     axios
       .post(
         "https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/CreateAccount/FINDME",
@@ -83,52 +90,30 @@ export default function EmailSignup() {
       });
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <UserAlreadyExistsModal
         isOpen={userAlreadyExists}
         onCancel={onCancel}
         email={email}
       />
-      <Grid
-        container
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          signup
+        </Typography>
+      </Stack>
+      <Stack
         direction="column"
-        alignItems="center"
         justifyContent="center"
-        border={1}
-        margin={5}
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        {" "}
-        <div className="mt-5 mb-3">Email Signup</div>
-        {signupSuccessful ? (
-          <div className="d-flex flex-column justify-content-start mt-5">
-            <div className="text-center">
-              <p style={boldSmall} className="mb-1">
-                Signup Successful
-              </p>
-              <Button
-                variant="primary"
-                onClick={() =>
-                  navigate("/login", {
-                    state: {
-                      path: path,
-                      eventObj: eventObj,
-                    },
-                  })
-                }
-                className="mb-4"
-              >
-                Login
-              </Button>
-            </div>
-          </div>
-        ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <div
             style={{
               display: "flex",
@@ -136,71 +121,55 @@ export default function EmailSignup() {
               alignItems: "center",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <FormControl>
-                {" "}
-                <FormGroup className="mb-3" controlId="formBasicEmail">
-                  <TextField
-                    type="email"
-                    margin="normal"
-                    label="Email Address"
-                    InputLabelProps={{ shrink: true }}
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </FormGroup>
-                <FormGroup className="mb-3" controlId="formBasicPassword">
-                  <TextField
-                    type="password"
-                    name="password"
-                    margin="normal"
-                    label="Password"
-                    InputLabelProps={{ shrink: true }}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </FormGroup>
-                <FormGroup className="mb-3" controlId="formBasicPassword">
-                  <TextField
-                    type="password"
-                    margin="normal"
-                    label="Confirm Password"
-                    InputLabelProps={{ shrink: true }}
-                    name="confirm_password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                </FormGroup>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    margin: "2rem 0rem",
-                  }}
-                >
-                  <Button variant="outlined" onClick={submitForm}>
-                    Next
-                  </Button>{" "}
-                  {/* <Button variant="outlined" onClick={() => navigate("/")}>
-                    Cancel
-                  </Button> */}
-                </div>
-              </FormControl>
-            </div>
+            <FormControl>
+              {" "}
+              <FormGroup>
+                <Typography variant="h5" className={classes.whiteText}>
+                  Username
+                </Typography>
+                <TextField
+                  className={classes.textfield}
+                  type="email"
+                  name="email"
+                  margin="normal"
+                  value={email}
+                  // onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Typography variant="h5" className={classes.whiteText}>
+                  Confirm Password
+                </Typography>
+                <TextField
+                  className={classes.textfield}
+                  type="password"
+                  margin="normal"
+                  name="confirm_password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </FormGroup>
+              <div className={errorMessage === "" ? classes.hidden : {}}>
+                <p className={classes.error}>{errorMessage || "error"}</p>
+              </div>
+              <Stack sx={{ mt: 2 }}>
+                <Button className={classes.button} onClick={submitForm}>
+                  Create New Account
+                </Button>{" "}
+              </Stack>
+            </FormControl>
           </div>
-        )}
-      </Grid>
-    </div>
+        </div>
+      </Stack>
+      <Stack sx={{ mt: 12 }}>
+        {" "}
+        <Button className={classes.button} onClick={() => navigate(-1)}>
+          <img src={Back} style={{ width: "2rem" }} />
+          &nbsp; &nbsp;Back
+        </Button>
+      </Stack>
+    </Box>
   );
 }

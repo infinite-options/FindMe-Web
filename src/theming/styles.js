@@ -25,6 +25,29 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Inter !important",
     textTransform: "none !important",
   },
+  textfield: {
+    width: "314px",
+    height: "62px",
+    marginTop: "1rem",
+    color: `${theme.palette.primary.contrastText} !important`,
+    backgroundColor: `${theme.palette.primary.main} !important`,
+    borderRadius: "30px",
+    "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+      underline: "none",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+      underline: "none",
+    },
+  },
+  error: {
+    fontSize: "small",
+    color: "red",
+  },
+  hidden: {
+    visibility: "hidden",
+  },
 }));
 
 export default useStyles;

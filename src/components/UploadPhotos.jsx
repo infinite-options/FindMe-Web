@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import AddPhoto from "../Icons/AddPhotoIcon.png";
+import { Box, Button, Stack } from "@mui/material";
+import UploadImage from "../Icons/UploadImage.svg";
 import {
   xSmall,
   bold,
@@ -9,8 +10,10 @@ import {
   hidden,
   tileImg,
 } from "../styles";
+import useStyles from "../theming/styles";
 
 function UploadPhotos(props) {
+  const classes = useStyles();
   const [imageState, setImageState] = props.state;
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -45,89 +48,72 @@ function UploadPhotos(props) {
     readImage(file);
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "row ",
-        margin: "0.5rem",
-      }}
+    <Stack
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      sx={{ mt: 2, p: 2 }}
     >
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "row ",
+        }}
+      >
+        <input
+          id="contained-button-file"
+          style={{ display: "none" }}
+          type="file"
+          accept="image/*"
+          onChange={addFile}
+        />
+        <label htmlFor="contained-button-file">
+          <img src={UploadImage} style={{ width: "2rem" }} alt="add an image" />
+          {/* <img src={AddPhoto} style={{ width: "2rem" }} alt="add an image" /> */}
+        </label>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           margin: "0.5rem",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "1rem",
-          }}
-        >
-          <input
-            id="contained-button-file"
-            style={{ display: "none" }}
-            type="file"
-            accept="image/*"
-            onChange={addFile}
-            className="d-none"
-          />
-          <label
-            htmlFor="contained-button-file"
-            className="d-flex justify-content-center align-items-center"
+        {imageState.map((file, i) => (
+          <div
+            className="mx-2"
+            style={{
+              position: "relative",
+              minHeight: "100px",
+              minWidth: "100px",
+              height: "100px",
+              width: "100px",
+            }}
+            key={i}
           >
-            <img src={AddPhoto} style={{ width: "2rem" }} alt="add an image" />
-          </label>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "0.5rem",
-          }}
-        >
-          {imageState.map((file, i) => (
-            <div
-              className="mx-2"
-              style={{
-                position: "relative",
-                minHeight: "100px",
-                minWidth: "100px",
-                height: "100px",
-                width: "100px",
-              }}
-              key={i}
-            >
-              {file.file === null ? (
-                <img
-                  key={Date.now()}
-                  src={`${file.image}?${Date.now()}`}
-                  style={{ ...tileImg, objectFit: "cover" }}
-                />
-              ) : (
-                <img
-                  key={Date.now()}
-                  src={file.image}
-                  style={{ ...tileImg, objectFit: "cover" }}
-                />
-              )}
-            </div>
-          ))}
-        </div>
+            {file.file === null ? (
+              <img
+                key={Date.now()}
+                src={`${file.image}?${Date.now()}`}
+                style={{ ...tileImg, objectFit: "cover" }}
+              />
+            ) : (
+              <img
+                key={Date.now()}
+                src={file.image}
+                style={{ ...tileImg, objectFit: "cover" }}
+              />
+            )}
+          </div>
+        ))}
       </div>
 
       <div className="text-center" style={errorMessage === "" ? hidden : {}}>
         <p style={{ ...red, ...small }}>{errorMessage || "error"}</p>
       </div>
-    </div>
+    </Stack>
   );
 }
 

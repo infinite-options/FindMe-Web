@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
+  Stack,
+  Box,
+  Typography,
   Grid,
   Button,
   FormControl,
@@ -11,6 +14,7 @@ import {
 import axios from "axios";
 import UserAlreadyExistsModal from "./UserAlreadyExistsModal";
 import { formatPhoneNumber } from "../../helper";
+import useStyles from "../../theming/styles";
 import { boldSmall } from "../../styles";
 
 let SCOPES =
@@ -18,6 +22,7 @@ let SCOPES =
 
 function GoogleSignupForm(props) {
   const navigate = useNavigate();
+  const classes = useStyles();
   const { state } = useLocation();
   let user = state.user;
   let path = state.path;
@@ -53,7 +58,17 @@ function GoogleSignupForm(props) {
           return;
           // add validation
         } else {
-          setSignupSuccessful(true);
+          navigate("/create-card", {
+            state: {
+              email: email,
+              user_uid: response.data.result.user_uid,
+              edit: false,
+              eventObj: eventObj,
+              path: path,
+              user: response.data.result,
+            },
+          });
+          // setSignupSuccessful(true);
         }
       });
   };
@@ -62,130 +77,96 @@ function GoogleSignupForm(props) {
     setUserAlreadyExists(false);
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       {
         <UserAlreadyExistsModal
           isOpen={userAlreadyExists}
           onCancel={onCancel}
           email={email}
         />
-      }
-      <Grid
-        container
+      }{" "}
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          signup
+        </Typography>
+      </Stack>
+      <Stack
         direction="column"
-        alignItems="center"
         justifyContent="center"
-        border={1}
-        margin={5}
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        <div className="mt-5 mb-3">Confirm Profile</div>
-        {signupSuccessful ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: "5%",
-            }}
-          >
-            <div>
-              <p style={boldSmall}>Signup Successful</p>
-              <Button
-                variant="outlined"
-                style={{ margin: "2rem" }}
-                onClick={() =>
-                  navigate("/login", {
-                    state: {
-                      path: path,
-                      eventObj: eventObj,
-                    },
-                  })
-                }
-              >
-                Login
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: "5%",
-            }}
-          >
-            <div></div>
-            <div>
-              <FormControl>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: "5%",
+          }}
+        >
+          <div></div>
+          <div>
+            <FormControl>
+              <div>
+                {" "}
                 <div>
-                  {" "}
-                  <div>
-                    <FormGroup className="mb-3" controlId="formBasicEmail">
-                      <TextField
-                        type="email"
-                        placeholder="First Name"
-                        margin="normal"
-                        label="First Name"
-                        InputLabelProps={{ shrink: true }}
-                        name="email"
-                        value={user.first_name}
-                        // onChange={(e) => setFirstName(e.target.value)}
-                      />
-                    </FormGroup>
-                  </div>
-                  <div>
-                    <FormGroup className="mb-3" controlId="formBasicEmail">
-                      <TextField
-                        type="email"
-                        InputLabelProps={{ shrink: true }}
-                        label="Last Name"
-                        placeholder="Last Name"
-                        margin="normal"
-                        name="email"
-                        value={user.last_name}
-                        // onChange={(e) => setLastName(e.target.value)}
-                      />
-                    </FormGroup>
-                  </div>
+                  <FormGroup className="mb-3" controlId="formBasicEmail">
+                    <TextField
+                      type="email"
+                      placeholder="First Name"
+                      margin="normal"
+                      className={classes.textfield}
+                      name="email"
+                      value={user.first_name}
+                      // onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </FormGroup>
                 </div>
-                <FormGroup className="mb-3" controlId="formBasicEmail">
-                  <TextField
-                    placeholder="(xxx)xxx-xxxx"
-                    margin="normal"
-                    type="tel"
-                    label="Phone Number"
-                    InputLabelProps={{ shrink: true }}
-                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={(e) =>
-                      setPhoneNumber(formatPhoneNumber(e.target.value))
-                    }
-                  />
-                </FormGroup>
-              </FormControl>
-            </div>
-            <Button
-              variant="outlined"
-              style={{ margin: "2rem" }}
-              onClick={submitForm}
-            >
-              Confirm
-            </Button>
+                <div>
+                  <FormGroup className="mb-3" controlId="formBasicEmail">
+                    <TextField
+                      type="email"
+                      className={classes.textfield}
+                      placeholder="Last Name"
+                      margin="normal"
+                      name="email"
+                      value={user.last_name}
+                      // onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </FormGroup>
+                </div>
+              </div>
+              <FormGroup className="mb-3" controlId="formBasicEmail">
+                <TextField
+                  placeholder="(xxx)xxx-xxxx"
+                  margin="normal"
+                  type="tel"
+                  className={classes.textfield}
+                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                  name="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) =>
+                    setPhoneNumber(formatPhoneNumber(e.target.value))
+                  }
+                />
+              </FormGroup>
+            </FormControl>
           </div>
-        )}
-      </Grid>
-    </div>
+        </div>
+      </Stack>{" "}
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 8 }}
+      >
+        {" "}
+        <Button className={classes.button} onClick={submitForm}>
+          Enter
+        </Button>
+      </Stack>
+    </Box>
   );
 }
 
