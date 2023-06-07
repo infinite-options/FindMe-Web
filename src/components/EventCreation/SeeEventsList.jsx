@@ -25,6 +25,7 @@ const Img = styled("img")({
 });
 export default function SeeEventsList() {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}

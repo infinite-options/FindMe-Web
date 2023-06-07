@@ -1,13 +1,15 @@
 import React, { Component, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, Box, Stack } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import useStyles from '../../theming/styles';
 
 export default function EventVisibility() {
+    const classes = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
@@ -24,21 +26,29 @@ export default function EventVisibility() {
     }
     return (
         <>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
-            <Grid
-            container
-            direction="column"
-            margin={1}
-            style={{ height: "30rem" , width: "80rem" }}
-            alignItems="center"
-            justify="center"
-            border={1}
-            >
-                <Typography variant="h5" sx={{mt: 2}}> Create </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+        >
+        <Typography variant="h2" className={classes.whiteText}>
+            create
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt: 5 }}
+        >
+        <Typography variant="h4" className={classes.whiteText}>
+            Event Accessibility
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}>
                 <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">
-                            Event Accessibility
-                </FormLabel>
                 <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
                     defaultValue="female"
@@ -46,18 +56,24 @@ export default function EventVisibility() {
                     value={eventVisibility}
                     onChange={handleChange}                    
                 >
-                    <FormControlLabel value="Public" control={<Radio />} label="Public" />
-                    <footer>Event is searchable and anyone can attend</footer>
+                    <FormControlLabel value="Public" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Public</Typography>} />
+                    <footer><Typography className={classes.whiteText}>Event is searchable and anyone can attend</Typography></footer>
 
                     <br></br>
                     
-                    <FormControlLabel value="Private" control={<Radio />} label="Private" />
-                    <footer>Event is by Invitation Only</footer>
+                    <FormControlLabel value="Private" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Private</Typography>} />
+                    <footer><Typography className={classes.whiteText}>Event is by Invitation Only</Typography></footer>
 
                 </RadioGroup>
                 </FormControl>
-                
-                <Button onClick={() => {
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}>
+                <Button 
+                className={classes.button}
+                onClick={() => {
                     saveEventObject()
                     if(location.state && location.state.edit){
                         navigate(-1);
@@ -66,8 +82,8 @@ export default function EventVisibility() {
                         navigate('/eventParticulars');
                     }
                 }}> Next</Button>
-            </Grid>
-        </div>
+        </Stack>
+        </Box>
         </>
     )
 }

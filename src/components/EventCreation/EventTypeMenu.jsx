@@ -1,13 +1,15 @@
 import React, { Component, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, Box, Stack } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import useStyles from '../../theming/styles';
 
 export default function EventTypeMenu() {
+    const classes = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -26,44 +28,62 @@ export default function EventTypeMenu() {
     }
     return (
         <>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: "5%" }}>
-            <Grid
-            container
-            direction="column"
-            margin={1}
-            style={{ height: "30rem" , width: "80rem" }}
-            alignItems="center"
-            justify="center"
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+        >
+        <Typography variant="h2" className={classes.whiteText}>
+            create
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt: 5 }}
+        >
+        <Typography variant="h4" className={classes.whiteText}>
+            Event Type
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}
+        >
+            <FormControl>
+            <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="female"
+                name="radio-buttons-group"
+                value={eventType}
+                onChange={handleChange}
             >
-                <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">
-                    <Typography variant="h5" sx={{mt: 2}}> Create </Typography>
-                    <Typography sx={{mt: 2}}> Event Type </Typography>
-                </FormLabel>
-                <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="female"
-                    name="radio-buttons-group"
-                    value={eventType}
-                    onChange={handleChange}
-                >
-                    <FormControlLabel value="Business Networking" control={<Radio />} label="Business Networking" />
-                    <FormControlLabel value="Party" control={<Radio />} label="Party" />
-                    <FormControlLabel value="Social Mixer" control={<Radio />} label="Social Mixer" />
-                    <FormControlLabel value="other" control={<Radio />} label="Other" />
-                </RadioGroup>
-                </FormControl>
-                <Button onClick={() => {
-                    saveEventObject()
-                    if(location.state && location.state.edit){
-                        navigate(-1);
-                    }
-                    else{
-                        navigate('/eventVisibility'); 
-                    }
-                }}> Next</Button>
-            </Grid>
-        </div>
+                <FormControlLabel value="Business Networking" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Business Networking</Typography>}></FormControlLabel>
+                <FormControlLabel className={classes.whiteText} value="Party" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Party</Typography>}></FormControlLabel>
+                <FormControlLabel className={classes.whiteText} value="Social Mixer" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Social Mixer</Typography>}></FormControlLabel>
+                <FormControlLabel className={classes.whiteText} value="other" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Other</Typography>}></FormControlLabel>
+            </RadioGroup>
+            </FormControl>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}
+        >
+            <Button 
+            className={classes.button}
+            onClick={() => {
+                saveEventObject()
+                if(location.state && location.state.edit){
+                    navigate(-1);
+                }
+                else{
+                    navigate('/eventVisibility'); 
+                }
+            }}> Next</Button>
+        </Stack>
+        </Box>
         </>
     )
 }
