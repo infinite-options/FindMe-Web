@@ -4,6 +4,7 @@ import LoginContext, { LoginInitState } from "./LoginContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import PreRegMenu from "./components/UserPreReg/PreRegMenu";
 import RegCode from "./components/UserPreReg/RegCode";
 import EventProfile from "./components/UserPreReg/EventProfile";
@@ -76,7 +77,7 @@ function App() {
 
   return (
     <Container maxWidth="sm" className={classes.container}>
-      <Box>
+      <Box className={classes.box}>
         <Router>
           <LoginContext.Provider
             value={{
@@ -248,6 +249,9 @@ function App() {
           </LoginContext.Provider>
         </Router>
       </Box>
+      <Typography variant="h3" align="center" className={classes.blueText}>
+        {"bizbuz.design"}
+      </Typography>
     </Container>
   );
 }
