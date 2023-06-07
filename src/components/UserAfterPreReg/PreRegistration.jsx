@@ -61,7 +61,11 @@ export default function PreRegistration() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => navigate(-1)}
+        >
           register
         </Typography>
       </Stack>

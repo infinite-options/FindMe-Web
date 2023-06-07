@@ -108,9 +108,19 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "-50px",
     marginTop: "8px",
   },
-  circularImage: {
+
+  ellipseImg: {
+    background: "#D9D9D9",
+    zIndex: 10,
+    float: "right",
+    width: "100px",
+    height: "100px",
+    borderRadius: "50%",
+    marginLeft: "-50px",
+    marginTop: "0px",
+
+  },circularImage: {
     clipPath: "circle()",
-  },
 }));
 
 export default useStyles;

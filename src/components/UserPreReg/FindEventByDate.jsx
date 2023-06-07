@@ -37,13 +37,18 @@ export default function FindEventByDate() {
     <>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-          <Typography variant="h2" className={classes.whiteText}>
+          <Typography
+            variant="h2"
+            className={classes.whiteText}
+            onClick={() => navigate(-1)}
+          >
             byDate
           </Typography>
         </Stack>
         <Stack
           direction="column"
           justifyContent="center"
+          alignItems="center"
           spacing={2}
           sx={{ mt: 2 }}
         >
@@ -93,7 +98,7 @@ export default function FindEventByDate() {
                         </div>
                         <div className={classes.ellipse}>
                           <img
-                            className={classes.ellipse}
+                            className={classes.ellipseImg}
                             src={`${JSON.parse(
                               event.event_photo
                             )}?${Date.now()}`}

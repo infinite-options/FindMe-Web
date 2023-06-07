@@ -262,7 +262,7 @@ export default function CreateFindMeCard() {
             </Typography>
             <Button className={classes.button} onClick={UpdateProfile}>
               {" "}
-              Confirm FindMe Card
+              Confirm bizCard
             </Button>
           </Box>
         ) : (
