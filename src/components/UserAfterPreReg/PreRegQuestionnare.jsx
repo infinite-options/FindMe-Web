@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Grid, Button, Box } from "@mui/material";
-import axios from "axios";
+import { Grid, Button, Box, Stack, Typography, TextField } from "@mui/material";
+import useStyles from "../../theming/styles";
+import Next from "../../Icons/Next.svg";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function PreRegQuestionnare() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const { state } = useLocation();
   const event = state.event;
   const [index, setIndex] = useState(0);
@@ -88,117 +90,174 @@ export default function PreRegQuestionnare() {
     }
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Grid
-        container
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          register
+        </Typography>
+      </Stack>
+      <Stack
         direction="column"
-        margin={5}
-        // style={{ height: "20rem", width: "80rem" }}
-        alignItems="center"
-        justify="center"
-        border={1}
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        Pre Registeration
-        <div>
-          {showAllQuestions ? (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {questions.map((quest, i) => {
-                return (
-                  <div>
-                    <div>
-                      <p style={{ maxWidth: "250px", wordWrap: "break-word" }}>
-                        {quest.question}
-                      </p>
-                    </div>
-                    <div>
-                      <textarea
-                        rows={15}
-                        name="answer"
-                        value={quest.answer}
-                        style={{ width: "15rem" }}
-                        onChange={(e) => handleChangeLater(e, i)}
-                      ></textarea>
-                    </div>
+        {showAllQuestions ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {questions.map((quest, i) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      margin: "2rem 0rem",
+                    }}
+                  >
+                    <Typography variant="h4" className={classes.whiteText}>
+                      {event.event_title}
+                    </Typography>
+                    <Typography variant="h5" className={classes.whiteText}>
+                      {new Date(event.event_start_date).toLocaleString(
+                        "default",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        }
+                      )}
+                    </Typography>
+                    <Typography variant="h5" className={classes.whiteText}>
+                      {event.event_start_time} - {event.event_end_time}
+                    </Typography>
                   </div>
-                );
-              })}
-              <Button
-                variant="outlined"
-                color="primary"
-                style={{ margin: "2rem 0rem" }}
-                onClick={() => CreateEventReg()}
-                // onClick={() =>
-                //   navigate("/login", {
-                //     state: {
-                //       path: "/registration-confirmation",
-                //     },
-                //   })
-                // }
-              >
-                Confirm Answers
-              </Button>
-            </div>
-          ) : (
+                  <div>
+                    <Typography
+                      className={classes.whiteText}
+                      style={{ maxWidth: "250px", wordWrap: "break-word" }}
+                    >
+                      {quest.question}
+                    </Typography>
+                  </div>
+                  <div>
+                    <TextField
+                      multiline
+                      name="answer"
+                      value={quest.answer}
+                      className={classes.textfieldMulti}
+                      onChange={(e) => handleChangeLater(e, i)}
+                      rows={7}
+                    ></TextField>
+                  </div>
+                </div>
+              );
+            })}
+            <Button
+              className={classes.button}
+              sx={{ mt: 2 }}
+              onClick={() => CreateEventReg()}
+              // onClick={() =>
+              //   navigate("/login", {
+              //     state: {
+              //       path: "/registration-confirmation",
+              //     },
+              //   })
+              // }
+            >
+              Confirm Answers
+            </Button>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                flexDirection: "column",
+                margin: "2rem 0rem",
               }}
             >
-              <div>
-                <p>{current.question}</p>
-              </div>
-              <div key={index}>
-                <textarea
-                  rows={15}
-                  name="answer"
-                  value={current.answer}
-                  style={{ width: "15rem" }}
-                  onChange={(e) => handleChange(e)}
-                ></textarea>
-              </div>
+              <Typography variant="h4" className={classes.whiteText}>
+                {event.event_title}
+              </Typography>
+              <Typography variant="h5" className={classes.whiteText}>
+                {new Date(event.event_start_date).toLocaleString("default", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </Typography>
+              <Typography variant="h5" className={classes.whiteText}>
+                {event.event_start_time} - {event.event_end_time}
+              </Typography>
             </div>
-          )}
-        </div>
+            <div sx={{ m: 1 }}>
+              <Typography className={classes.whiteText}>
+                {current.question}
+              </Typography>
+            </div>
+            <div key={index}>
+              <TextField
+                multiline
+                name="answer"
+                value={current.answer}
+                className={classes.textfieldMulti}
+                onChange={(e) => handleChange(e)}
+                rows={7}
+              ></TextField>
+            </div>
+          </div>
+        )}
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 8 }}
+      >
         {index == questions.length - 1 ? (
           <Button
-            variant="outlined"
-            color="primary"
+            className={classes.button}
             style={{
-              margin: "2rem 0rem",
               display: showAllQuestions ? "none" : "",
             }}
             onClick={() => setShowAllQuestions(true)}
           >
-            Next
+            Next &nbsp; &nbsp; <img src={Next} style={{ width: "2rem" }} />
           </Button>
         ) : (
           <Button
-            variant="outlined"
-            color="primary"
-            style={{ margin: "2rem 0rem" }}
+            className={classes.button}
             onClick={() => setIndex(index + 1)}
           >
-            Next
+            Next &nbsp; &nbsp; <img src={Next} style={{ width: "2rem" }} />
           </Button>
         )}
-      </Grid>
-    </div>
+      </Stack>
+    </Box>
   );
 }

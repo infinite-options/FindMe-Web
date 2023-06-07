@@ -1,84 +1,76 @@
 import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Typography, Button, Paper } from "@mui/material";
+import { Grid, Typography, Button, Paper, Box, Stack } from "@mui/material";
+import useStyles from "../../theming/styles";
 
 export default function PreRegMenu() {
   const navigate = useNavigate();
+  const classes = useStyles();
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "5%",
-        }}
-      >
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: 5,
-            flexDirection: "column",
-            flexGrow: 1,
-            border: 1,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-          }}
-        >
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            {" "}
-            Pre-registration{" "}
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+          <Typography variant="h2" className={classes.whiteText}>
+            register
           </Typography>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => navigate("/registrationCode")}
+        </Stack>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          spacing={2}
+          sx={{ mt: 2 }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
           >
-            {" "}
-            Enter Registration Code{" "}
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => navigate("/findEventByDate")}
-          >
-            {" "}
-            Find Event by Date{" "}
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => navigate("/event-byorganizer")}
-          >
-            {" "}
-            Find Event by Organizer{" "}
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => navigate("/event-list")}
-          >
-            {" "}
-            See Event List{" "}
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            style={{ width: "20rem" }}
-            onClick={() => navigate("/event-bylocation")}
-          >
-            {" "}
-            See Events in your location{" "}
-          </Button>
-        </Paper>
-      </div>
+            <Button
+              sx={{ mt: 2 }}
+              className={classes.button}
+              onClick={() => navigate("/registrationCode")}
+            >
+              {" "}
+              Enter Registration Code{" "}
+            </Button>
+            <Button
+              sx={{ mt: 2 }}
+              className={classes.button}
+              onClick={() => navigate("/findEventByDate")}
+            >
+              {" "}
+              Find Event by Date{" "}
+            </Button>
+            <Button
+              sx={{ mt: 2 }}
+              className={classes.button}
+              onClick={() => navigate("/event-byorganizer")}
+            >
+              {" "}
+              Find Event by Organizer{" "}
+            </Button>
+            <Button
+              sx={{ mt: 2 }}
+              className={classes.button}
+              onClick={() => navigate("/event-list")}
+            >
+              {" "}
+              See Event List{" "}
+            </Button>
+            <Button
+              sx={{ mt: 2 }}
+              className={classes.button}
+              onClick={() => navigate("/event-bylocation")}
+            >
+              {" "}
+              See Events in your location{" "}
+            </Button>
+          </div>
+        </Stack>
+      </Box>
     </>
   );
 }

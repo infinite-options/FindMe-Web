@@ -7,20 +7,27 @@ import {
   FormControl,
   TextField,
   FormControlLabel,
+  Stack,
+  Typography,
 } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
 import Checkbox from "@mui/material/Checkbox";
 import UploadPhotos from "../UploadPhotos";
 import { tileImg } from "../../styles";
+import useStyles from "../../theming/styles";
+import { formatPhoneNumber } from "../../helper";
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 export default function CreateFindMeCard() {
   const navigate = useNavigate();
+  const classes = useStyles();
   const { state } = useLocation();
   const email = state.email;
   const userDetails = state.user;
   const edit = state.edit;
+  const user_uid = state.user_uid;
+  const path = state.path;
+  const eventObj = state.eventObj;
   // const [userDetails, setUserDetails] = useState([]);
   const [displayCard, setDisplayCard] = useState(false);
   const [agreement, setAgreement] = useState(false);
@@ -60,7 +67,7 @@ export default function CreateFindMeCard() {
     }
   };
   useEffect(() => {
-    if (userDetails) {
+    if (userDetails && edit) {
       loadUserDetails();
     }
   }, [userDetails]);
@@ -68,7 +75,7 @@ export default function CreateFindMeCard() {
     if (edit) {
       const body = {
         profile_uid: userDetails.profile_uid,
-        profile_user_id: userDetails.user_uid,
+        profile_user_id: user_uid,
         title: title,
         company: company,
         catch_phrase: catchPhrase,
@@ -119,7 +126,7 @@ export default function CreateFindMeCard() {
       });
     } else {
       const body = {
-        profile_user_id: userDetails.user_uid,
+        profile_user_id: user_uid,
         title: title,
         company: company,
         catch_phrase: catchPhrase,
@@ -158,10 +165,11 @@ export default function CreateFindMeCard() {
       });
 
       const data = await response.json();
-      navigate("/registration-confirmation", {
+      navigate(path, {
         state: {
           email: email,
           user: userDetails,
+          user_uid: user_uid,
         },
       });
     }
@@ -181,36 +189,22 @@ export default function CreateFindMeCard() {
   };
   useEffect(() => canBeSubmitted(), [agreement]);
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <Grid
-        container
-        direction="column"
-        margin={5}
-        alignItems="center"
-        justify="center"
-        border={1}
-      >
-        {" "}
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          bizCard
+        </Typography>
+      </Stack>{" "}
+      <Stack direction="row" justifyContent="center" sx={{ mt: 2, p: 2 }}>
         {displayCard ? (
-          <div
-            style={{
+          <Box
+            sx={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <div style={{ margin: "1rem 0rem", fontSize: "18px" }}>
-              {" "}
-              My FindMe Card
-            </div>
             <div>
               {imageState[0].map((file, i) => (
                 <div
@@ -243,25 +237,34 @@ export default function CreateFindMeCard() {
                 </div>
               ))}
             </div>
-            <div style={{ margin: "0.5rem 0rem" }}>{catchPhrase}</div>
-            <div>
-              {userDetails.first_name} {userDetails.last_name}
-            </div>
-            <div>{title}</div>
-            <div>{company}</div>
-            <div style={{ margin: "0.5rem 0rem" }}>
-              {userDetails.phone_number}
-            </div>
-            <div style={{ margin: "0.5rem 0rem" }}>{userDetails.email}</div>
-            <Button
-              variant="outlined"
-              style={{ margin: "2rem 0rem" }}
-              onClick={UpdateProfile}
+            <Typography
+              className={classes.whiteText}
+              style={{ margin: "0.5rem 0rem" }}
             >
+              {catchPhrase}
+            </Typography>
+            <Typography className={classes.whiteText}>
+              {firstName} {lastName}
+            </Typography>
+            <Typography className={classes.whiteText}>{title}</Typography>
+            <Typography className={classes.whiteText}>{company}</Typography>
+            <Typography
+              className={classes.whiteText}
+              style={{ margin: "0.5rem 0rem" }}
+            >
+              {phoneNumber}
+            </Typography>
+            <Typography
+              className={classes.whiteText}
+              style={{ margin: "0.5rem 0rem" }}
+            >
+              {email}
+            </Typography>
+            <Button className={classes.button} onClick={UpdateProfile}>
               {" "}
               Confirm FindMe Card
             </Button>
-          </div>
+          </Box>
         ) : (
           <div
             style={{
@@ -272,16 +275,9 @@ export default function CreateFindMeCard() {
             }}
           >
             {" "}
-            <div style={{ margin: "1rem 0rem", fontSize: "18px" }}>
-              {" "}
-              Your FindMe Card
-            </div>
             <FormControl>
               <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                variant="outlined"
-                size="small"
+                className={classes.textfield}
                 margin="normal"
                 label="First Name"
                 value={firstName}
@@ -289,42 +285,39 @@ export default function CreateFindMeCard() {
                 required
               />
               <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                variant="outlined"
-                size="small"
+                className={classes.textfield}
                 margin="normal"
                 label="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
               />
-              <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                variant="outlined"
-                size="small"
+              {/* <TextField
+                className={classes.textfield}
                 margin="normal"
                 label="Email Address"
-                value={userDetails.email}
+                value={email}
                 disabled
-              />
+              /> */}
+              <Typography
+                className={classes.whiteText}
+                sx={{ textAlign: "center" }}
+              >
+                {" "}
+                {email}
+              </Typography>
               <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                variant="outlined"
-                size="small"
+                className={classes.textfield}
                 margin="normal"
                 label="Phone Number"
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={(e) =>
+                  setPhoneNumber(formatPhoneNumber(e.target.value))
+                }
                 required
               />
               <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                variant="outlined"
-                size="small"
+                className={classes.textfield}
                 margin="normal"
                 label="Title"
                 value={title}
@@ -332,10 +325,7 @@ export default function CreateFindMeCard() {
                 required
               />
               <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                variant="outlined"
-                size="small"
+                className={classes.textfield}
                 margin="normal"
                 label="Company"
                 value={company}
@@ -343,10 +333,7 @@ export default function CreateFindMeCard() {
                 required
               />
               <TextField
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                variant="outlined"
-                size="small"
+                className={classes.textfield}
                 margin="normal"
                 label="Catch Phrase"
                 value={catchPhrase}
@@ -355,9 +342,9 @@ export default function CreateFindMeCard() {
               />
               <Select
                 InputLabelProps={{ shrink: true }}
+                className={classes.textfield}
                 value={role}
                 label="Role"
-                size="small"
                 onChange={(e) => setRole(e.target.value)}
                 required
               >
@@ -371,23 +358,23 @@ export default function CreateFindMeCard() {
             </FormControl>{" "}
             <UploadPhotos state={imageState} />
             <FormControlLabel
+              className={classes.whiteText}
+              sx={{ m: 2 }}
               required
               control={<Checkbox checked={agreement} onChange={handleChange} />}
               label="I agree to let this information be shared with other participants"
             />
             <Button
-              variant="contained"
-              color="primary"
               id="submitButton"
-              style={{ margin: "2rem 0rem" }}
+              className={classes.button}
               onClick={() => setDisplayCard(true)}
             >
               {" "}
-              Review FindMe Card
+              Save
             </Button>
           </div>
         )}
-      </Grid>
-    </div>
+      </Stack>
+    </Box>
   );
 }

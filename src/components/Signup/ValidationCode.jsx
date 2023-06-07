@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Grid, Button } from "@mui/material";
+import { Box, Stack, Button, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactCodeInput from "react-code-input";
+import useStyles from "../../theming/styles";
 
 const codeInputStyle = {
   borderRadius: "6px",
@@ -19,6 +20,7 @@ const codeInputStyle = {
 export default function ValidationCode() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const classes = useStyles();
 
   const user_uid = state.user_uid;
   const path = state.path;
@@ -47,55 +49,81 @@ export default function ValidationCode() {
         if (response.data.email_validated_status === "...") {
           setErrorMessage(response.data.message);
         } else if (response.data.email_validated_status === "TRUE") {
-          navigate("/email-signup-form", {
+          navigate("/create-card", {
             state: {
+              email: email,
               user_uid: user_uid,
+              edit: false,
               eventObj: eventObj,
               path: path,
+              user: user,
             },
           });
+
+          // navigate("/email-signup-form", {
+          //   state: {
+          //     user_uid: user_uid,
+          //     eventObj: eventObj,
+          //     path: path,
+          //   },
+          // });
         }
       });
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      {" "}
-      <Grid
-        container
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          signup
+        </Typography>
+      </Stack>
+      <Stack
         direction="column"
-        alignItems="center"
         justifyContent="center"
-        border={1}
-        margin={5}
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        Enter Code
-        <div style={{ margin: "2rem 0rem", textAlign: "center" }}>
-          We just sent a code to your email address.
-          <br /> Please enter the code below
-        </div>
-        <ReactCodeInput
-          type="number"
-          inputStyle={codeInputStyle}
-          fields={3}
-          onChange={handleChange}
-        />
-        <Button
-          variant="outlined"
-          style={{ margin: "2rem 0rem" }}
-          onClick={submitButton}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            flexDirection: "column",
+          }}
         >
-          Enter
+          {" "}
+          <Typography className={classes.whiteText} sx={{ m: 2 }}>
+            We sent a code to {email}
+            <br /> Please enter the code below
+          </Typography>
+          <Box sx={{ mt: 8 }}>
+            {" "}
+            <ReactCodeInput
+              type="number"
+              inputStyle={codeInputStyle}
+              fields={3}
+              onChange={handleChange}
+            />
+          </Box>
+          <Typography className={classes.error} sx={{ m: 2 }}>
+            {" "}
+            {errorMessage}
+          </Typography>
+        </div>
+      </Stack>{" "}
+      <Stack
+        direction="column"
+        justifyContent="center"
+        spacing={2}
+        sx={{ mt: 12 }}
+      >
+        {" "}
+        <Button className={classes.button} onClick={submitButton}>
+          Verify
         </Button>
-        {errorMessage}
-      </Grid>
-    </div>
+      </Stack>
+    </Box>
   );
 }

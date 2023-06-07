@@ -1,53 +1,51 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Grid, Button } from "@mui/material";
+import { Box, Button, Typography, Stack } from "@mui/material";
 import GoogleLogin from "./GoogleLogin";
 import EmailLogin from "./EmailLogin";
+import useStyles from "../../theming/styles";
+import Back from "../../Icons/Back.png";
 import UserDoesNotExistModal from "./UserDoesNotExistModal";
-
+import { hidden } from "../../styles";
 export default function Login() {
+  const classes = useStyles();
   const navigate = useNavigate();
   const { state } = useLocation();
   const path = state.path;
   const eventObj = state.eventObj !== undefined ? state.eventObj : "";
   const [userDoesntExist, setUserDoesntExist] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onCancelModal = () => {
     setUserDoesntExist(false);
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5%",
-      }}
-    >
-      <UserDoesNotExistModal
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      {/* <UserDoesNotExistModal
         isOpen={userDoesntExist}
         onCancel={onCancelModal}
         path={path}
         eventObj={eventObj}
-      />
-
-      <Grid
-        container
+      /> */}
+      <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
+        <Typography variant="h2" className={classes.whiteText}>
+          login
+        </Typography>
+      </Stack>
+      <Stack
         direction="column"
-        alignItems="center"
         justifyContent="center"
-        border={1}
-        margin={5}
+        spacing={2}
+        sx={{ mt: 2 }}
       >
-        <div style={{ marginTop: "3rem" }}> Welcome to Find Me!</div>
-        <div style={{ marginTop: "3rem" }}> Sign In</div>
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
           }}
         >
           {showForm ? (
@@ -58,6 +56,8 @@ export default function Login() {
               setUserDoesntExist={setUserDoesntExist}
               path={path}
               eventObj={eventObj}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
             />
           )}
 
@@ -68,34 +68,33 @@ export default function Login() {
             setShowForm={setShowForm}
             path={path}
             eventObj={eventObj}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
           />
         </div>
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        sx={{ mt: 2 }}
+      >
+        <div className="text-center" style={errorMessage === "" ? hidden : {}}>
+          <p className={classes.error}>{errorMessage || "error"}</p>
+        </div>
+      </Stack>
+
+      <Stack sx={{ mt: 12 }}>
         {showForm ? (
-          ""
+          " "
         ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: "5%",
-            }}
-          >
-            <Button
-              variant="outlined"
-              color="info"
-              style={{ margin: "6rem 0rem" }}
-              onClick={() =>
-                navigate("/signup", {
-                  state: { path: path, eventObj: eventObj },
-                })
-              }
-            >
-              Signup
-            </Button>
-          </div>
+          <Button className={classes.button} onClick={() => navigate(-1)}>
+            <img src={Back} style={{ width: "2rem" }} />
+            &nbsp; &nbsp;Back
+          </Button>
         )}
-      </Grid>
-    </div>
+      </Stack>
+    </Box>
   );
 }
