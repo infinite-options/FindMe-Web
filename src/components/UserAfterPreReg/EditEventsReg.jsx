@@ -3,6 +3,7 @@ import axios from "axios";
 import { Grid, Button, Box, Stack, Typography, TextField } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import useStyles from "../../theming/styles";
+import NoImage from "../../Icons/NoImage.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 export default function EditEventsReg() {
@@ -41,7 +42,11 @@ export default function EditEventsReg() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => navigate(-1)}
+        >
           edit
         </Typography>
       </Stack>
@@ -52,10 +57,17 @@ export default function EditEventsReg() {
         spacing={2}
         sx={{ mt: 2 }}
       >
-        <img
-          src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-          style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-        />
+        {JSON.parse(event.event_photo).length === 0 ? (
+          <img
+            style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+            src={NoImage}
+          />
+        ) : (
+          <img
+            src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+            style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+          />
+        )}
         <div
           style={{
             display: "flex",
