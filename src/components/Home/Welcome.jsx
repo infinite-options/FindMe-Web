@@ -47,38 +47,7 @@ export default function Welcome() {
         </Button>
         <Button
           className={classes.button}
-          onClick={() => {
-            if (
-              document.cookie !== "" &&
-              document.cookie
-                .split("; ")
-                .find((row) => row.startsWith("loggedIn=")) !== undefined
-            ) {
-              document.cookie
-                .split("; ")
-                .find((row) => row.startsWith("loggedIn="))
-                .split("=")[1] === "true"
-                ? navigate("/currentEvents", {
-                    state: {
-                      email: document.cookie
-                        .split("; ")
-                        .find((row) => row.startsWith("user_email="))
-                        .split("=")[1],
-                      user: document.cookie
-                        .split("; ")
-                        .find((row) => row.startsWith("user_details="))
-                        .split("=")[1],
-                    },
-                  })
-                : navigate("/login", {
-                    state: { path: "/currentEvents" },
-                  });
-            } else {
-              navigate("/login", {
-                state: { path: "/currentEvents" },
-              });
-            }
-          }}
+          onClick={() => navigate("/currentEvents")}
         >
           {"Attend an Event"}
         </Button>
