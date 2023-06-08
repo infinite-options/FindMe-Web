@@ -273,80 +273,20 @@ function GoogleLogin(props) {
                         setErrorMessage(response["data"]["message"]);
                       } else {
                         let user = response.data.result;
-                        setAccessToken(response.data.result.google_auth_token);
-
                         let user_id = response.data.result.user_uid;
-                        var old_at = response.data.result.google_auth_token;
-                        var refreshToken =
-                          response.data.result.google_refresh_token;
-
-                        fetch(
-                          `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`,
-                          {
-                            method: "GET",
-                          }
-                        )
+                        setAccessToken(at);
+                        let url = `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UpdateAccessToken/FINDME/${user_id}`;
+                        axios
+                          .post(url, {
+                            google_auth_token: at,
+                          })
                           .then((response) => {
-                            if (response["status"] === 400) {
-                              let authorization_url =
-                                "https://accounts.google.com/o/oauth2/token";
-
-                              var details = {
-                                refresh_token: refreshToken,
-                                client_id: CLIENT_ID,
-                                client_secret: CLIENT_SECRET,
-                                grant_type: "refresh_token",
-                              };
-
-                              var formBody = [];
-                              for (var property in details) {
-                                var encodedKey = encodeURIComponent(property);
-                                var encodedValue = encodeURIComponent(
-                                  details[property]
-                                );
-                                formBody.push(encodedKey + "=" + encodedValue);
-                              }
-                              formBody = formBody.join("&");
-
-                              fetch(authorization_url, {
-                                method: "POST",
-                                headers: {
-                                  "Content-Type":
-                                    "application/x-www-form-urlencoded;charset=UTF-8",
-                                },
-                                body: formBody,
-                              })
-                                .then((response) => {
-                                  return response.json();
-                                })
-                                .then((responseData) => {
-                                  return responseData;
-                                })
-                                .then((data) => {
-                                  let at = data["access_token"];
-                                  setAccessToken(at);
-                                  let url = `https://mrle52rri4.execute-api.us-west-1.amazonaws.com/dev/api/v2/UpdateAccessToken/FINDME/${user_id}`;
-                                  axios
-                                    .post(url, {
-                                      google_auth_token: at,
-                                    })
-                                    .then((response) => {})
-                                    .catch((err) => {
-                                      console.log(err);
-                                    });
-                                  return accessToken;
-                                })
-                                .catch((err) => {
-                                  console.log(err);
-                                });
-                            } else {
-                              setAccessToken(old_at);
-                            }
+                            socialGoogle(email, user);
                           })
                           .catch((err) => {
                             console.log(err);
                           });
-                        socialGoogle(email, user);
+                        return accessToken;
                       }
                     });
                 })
