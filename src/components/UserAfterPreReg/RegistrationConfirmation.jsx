@@ -109,8 +109,12 @@ export default function RegistrationConfirmation() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
-          confirmed
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => navigate("/")}
+        >
+          {eventObj !== "" ? `confirmed` : `bizCard`}
         </Typography>
       </Stack>
       <Stack
@@ -121,30 +125,47 @@ export default function RegistrationConfirmation() {
         sx={{ mt: 2 }}
       >
         {alreadyRegistered()}
-        <Typography className={classes.whiteText}>You're going to</Typography>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            margin: "2rem 0rem",
-          }}
-        >
-          <Typography variant="h4" className={classes.whiteText}>
-            {event.event_title}
-          </Typography>
-          <Typography variant="h5" className={classes.whiteText}>
-            {new Date(event.event_start_date).toLocaleString("default", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </Typography>
-          <Typography variant="h5" className={classes.whiteText}>
-            {event.event_start_time} - {event.event_end_time}
-          </Typography>
-        </div>
+        {eventObj !== "" ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            {" "}
+            <Typography className={classes.whiteText}>
+              You're going to
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                margin: "2rem 0rem",
+              }}
+            >
+              <Typography variant="h4" className={classes.whiteText}>
+                {event.event_title}
+              </Typography>
+              <Typography variant="h5" className={classes.whiteText}>
+                {new Date(event.event_start_date).toLocaleString("default", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </Typography>
+              <Typography variant="h5" className={classes.whiteText}>
+                {event.event_start_time} - {event.event_end_time}
+              </Typography>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
         {showCreateCard ? (
           <Box
             style={{
@@ -162,7 +183,13 @@ export default function RegistrationConfirmation() {
               className={classes.button}
               onClick={() =>
                 navigate("/create-card", {
-                  state: { email: email, user: userDetails, edit: false },
+                  state: {
+                    email: email,
+                    user: userDetails,
+                    edit: false,
+                    eventObj: event,
+                    user_uid: user_uid,
+                  },
                 })
               }
             >
@@ -187,7 +214,13 @@ export default function RegistrationConfirmation() {
               className={classes.button}
               onClick={() =>
                 navigate("/create-card", {
-                  state: { email: email, user: userDetails, edit: true },
+                  state: {
+                    email: email,
+                    user: userDetails,
+                    edit: true,
+                    eventObj: event,
+                    user_uid: user_uid,
+                  },
                 })
               }
             >
@@ -229,6 +262,19 @@ export default function RegistrationConfirmation() {
       >
         <Button className={classes.button} onClick={() => navigate("/")}>
           Homepage
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={() =>
+            navigate("/current-rsvps", {
+              state: {
+                email: email,
+                user: user,
+              },
+            })
+          }
+        >
+          Current RSVPs
         </Button>
       </Stack>
     </Box>

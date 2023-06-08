@@ -28,6 +28,7 @@ export default function CreateFindMeCard() {
   const user_uid = state.user_uid;
   const path = state.path;
   const eventObj = state.eventObj;
+  console.log(eventObj);
   // const [userDetails, setUserDetails] = useState([]);
   const [displayCard, setDisplayCard] = useState(false);
   const [agreement, setAgreement] = useState(false);
@@ -191,7 +192,13 @@ export default function CreateFindMeCard() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           bizCard
         </Typography>
       </Stack>{" "}
@@ -211,14 +218,13 @@ export default function CreateFindMeCard() {
                   className="mx-2"
                   style={{
                     position: "relative",
-                    minHeight: "100px",
-                    minWidth: "100px",
-                    height: "100px",
-                    width: "100px",
+                    minHeight: "150px",
+                    minWidth: "150px",
+                    height: "150px",
+                    width: "150px",
                   }}
                   key={i}
                 >
-                  {console.log(imageState[0])}
                   {file.file === null ? (
                     <img
                       key={Date.now()}
@@ -228,6 +234,7 @@ export default function CreateFindMeCard() {
                         width: "150px",
                         height: "150px",
                         borderRadius: "50%",
+                        objectFit: "cover",
                       }}
                     />
                   ) : (
@@ -238,6 +245,7 @@ export default function CreateFindMeCard() {
                         width: "150px",
                         height: "150px",
                         borderRadius: "50%",
+                        objectFit: "cover",
                       }}
                     />
                   )}

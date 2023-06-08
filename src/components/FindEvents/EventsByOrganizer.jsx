@@ -139,7 +139,6 @@ export default function EventByOrganizer() {
                   >
                     <Typography className={classes.eventText}>
                       {event.event_title}
-                      <br /> {event.event_location.split(",")[0]}
                       <br />
                       {event.event_location.split(",")[1]},{" "}
                       {event.event_location.split(",")[2]}

@@ -69,7 +69,6 @@ export default function EventList() {
                 <div direction="column" spacing={2} className={classes.events}>
                   <Typography className={classes.eventText}>
                     {event.event_title}
-                    <br /> {event.event_location.split(",")[0]}
                     <br />
                     {event.event_location.split(",")[1]},{" "}
                     {event.event_location.split(",")[2]}

@@ -171,9 +171,9 @@ export default function EventByLocation() {
                     backgroundColor: "#ffffff",
                     borderRadius: "30px",
                     padding: "15px",
-                    fontSize: "20px !important",
+                    fontSize: "18px !important",
                     fontWeight: "400 !important",
-                    fontFamily: "Inter !important",
+                    // fontFamily: "Inter !important",
                     textTransform: "none !important",
                   }}
                   onClick={() => getCurrentLocation()}
@@ -219,7 +219,6 @@ export default function EventByLocation() {
                   >
                     <Typography className={classes.eventText}>
                       {event.event_title}
-                      <br /> {event.event_location.split(",")[0]}
                       <br />
                       {event.event_location.split(",")[1]},{" "}
                       {event.event_location.split(",")[2]}

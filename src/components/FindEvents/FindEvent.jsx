@@ -30,6 +30,14 @@ export default function FindEvent() {
             flexDirection: "column",
           }}
         >
+          {" "}
+          <Button
+            sx={{ mt: 2 }}
+            className={classes.button}
+            onClick={() => navigate("/event-list")}
+          >
+            See Event List
+          </Button>
           <Button
             sx={{ mt: 2 }}
             className={classes.button}
@@ -47,17 +55,17 @@ export default function FindEvent() {
           <Button
             sx={{ mt: 2 }}
             className={classes.button}
-            onClick={() => navigate("/event-list")}
-          >
-            See Event List
-          </Button>
-          <Button
-            sx={{ mt: 2 }}
-            className={classes.button}
             onClick={() => navigate("/event-bylocation")}
           >
             Events in Your Location
           </Button>{" "}
+          <Button
+            sx={{ mt: 2 }}
+            className={classes.button}
+            onClick={() => navigate("/event-bytype")}
+          >
+            Event By Type
+          </Button>
           <Button
             sx={{ mt: 2 }}
             className={classes.button}
@@ -91,13 +99,6 @@ export default function FindEvent() {
             }}
           >
             See Current RSVPs
-          </Button>
-          <Button
-            sx={{ mt: 2 }}
-            className={classes.button}
-            onClick={() => navigate("/event-bytype")}
-          >
-            Event By Type
           </Button>
         </div>
       </Stack>
