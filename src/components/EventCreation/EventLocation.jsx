@@ -43,6 +43,7 @@ export default function EventLocation() {
         <Stack 
           direction="row"
           justifyContent="flex-start"
+          sx={{mt:5}}
         >
         <Typography variant="h4" className={classes.whiteText}>
             Event Location
@@ -71,7 +72,7 @@ export default function EventLocation() {
             <Stack 
             direction="row"
             justifyContent="flex-start"
-            sx={{mt:2}}
+            sx={{mt:5}}
             >
                 <Button
                 className={classes.button}

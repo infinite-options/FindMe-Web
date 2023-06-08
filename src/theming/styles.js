@@ -125,6 +125,15 @@ const useStyles = makeStyles((theme) => ({
   circularImage: {
     clipPath: "circle()",
   },
+  ellipseSmall: {
+    background: "#D9D9D9",
+    zIndex: 10,
+    float: "right",
+    width: "75px",
+    height: "75px",
+    borderRadius: "50%",
+    marginLeft: "-80px",
+  },
 }));
 
 export default useStyles;

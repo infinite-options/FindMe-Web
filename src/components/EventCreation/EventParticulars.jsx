@@ -55,7 +55,11 @@ export default function EventParticulars() {
             Event Date & Time
         </Typography>
         </Stack>
-                                
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt: 5 }}
+        >                 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={['DatePicker', 'TimePicker']}>
                 <Grid
@@ -115,7 +119,7 @@ export default function EventParticulars() {
             </Grid>
         </DemoContainer>
         </LocalizationProvider>
-        
+        </Stack>
         <Stack 
         direction="row"
         justifyContent="center"

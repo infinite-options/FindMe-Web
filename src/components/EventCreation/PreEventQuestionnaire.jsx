@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Grid, Typography, Button, TextField } from "@mui/material";
+import { Grid, Typography, Button, TextField, Box, Stack } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -10,8 +10,10 @@ import Select from "@mui/material/Select";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import useStyles from "../../theming/styles";
 
 export default function PreEventQuestionnaire() {
+    const classes = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
     const retrievedEventObject =
@@ -22,8 +24,8 @@ export default function PreEventQuestionnaire() {
     const [question, setQuestion] = useState("");
     const options = [
         "What is your current role?",
-        "What Are You Really Good At?",
-        "What are a Few Things you Need?",
+        "What Are you really good at?",
+        "What are a few things you need?",
         "What is one thing you are really proud of?",
         "What is one thing you wish you were better at?",
         "What are one or two words that describe you?",
@@ -75,98 +77,131 @@ export default function PreEventQuestionnaire() {
 
     return (
         <>
-        <div
-            style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: "5%",
-            }}
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
         >
-            <Grid
-            container
-            direction="column"
-            margin={1}
-            style={{ width: "80rem" }}
-            alignItems="center"
-            justify="center"
-            border={1}
-            >
-            <Typography variant="h5" sx={{ mt: 2 }}>
-                {" "}
-                {retrievedEventObject.eventType}{" "}
-            </Typography>
-            <Typography sx={{ mt: 2 }}>
-                {" "}
-                What Questions Should be on the Questionnaire?{" "}
-            </Typography>
+        <Typography variant="h2" className={classes.whiteText}>
+            create
+        </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt: 5 }}
+        >
+        <Typography variant="h4" className={classes.whiteText}>
+            Event Questionnaire
+        </Typography>
+        </Stack>
+        
+        <FormControl>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt: 5 }}
+        >
+            <FormLabel id="demo-radio-buttons-group-label">
+                <Typography className={classes.whiteText}>Select from list</Typography>
+            </FormLabel>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 2 }}
+        >
+            <div>
+            <Select
+                className={classes.textfieldMulti}
+                multiple
+                native
+                onChange={handleSelectOption}
+                label="Native"
+                inputProps={{
+                id: "select-multiple-native",
+                }}
+            >                
+                {options.map((option, index) => (
+                <option key={index} value={option}>
+                    {option}
+                </option>
+                ))}
+            </Select>
 
-            <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">
-                Select from list
-                </FormLabel>
-                <div>
-                <Select
-                    multiple
-                    native
-                    onChange={handleSelectOption}
-                    label="Native"
-                    inputProps={{
-                    id: "select-multiple-native",
-                    }}
+            <div style={{ marginBlock: "30px" }}>
+                <TextField
+                className={classes.textfield}
+                id="outlined-basic"
+                label="Write your own question"
+                variant="outlined"
+                // sx={{ mt:2 }}
+                value={question}
+                onChange={handleQuestionInput}
+                />
+                <IconButton
+                color="primary"
+                component="span"
+                // sx={{ width: "15%" }}
+                onClick={() => handleAddQuestion(question)}
                 >
-                    {options.map((option, index) => (
-                    <option key={index} value={option}>
-                        {option}
-                    </option>
-                    ))}
-                </Select>
-
-                <div style={{ marginBlock: "5px" }}>
-                    <TextField
-                    id="outlined-basic"
-                    label="Write your own question"
-                    variant="outlined"
-                    sx={{ width: "85%" }}
-                    value={question}
-                    onChange={handleQuestionInput}
-                    />
-                    <IconButton
-                    color="primary"
-                    component="span"
-                    sx={{ width: "15%" }}
-                    onClick={() => handleAddQuestion(question)}
-                    >
-                    <AddIcon />
-                    </IconButton>
-                </div>
-                </div>
-
-                <div>
-                <List sx={{ width: "100%", bgcolor: "background.paper", mt: 2 }}>
-                    {selectedOptions.length > 0 ? (
-                    <Typography>Pre-Event Questionnaire</Typography>
-                    ) : (
-                    ""
-                    )}
-                    {selectedOptions.map((option, index) => (
-                    <ListItem sx={{ border: "1px solid grey" }}>
-                        <Typography key={index} sx={{ width: "85%" }}>
-                        {option}
-                        </Typography>
-                        <IconButton
-                        component="span"
-                        sx={{ width: "15%" }}
-                        onClick={() => handleDeselectOption(option)}
-                        >
-                        <DeleteIcon fontSize="small" />
-                        </IconButton>
-                    </ListItem>
-                    ))}
-                </List>
-                </div>
-            </FormControl>
+                <AddIcon />
+                </IconButton>
+            </div>
+            </div>
+        </Stack>
+            <div>
+            <List sx={{ mt: 2 }}>
+                {selectedOptions.length > 0 ? (
+                <Stack 
+                direction="row"
+                justifyContent="flex-start"
+                sx={{ mt: 2 }}
+                >
+                <Typography variant="h5" className={classes.whiteText}>Pre-Event Questionnaire</Typography>
+                </Stack> ) : (
+                ""
+                )}
+                {selectedOptions.map((option, index) => (
+                // <Stack 
+                // direction="row"
+                // justifyContent="center"
+                // sx={{ mt: 1 }}
+                // >
+                //<ListItem>
+                    <Grid container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center">
+                        <Grid item xs={8} md={8}>
+                            <Typography className={classes.whiteText} key={index}>
+                            {option}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4} md={4}>
+                            <IconButton
+                            color="primary"
+                            component="span"
+                            // sx={{ width: "15%" }}
+                            onClick={() => handleDeselectOption(option)}
+                            >
+                            <DeleteIcon fontSize="small" />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                //</ListItem> 
+                // </Stack>
+                ))}
+            </List>
+            </div>
+        </FormControl>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt: 5 }}
+        >
             <Button
+                className={classes.button}
                 onClick={() => {
                 saveEventObject()
                 if(location.state && location.state.edit){
@@ -180,8 +215,8 @@ export default function PreEventQuestionnaire() {
                 {" "}
                 Next
             </Button>
-            </Grid>
-        </div>
+        </Stack>
+            </Box>
         </>
     );
 }

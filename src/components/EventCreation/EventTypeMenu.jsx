@@ -48,7 +48,7 @@ export default function EventTypeMenu() {
         </Stack>
         <Stack 
           direction="row"
-          justifyContent="center"
+          justifyContent="flex-start"
           sx={{ mt: 5 }}
         >
             <FormControl>
@@ -59,10 +59,10 @@ export default function EventTypeMenu() {
                 value={eventType}
                 onChange={handleChange}
             >
-                <FormControlLabel value="Business Networking" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Business Networking</Typography>}></FormControlLabel>
-                <FormControlLabel className={classes.whiteText} value="Party" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Party</Typography>}></FormControlLabel>
-                <FormControlLabel className={classes.whiteText} value="Social Mixer" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Social Mixer</Typography>}></FormControlLabel>
-                <FormControlLabel className={classes.whiteText} value="other" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Other</Typography>}></FormControlLabel>
+                <FormControlLabel sx={{ mt: 3 }} value="Business Networking" control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>} label={<Typography variant="h5" className={classes.whiteText}>Business Networking</Typography>}></FormControlLabel>
+                <FormControlLabel sx={{ mt: 3 }} value="Party" control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>} label={<Typography variant="h5" className={classes.whiteText}>Party</Typography>}></FormControlLabel>
+                <FormControlLabel sx={{ mt: 3 }} value="Social Mixer" control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>} label={<Typography variant="h5" className={classes.whiteText}>Social Mixer</Typography>}></FormControlLabel>
+                <FormControlLabel sx={{ mt: 3 }} value="other" control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>} label={<Typography variant="h5" className={classes.whiteText}>Other</Typography>}></FormControlLabel>
             </RadioGroup>
             </FormControl>
         </Stack>
@@ -81,7 +81,9 @@ export default function EventTypeMenu() {
                 else{
                     navigate('/eventVisibility'); 
                 }
-            }}> Next</Button>
+            }}> 
+            Next
+            </Button>
         </Stack>
         </Box>
         </>

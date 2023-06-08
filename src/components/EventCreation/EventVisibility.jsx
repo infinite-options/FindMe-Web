@@ -46,7 +46,7 @@ export default function EventVisibility() {
         </Stack>
         <Stack 
           direction="row"
-          justifyContent="center"
+          justifyContent="flex-start"
           sx={{ mt: 5 }}>
                 <FormControl>
                 <RadioGroup
@@ -56,12 +56,12 @@ export default function EventVisibility() {
                     value={eventVisibility}
                     onChange={handleChange}                    
                 >
-                    <FormControlLabel value="Public" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Public</Typography>} />
+                    <FormControlLabel sx={{ mt: 3 }} value="Public" control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>} label={<Typography variant="h5" className={classes.whiteText}>Public</Typography>} />
                     <footer><Typography className={classes.whiteText}>Event is searchable and anyone can attend</Typography></footer>
 
                     <br></br>
                     
-                    <FormControlLabel value="Private" control={<Radio />} label={<Typography variant="h5" className={classes.whiteText}>Private</Typography>} />
+                    <FormControlLabel sx={{ mt: 3 }} value="Private" control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>} label={<Typography variant="h5" className={classes.whiteText}>Private</Typography>} />
                     <footer><Typography className={classes.whiteText}>Event is by Invitation Only</Typography></footer>
 
                 </RadioGroup>

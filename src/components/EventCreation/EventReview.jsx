@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Button, Typography, Paper } from "@mui/material";
+import { Grid, Button, Typography, Paper, Box, Stack } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -9,10 +9,12 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import UploadPhotos from "../UploadPhotos";
 import QRCode from "../QRCode/QRCode";
+import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function EventReview() {
+  const classes = useStyles();
   const navigate = useNavigate();
   const { state } = useLocation();
   const edit = state.edit;
@@ -160,233 +162,158 @@ export default function EventReview() {
   };
 
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "5%",
-        }}
-      >
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: 5,
-            flexDirection: "column",
-            flexGrow: 1,
-            border: 1,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-          }}
+   <>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
         >
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            {" "}
-            Review Event{" "}
-          </Typography>
+        <Typography variant="h2" className={classes.whiteText}>
+            edit
+        </Typography>
+        </Stack>
 
-          <List sx={{ bgcolor: "background.paper", mt: 2 }}>
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Title : {retrievedEventObject.eventTitle}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
+        <Stack
+          direction="row"
+          justifyContent="center"
+        >
+          <Typography
+            variant="h4"
+            className={classes.whiteText}
+            onClick={() => {
                   navigate("/eventTitle", { state: { edit: true } });
                 }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Description : {retrievedEventObject.eventDescription}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
-                  navigate("/eventTitle", { state: { edit: true } });
+          >
+            {retrievedEventObject.eventTitle}
+          </Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          // sx={{ mt :2}}
+        >
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            onClick={() => {
+                  navigate("/eventParticulars", { state: { edit: true } });
                 }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Type : {retrievedEventObject.eventType}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
+          >
+            {new Date(retrievedEventObject.eventStartDate).toLocaleString('default', { month: 'short', day: 'numeric' })}
+          </Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          justifyContent="center"
+        >
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            onClick={() => {
+                  navigate("/eventParticulars", { state: { edit: true } });
+                }}
+          >
+            {retrievedEventObject.eventStartTime} - {retrievedEventObject.eventEndTime}
+          </Typography>
+        </Stack>
+
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt :5}}
+        >
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            onClick={() => {
                   navigate("/eventTypeMenu", { state: { edit: true } });
                 }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Visibility : {retrievedEventObject.eventVisibility}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
+          >
+            {retrievedEventObject.eventType}
+          </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt :2}}
+        >
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            onClick={() => {
                   navigate("/eventVisibility", { state: { edit: true } });
                 }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Location : {retrievedEventObject.eventLocation}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
+          >
+            {retrievedEventObject.eventVisibility}
+          </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt :2}}
+        >
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            onClick={() => {
                   navigate("/eventLocation", { state: { edit: true } });
                 }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Start Date : {retrievedEventObject.eventStartDate}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
-                  navigate("/eventParticulars", { state: { edit: true } });
-                }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Start Time : {retrievedEventObject.eventStartTime}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
-                  navigate("/eventParticulars", { state: { edit: true } });
-                }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event End Date : {retrievedEventObject.eventEndDate}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
-                  navigate("/eventParticulars", { state: { edit: true } });
-                }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event End Time : {retrievedEventObject.eventEndTime}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
-                  navigate("/eventParticulars", { state: { edit: true } });
-                }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Capacity : {retrievedEventObject.eventCapacity}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
+          >
+            {retrievedEventObject.eventLocation ? retrievedEventObject.eventLocation.split(',')[0] : ''}
+          </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt :2}}
+        >
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            onClick={() => {
                   navigate("/eventCapacity", { state: { edit: true } });
                 }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Photo :
-                {/* {retrievedEventObject.eventPhoto ? (
-                  <img
-                    src={retrievedEventObject.eventPhoto}
-                    width={250}
-                    height={250}
-                    alt="Event Photo"
-                  />
-                ) : (
-                  "None"
-                )} */}
-              </Typography>{" "}
-              <UploadPhotos state={imageState} />
-              {/* <IconButton
-                component="span"
-                onClick={() => {
-                  navigate("/eventPhotoUpload");
-                }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton> */}
-            </ListItem>
-
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Pre-Event Questionnaire :{" "}
-                {retrievedEventObject.preEventQuestionnaire.map(
-                  (question, index) => {
-                    {
-                      return <ListItem>{question.question}</ListItem>;
-                    }
-                  }
-                )}
-              </Typography>
-              <IconButton
-                component="span"
-                onClick={() => {
+          >
+            Event Capacity : {retrievedEventObject.eventCapacity}
+          </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="flex-start"
+          sx={{ mt :2}}
+        >
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            onClick={() => {
                   navigate("/preEventQuestionnaire", { state: { edit: true } });
                 }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-            {/* <UploadPhotos state={imageState} /> */}
-            
-            <ListItem sx={{ border: "1px solid grey" }}>
-              <Typography>
-                Event Registration QR code :
-                <QRCode 
-                    route = {"/preregistration-event/"}
-                    event_registration_code = {retrievedEventObject.eventRegistrationCode}
-                ></QRCode>
-              </Typography>
-            </ListItem>
-          </List>
-
+          >
+            Pre-Event Questionnaire :{" "}
+            {retrievedEventObject.preEventQuestionnaire.map(
+              (question, index) => {
+                {
+                  return <ListItem>{question.question}</ListItem>;
+                }
+              }
+            )}
+          </Typography>
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt :2}}
+        >
+          <UploadPhotos state={imageState} />
+        </Stack>
+        <Stack 
+          direction="row"
+          justifyContent="center"
+          sx={{ mt :2}}
+        >
           {edit || retrievedEventObject.event_uid ? (
             <Button
+              className={classes.button}
               variant="outlined"
               onClick={() => {
                 updateEvent();
@@ -396,6 +323,7 @@ export default function EventReview() {
             </Button>
           ) : (
             <Button
+              className={classes.button}
               variant="outlined"
               onClick={() => {
                 addEvent();
@@ -404,8 +332,8 @@ export default function EventReview() {
               Create Event
             </Button>
           )}
-        </Paper>
-      </div>
+        </Stack>
+        </Box>
     </>
   );
 }

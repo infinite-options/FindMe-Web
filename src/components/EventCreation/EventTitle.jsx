@@ -50,9 +50,10 @@ export default function EventTitle() {
           sx={{ mt: 5 }}
         >
             <TextField 
-            id="outlined-basic" 
+            className={classes.textfield}
+            // id="outlined-basic" 
             label="Enter Event Title" 
-            variant="outlined" sx={{ width: '30%', mt: 2}} 
+            // variant="outlined"
             value={eventTitle}
             onChange={handleTitleInput}/>
         </Stack>
@@ -71,10 +72,12 @@ export default function EventTitle() {
           sx={{ mt: 5 }}
         >
             <TextField 
-            id="outlined-basic" 
+            className={classes.textfieldMulti}
+            // id="outlined-basic" 
             multiline
+            rows={7}
             label="Enter Event Description" 
-            variant="outlined" sx={{ width: '30%', mt: 2}} 
+            // variant="outlined" sx={{ width: '30%', mt: 2}} 
             value={eventDescription}
             onChange={handleDescInput}/>
         </Stack>
