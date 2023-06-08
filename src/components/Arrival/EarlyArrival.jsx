@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import ably from "../../config/ably";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -14,9 +15,17 @@ const EarlyArrival = () => {
   const { eventObj, user } = location.state;
   const userObj = typeof user === "string" ? JSON.parse(user) : user;
   const navigate = useNavigate();
+  const channel = ably.channels.get(`FindMe/${eventObj.event_uid}`);
 
   const handleEnterWaitingRoom = async () => {
-    navigate("/waiting", { state: { event: eventObj, user } });
+    navigate("/eventAttendees", { state: { event: eventObj, user } });
+  };
+
+  const handleNewAttendee = () => {
+    axios.put(
+      `${BASE_URL}/eventAttend?userId=${userObj.user_uid}&eventId=${eventObj.event_uid}&attendFlag=1`
+    );
+    channel.publish({ data: { message: "New attendee" } });
   };
 
   const validateAndRoute = async () => {
@@ -35,11 +44,26 @@ const EarlyArrival = () => {
         navigate("/preregistration-event/" + eventObj.event_registration_code, {
           state: { event: eventObj },
         });
-      } else if (response.data.eventStarted) {
-        navigate("/activityWaiting", {
-          state: { event: eventObj, user },
-        });
+        return;
       }
+      handleNewAttendee();
+      channel.presence.get(
+        { clientId: eventObj.event_organizer_uid + eventObj.event_uid },
+        async (err, members) => {
+          if (err) console.error("Ably error: " + err.message);
+          if (members.length > 0) {
+            if (response.data.eventStarted === "1") {
+              navigate("/networkingActivity", {
+                state: { event: eventObj, user },
+              });
+            } else {
+              navigate("/waiting", {
+                state: { event: eventObj, user },
+              });
+            }
+          }
+        }
+      );
     }
   };
 

@@ -11,17 +11,17 @@ import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
-const RegistrantDetails = () => {
+const AttendeeDetails = () => {
   const classes = useStyles();
   const location = useLocation();
-  const { event, user, registrantId } = location.state;
+  const { event, user, attendeeId } = location.state;
   const navigate = useNavigate();
   const [registrant, setRegistrant] = useState({ images: "[]" });
   const [qas, setQas] = useState([]);
 
   const fetchRegistrantDetails = async () => {
     const response = await axios.get(
-      `${BASE_URL}/eventRegistrant?eventId=${event.event_uid}&registrantId=${registrantId}`
+      `${BASE_URL}/eventRegistrant?eventId=${event.event_uid}&registrantId=${attendeeId}`
     );
     const data = response["data"];
     setRegistrant(data.registrant);
@@ -139,4 +139,4 @@ const RegistrantDetails = () => {
   );
 };
 
-export default RegistrantDetails;
+export default AttendeeDetails;

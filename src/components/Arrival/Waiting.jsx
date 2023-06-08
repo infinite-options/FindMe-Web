@@ -49,22 +49,9 @@ const Waiting = () => {
   };
 
   const handleAttend = async () => {
-    const response = await axios.get(
-      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&userId=${user.user_uid}`
-    );
-    if (!response.data.hasRegistered) {
-      navigate("/preregistration-event/" + event.event_registration_code, {
-        state: { event },
-      });
-    } else {
-      if (response.data.eventStarted) {
-        navigate("/activityWaiting", {
-          state: { event, user },
-        });
-      } else {
-        setShowAlert(true);
-      }
-    }
+    navigate("/eventAttendees", {
+      state: { event, user },
+    });
   };
 
   useEffect(() => {
