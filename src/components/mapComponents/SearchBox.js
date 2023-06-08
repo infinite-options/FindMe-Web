@@ -8,7 +8,6 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 20px;
 `;
-
 class SearchBox extends Component {
   constructor(props) {
     super(props);

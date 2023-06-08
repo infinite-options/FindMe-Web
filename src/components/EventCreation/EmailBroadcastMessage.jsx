@@ -9,6 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import ThreeDots from "../../Icons/Threedots.gif";
 import useStyles from "../../theming/styles";
+import Back from "../../Icons/Back.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -203,7 +204,7 @@ export default function EmailBroadcastMessage() {
         justifyContent="center"
         sx={{ mt :2}}>
             <TextField
-            style={{ borderRadius: 0 }}
+            className={classes.textfield}
             type="email"
             value={subject}
             margin="normal"
@@ -227,7 +228,7 @@ export default function EmailBroadcastMessage() {
         justifyContent="center"
         sx={{ mt :2}}>
             <TextField
-            style={{ borderRadius: 0 }}
+            className={classes.textfieldMulti}
             type="email"
             value={message}
             margin="normal"
@@ -236,6 +237,7 @@ export default function EmailBroadcastMessage() {
             onChange={(e) => setMessage(e.target.value)}
             fullWidth
             multiline
+            rows={7}
           />
         </Stack>
 
@@ -259,6 +261,7 @@ export default function EmailBroadcastMessage() {
             sx={{ mt: 2 }}
             onClick={() => navigate(-1)}
           >
+            <img src={Back} style={{ width: "2rem" }} alt="back" />
             Back
           </Button>
           </Box>

@@ -63,7 +63,7 @@ export default function EventCapacity() {
           
         <Stack 
           direction="row"
-          justifyContent="center"
+          justifyContent="flex-start"
           sx={{ mt: 5 }}
         >
           <FormControl>
@@ -79,12 +79,12 @@ export default function EventCapacity() {
             >
               <FormControlLabel
                 value="No Limit"
-                control={<Radio />}
+                control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>}
                 label={<Typography variant="h5" className={classes.whiteText}>No Limit</Typography>}
               />
               <FormControlLabel
                 value="Set Limit"
-                control={<Radio />}
+                control={<Radio sx={{color: '#ffffff','&.Mui-checked': {color: '#ffffff'}}}/>}
                 label={<Typography variant="h5" className={classes.whiteText}>Set Limit</Typography>}
               />
             </RadioGroup>
@@ -96,6 +96,7 @@ export default function EventCapacity() {
           sx={{ mt: 5 }}
           >
             <TextField
+              className={classes.textfield}
               label="Event Capacity"
               type="number"
               value={eventCapacity}

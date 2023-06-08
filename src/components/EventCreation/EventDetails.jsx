@@ -26,8 +26,8 @@ export default function EventDetails() {
       ? {}
       : JSON.parse(localStorage.getItem("event"));
 
-  const event = {};
-  event["event_uid"] = "200-000009";
+  // const event = {};
+  // event["event_uid"] = "200-000009";
   console.log(retrievedEventObject);
   console.log(retrievedEventObject.eventPhoto);
   const [images, setImages] = useState([]);
@@ -82,8 +82,8 @@ export default function EventDetails() {
           <Stack
             direction="column"
             justifyContent="center"
-            spacing={2}
-            sx={{ mt: 3 }}
+            spacing={5}
+            sx={{ mt: 5 }}
           >
             <Button
             className={classes.button}
@@ -93,14 +93,14 @@ export default function EventDetails() {
             >
               Registration Code
             </Button>
-            <Button
+            {/* <Button
             className={classes.button}
             onClick={() => {
               navigate("/eventCheckInCode");
             }}
             >
               Check In Code
-            </Button>
+            </Button> */}
             <Button
             className={classes.button}
             onClick={() => {

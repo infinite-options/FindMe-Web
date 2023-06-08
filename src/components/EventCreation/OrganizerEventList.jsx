@@ -117,100 +117,58 @@ export default function OrganizerEventList() {
           edit
         </Typography>
         </Stack>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          spacing={2}
+          sx={{ mt: 2 }}
+        >
         {events.map((event) => {
-          // console.log("event ", event);
           return (
-            <>
-            <Stack
-            direction="column"
-            align="center"
-            justifyContent="center"
-            sx={{
-              bgcolor: "background.paper",
-              border: 1,
-              borderColor: "primary.main",
-              borderRadius: "30px",
-              mt: 2
-            }}
-          >
-            <Grid
-              container
-              sx={{
-                p: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={()=>{
-                saveEventObject(event);
-                navigate("/eventDetails", { state: { edit: true } });
-              }
-              }
-            >
-              <Grid item xs={6} md={6}>
-                <ButtonBase
-                  sx={{
-                    width: 128,
-                    height: 128,
-                    border: "1px solid red",
-                  }}
-                >
-                  <Img
-                    alt="complex"
-                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                  />
-                </ButtonBase>
-              </Grid>
-              <Grid xs={6} md={6} direction="column" spacing={2}>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                  {event.event_title}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {event.event_description}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {event.event_location.split(',')[0]}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {new Date(event.event_start_date).toLocaleString('default', { month: 'short', day: 'numeric' })}
-                </Typography>
-
-                <Typography variant="body2" color="text.secondary">
-                  {event.event_start_time} - {event.event_end_time}
-                </Typography>
-              </Grid>
-              {/* <IconButton
-                component="span"
+            <Box
+                className={classes.eventContainer}
+                justifyContent={"center"}
                 onClick={() => {
-                  saveEventObject(event);
-                  navigate("/eventReview", { state: { edit: true } });
+                  saveEventObject(event)
+                  navigate(
+                    "/eventDetails/"
+                  );
                 }}
               >
-                <EditIcon fontSize="small" />
-              </IconButton> */}
-              {/* <IconButton
-                component="span"
-                onClick={() => {
-                  saveEventObject(event);
-                  navigate("/eventAttendeesList");
-                }}
-              >
-                <GroupsIcon fontSize="medium" />
-              </IconButton> */}
-              {/* <IconButton
-                component="span"
-                onClick={() => {
-                  saveEventObject(event);
-                  navigate("/eventDetails");
-                }}
-              >
-                <MoreHorizIcon fontSize="medium" />
-              </IconButton> */}
-            </Grid>
-            </Stack>            
-            </>
+                <div direction="column" spacing={2} className={classes.events}>
+                    <Stack
+                    className={classes.ellipseSmall}
+                      direction="column"
+                      justifyContent="center"
+                      spacing={2}
+                    >
+                      <Typography variant="h4" className={classes.blueText}>15</Typography>
+                    </Stack>
+                  <Typography className={classes.eventText}>
+                    {event.event_title}
+                    <br />
+                    {new Date(event.event_start_date).toLocaleString(
+                      "default",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }
+                    )}
+                    <br />
+                    {event.event_start_time} - {event.event_end_time}
+                  </Typography>
+                </div>
+                <div className={classes.ellipse}>
+                <img
+                  className={classes.ellipse}
+                  src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                />
+              </div>
+              </Box>
           );
         })}
+          </Stack>
         </Box>
       </>
   );
