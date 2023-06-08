@@ -30,24 +30,26 @@ const EventDashboard = () => {
   const [activityStarted, setActivityStarted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [message, setMessage] = useState("");
-  const [attendeeMap, setAttendeeMap] = useState(new Map());
   const channel = ably.channels.get(`FindMe/${event.event_uid}`);
 
   const handleAttend = async () => {
-    const response = await axios.post(`${BASE_URL}/verifyCheckinCode`, {
-      regCode: event.event_checkin_code,
-      userId: user.user_uid,
-      eventId: event.event_uid,
-    });
-    if (!response.data.hasRegistered)
+    const response = await axios.get(
+      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&userId=${user.user_uid}`
+    );
+    if (!response.data.hasRegistered) {
       navigate("/preregistration-event/" + event.event_registration_code, {
         state: { event },
       });
-    else {
-      localStorage.setItem("event", JSON.stringify(event));
-      localStorage.setItem("user", JSON.stringify(user));
-      window.open("/activityWaiting", "_blank");
+      return;
     }
+    axios.put(
+      `${BASE_URL}/eventAttend?userId=${user.user_uid}&eventId=${event.event_uid}&attendFlag=1`
+    );
+    channel.publish({ data: { message: "New attendee" } });
+    localStorage.setItem("event", JSON.stringify(event));
+    localStorage.setItem("user", JSON.stringify(user));
+    window.open("/networkingActivity", "_blank");
+    handleStartActivity();
   };
 
   const handleShowRegistrationCode = () => {
@@ -72,41 +74,34 @@ const EventDashboard = () => {
     event.event_status = "1";
     setEventStarted(true);
     localStorage.setItem("event", JSON.stringify(event));
+    handleAttend();
   };
 
   const handleStartActivity = () => {
     setActivityStarted(true);
-    channel.publish({ data: { message: "Event started" } });
+    channel.publish({ data: { message: "Activity started" } });
   };
 
   const handleStopActivity = () => {
     setActivityStarted(false);
-    channel.publish({ data: { message: "Event ended" } });
+    setEventStarted(false);
+    channel.publish({ data: { message: "Activity ended" } });
+    event.event_status = "0";
+    localStorage.setItem("event", JSON.stringify(event));
+    axios.put(
+      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&eventStatus=0`
+    );
   };
 
-  const presenceSubstribe = () => {
-    channel.presence.get((err, members) => {
-      if (err) console.error("Ably error: " + err.message);
-      members.forEach((member) => {
-        const userObj = member.data;
-        attendeeMap.set(userObj.user_uid, userObj.name);
-        setAttendeeMap(new Map(attendeeMap));
-      });
-    });
-    channel.presence.subscribe("enter", (member) => {
-      const userObj = member.data;
-      attendeeMap.set(userObj.user_uid, userObj.name);
-      setAttendeeMap(new Map(attendeeMap));
-    });
-    channel.presence.subscribe("leave", (member) => {
-      const userObj = member.data;
-      attendeeMap.delete(userObj.user_uid);
-      setAttendeeMap(new Map(attendeeMap));
+  const enterPresence = () => {
+    channel.presence.enterClient(user.user_uid + event.event_uid, {
+      user_uid: user.user_uid,
+      name: user.first_name + " " + user.last_name,
     });
   };
 
   useEffect(() => {
-    presenceSubstribe();
+    enterPresence();
   }, []);
 
   return (
@@ -146,7 +141,7 @@ const EventDashboard = () => {
           <Button
             className={classes.button}
             onClick={() =>
-              navigate("/eventRegistrations", {
+              navigate("/eventAttendees", {
                 state: { event, user },
               })
             }
@@ -156,34 +151,15 @@ const EventDashboard = () => {
           {eventStarted && (
             <Box sx={{ my: 5 }}>
               <Stack spacing={5} align="center" direction="column">
-                {activityStarted ? (
-                  <>
-                    <Button
-                      className={classes.button}
-                      onClick={handleStopActivity}
-                    >
-                      {"Stop"}
-                    </Button>
-                    <Button
-                      className={classes.button}
-                      onClick={() => setShowDialog(true)}
-                    >
-                      {"Broadcast"}
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      className={classes.button}
-                      onClick={handleStartActivity}
-                    >
-                      {"Start Activity"}
-                    </Button>
-                    <Button className={classes.button} onClick={handleAttend}>
-                      {"Attend Activity"}
-                    </Button>
-                  </>
-                )}
+                <Button className={classes.button} onClick={handleStopActivity}>
+                  {"Stop Event"}
+                </Button>
+                <Button
+                  className={classes.button}
+                  onClick={() => setShowDialog(true)}
+                >
+                  {"Broadcast"}
+                </Button>
               </Stack>
             </Box>
           )}

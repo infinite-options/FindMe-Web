@@ -28,7 +28,12 @@ const NetworkingActivity = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
-  const { event, user } = location.state;
+  const event = location.state
+    ? location.state.event
+    : JSON.parse(localStorage.getItem("event"));
+  const user = location.state
+    ? location.state.user
+    : JSON.parse(localStorage.getItem("user"));
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [options, setOptions] = useState({
@@ -79,8 +84,8 @@ const NetworkingActivity = () => {
 
   const handleNodeClick = (e) => {
     console.log(e);
-    navigate("/registrantDetails", {
-      state: { event, user, registrantId: e.id },
+    navigate("/attendeeDetails", {
+      state: { event, user, attendeeId: e.id },
     });
   };
 
@@ -115,13 +120,28 @@ const NetworkingActivity = () => {
     });
   };
 
+  const handleStopEvent = () => {
+    axios.put(
+      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&eventStatus=0`
+    );
+  };
+
+  const handleExitEvent = () => {
+    axios.put(
+      `${BASE_URL}/eventAttend?userId=${user.user_uid}&eventId=${event.event_uid}&attendFlag=0`
+    );
+  };
+
   const broadcastAndExitSubscribe = () => {
     const channel = ably.channels.get(`FindMe/${event.event_uid}`);
     channel.subscribe((event) => {
-      if (event.data.message === "Event ended") {
-        alert("Event ended");
+      if (event.data.message === "Activity ended") {
+        handleStopEvent();
+        handleExitEvent();
         channel.detach();
-        navigate("/currentEvents", { state: { event, user } });
+        navigate("/");
+      } else if (event.data.message === "New attendee") {
+        refreshGraph();
       } else {
         setMessage(event.data.message);
         setShowAlert(true);
@@ -160,7 +180,12 @@ const NetworkingActivity = () => {
       <Typography variant="h6" className={classes.whiteText} align="center">
         {event.event_start_date}
       </Typography>
-      <Typography variant="h6" className={classes.whiteText} align="center">
+      <Typography
+        variant="h6"
+        className={classes.whiteText}
+        align="center"
+        sx={{ fontKerning: "none" }}
+      >
         {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
       </Typography>
       <Stack spacing={2} direction="column">
@@ -171,10 +196,10 @@ const NetworkingActivity = () => {
         <Button
           className={classes.button}
           onClick={() =>
-            navigate("/eventRegistrations", { state: { event, user } })
+            navigate("/eventAttendees", { state: { event, user } })
           }
         >
-          {"See registrations"}
+          {"See attendees"}
         </Button>
       </Stack>
     </Box>
