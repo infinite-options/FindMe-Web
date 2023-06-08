@@ -224,14 +224,21 @@ export default function CreateFindMeCard() {
                       key={Date.now()}
                       // src={file.image}
                       src={`${file.image}?${Date.now()}`}
-                      style={{ ...tileImg, objectFit: "cover" }}
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "50%",
+                      }}
                     />
                   ) : (
                     <img
                       key={Date.now()}
                       src={file.image}
-                      // src={`${file.image}?${Date.now()}`}
-                      style={{ ...tileImg, objectFit: "cover" }}
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "50%",
+                      }}
                     />
                   )}
                 </div>

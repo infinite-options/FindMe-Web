@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Button, Box, Stack, Typography, TextField } from "@mui/material";
 import useStyles from "../../theming/styles";
 import { useLocation, useNavigate } from "react-router-dom";
+import NoImage from "../../Icons/NoImage.png";
 
 export default function EventsRegDetails() {
   const navigate = useNavigate();
@@ -13,7 +14,11 @@ export default function EventsRegDetails() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h2" className={classes.whiteText}>
+        <Typography
+          variant="h2"
+          className={classes.whiteText}
+          onClick={() => navigate("/")}
+        >
           details
         </Typography>
       </Stack>
@@ -24,10 +29,18 @@ export default function EventsRegDetails() {
         spacing={2}
         sx={{ mt: 2 }}
       >
-        <img
-          src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-          style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-        />
+        {JSON.parse(event.event_photo).length === 0 ? (
+          <img
+            style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+            src={NoImage}
+          />
+        ) : (
+          <img
+            src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+            style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+          />
+        )}
+
         <div
           style={{
             display: "flex",

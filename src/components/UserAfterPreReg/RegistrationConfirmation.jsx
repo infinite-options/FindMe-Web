@@ -23,7 +23,7 @@ export default function RegistrationConfirmation() {
   let email = state.email;
   let user = state.user;
   const eventObj = state.eventObj !== undefined ? state.eventObj : "";
-
+  console.log(eventObj);
   let user_uid =
     typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
 
@@ -57,6 +57,7 @@ export default function RegistrationConfirmation() {
         } else {
           axios.post(BASE_URL + "/EventUser", eObj).then((response) => {
             console.log(response);
+            setEvent(response.data.result[0]);
           });
         }
       });

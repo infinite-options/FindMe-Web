@@ -4,6 +4,8 @@ import { Stack, Box, Paper, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useStyles from "../../theming/styles";
 import Back from "../../Icons/Back.png";
+import NoUserImage from "../../Icons/NoUserImage.png";
+import NoImage from "../../Icons/NoImage.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -80,8 +82,7 @@ export default function EventByOrganizer() {
                 organizers.map((organizer) => {
                   return (
                     <Box
-                      sx={{ m: 1, p: 1 }}
-                      className={classes.button}
+                      className={classes.eventContainer}
                       onClick={() => {
                         setEventOrganizer(
                           organizer.first_name + " " + organizer.last_name
@@ -89,7 +90,30 @@ export default function EventByOrganizer() {
                         getEventsByOrganizer(organizer.user_uid);
                       }}
                     >
-                      {organizer.first_name} {organizer.last_name}
+                      <div
+                        direction="column"
+                        spacing={2}
+                        className={classes.events}
+                      >
+                        <Typography className={classes.eventText}>
+                          {organizer.first_name} {organizer.last_name}
+                        </Typography>
+                      </div>
+                      <div className={classes.ellipse}>
+                        {JSON.parse(organizer.images) === null ? (
+                          <img
+                            className={classes.ellipseImg}
+                            src={NoUserImage}
+                          />
+                        ) : (
+                          <img
+                            className={classes.ellipseImg}
+                            src={`${JSON.parse(
+                              organizer.images
+                            )}?${Date.now()}`}
+                          />
+                        )}
+                      </div>
                     </Box>
                   );
                 })}
@@ -115,24 +139,30 @@ export default function EventByOrganizer() {
                   >
                     <Typography className={classes.eventText}>
                       {event.event_title}
+                      <br /> {event.event_location.split(",")[0]}
+                      <br />
+                      {event.event_location.split(",")[1]},{" "}
+                      {event.event_location.split(",")[2]}
                       <br />
                       {new Date(event.event_start_date).toLocaleString(
                         "default",
                         {
                           month: "short",
                           day: "numeric",
-                          year: "numeric",
                         }
                       )}
-                      <br />
-                      {event.event_start_time} - {event.event_end_time}
+                      ,{event.event_start_time} - {event.event_end_time}
                     </Typography>
                   </div>
                   <div className={classes.ellipse}>
-                    <img
-                      className={classes.ellipseImg}
-                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                    />
+                    {JSON.parse(event.event_photo).length === 0 ? (
+                      <img className={classes.ellipseImg} src={NoImage} />
+                    ) : (
+                      <img
+                        className={classes.ellipseImg}
+                        src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                      />
+                    )}
                   </div>
                 </Box>
               );

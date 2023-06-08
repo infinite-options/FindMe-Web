@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import useStyles from "../../theming/styles";
 import Back from "../../Icons/Back.png";
+import NoImage from "../../Icons/NoImage.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -81,6 +82,7 @@ export default function EventByLocation() {
       <Stack
         direction="column"
         justifyContent="center"
+        alignItems="center"
         spacing={2}
         sx={{ mt: 2 }}
       >
@@ -110,7 +112,7 @@ export default function EventByLocation() {
             <Box
               style={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 margin: "2rem 0rem",
@@ -122,21 +124,19 @@ export default function EventByLocation() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  verticalAlign: "middle",
                 }}
               >
-                <FormGroup>
-                  <Typography style={{ color: "#0A23A6" }}>Miles</Typography>
-                  <TextField
-                    style={{ width: 50 }}
-                    type="email"
-                    value={miles}
-                    margin="normal"
-                    className={classes.textfield}
-                    onChange={(e) => setMiles(e.target.value)}
-                  />
-                </FormGroup>
+                <TextField
+                  style={{ width: 50 }}
+                  type="email"
+                  value={miles}
+                  margin="normal"
+                  className={classes.textfield}
+                  onChange={(e) => setMiles(e.target.value)}
+                />
                 <Typography className={classes.whiteText}>
-                  &nbsp;miles radius from
+                  &nbsp;&nbsp;&nbsp;miles radius from
                 </Typography>
               </div>
               <div
@@ -144,14 +144,12 @@ export default function EventByLocation() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  verticalAlign: "middle",
                 }}
               >
                 <FormGroup>
-                  <Typography className={classes.whiteText}>
-                    Zip Code
-                  </Typography>
                   <TextField
-                    // placeholder="Email"
+                    placeholder="Zip Code"
                     type="email"
                     value={zipCode}
                     margin="normal"
@@ -160,15 +158,30 @@ export default function EventByLocation() {
                     fullWidth
                   />
                 </FormGroup>
+                <Typography className={classes.whiteText}>
+                  {" "}
+                  &nbsp;&nbsp;OR &nbsp;&nbsp;
+                </Typography>
+                <Button
+                  margin="normal"
+                  sx={{
+                    height: "62px",
+                    width: "214px",
+                    color: "#000000",
+                    backgroundColor: "#ffffff",
+                    borderRadius: "30px",
+                    padding: "15px",
+                    fontSize: "20px !important",
+                    fontWeight: "400 !important",
+                    fontFamily: "Inter !important",
+                    textTransform: "none !important",
+                  }}
+                  onClick={() => getCurrentLocation()}
+                >
+                  Current Location
+                </Button>
               </div>
             </Box>
-            <Button
-              className={classes.button}
-              sx={{ mt: 1 }}
-              onClick={() => getCurrentLocation()}
-            >
-              Current Location
-            </Button>
             <Button
               className={classes.button}
               sx={{ my: 1 }}
@@ -178,44 +191,63 @@ export default function EventByLocation() {
             </Button>
           </div>
         ) : !isLoading ? (
-          events.map((event) => {
-            return (
-              <Box
-                className={classes.eventContainer}
-                onClick={() => {
-                  navigate(
-                    "/preregistration-event/" + event.event_registration_code,
-                    {
-                      state: { event: event },
-                    }
-                  );
-                }}
-              >
-                <div direction="column" spacing={2} className={classes.events}>
-                  <Typography className={classes.eventText}>
-                    {event.event_title}
-                    <br />
-                    {new Date(event.event_start_date).toLocaleString(
-                      "default",
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            {events.map((event) => {
+              return (
+                <Box
+                  className={classes.eventContainer}
+                  onClick={() => {
+                    navigate(
+                      "/preregistration-event/" + event.event_registration_code,
                       {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
+                        state: { event: event },
                       }
+                    );
+                  }}
+                >
+                  <div
+                    direction="column"
+                    spacing={2}
+                    className={classes.events}
+                  >
+                    <Typography className={classes.eventText}>
+                      {event.event_title}
+                      <br /> {event.event_location.split(",")[0]}
+                      <br />
+                      {event.event_location.split(",")[1]},{" "}
+                      {event.event_location.split(",")[2]}
+                      <br />
+                      {new Date(event.event_start_date).toLocaleString(
+                        "default",
+                        {
+                          month: "short",
+                          day: "numeric",
+                        }
+                      )}
+                      ,{event.event_start_time} - {event.event_end_time}
+                    </Typography>
+                  </div>
+                  <div className={classes.ellipse}>
+                    {JSON.parse(event.event_photo).length === 0 ? (
+                      <img className={classes.ellipseImg} src={NoImage} />
+                    ) : (
+                      <img
+                        className={classes.ellipseImg}
+                        src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                      />
                     )}
-                    <br />
-                    {event.event_start_time} - {event.event_end_time}
-                  </Typography>
-                </div>
-                <div className={classes.ellipse}>
-                  <img
-                    className={classes.ellipseImg}
-                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                  />
-                </div>
-              </Box>
-            );
-          })
+                  </div>
+                </Box>
+              );
+            })}
+          </div>
         ) : (
           `No events in the ${city} ${zipCode}`
         )}
@@ -234,7 +266,7 @@ export default function EventByLocation() {
               setEventZipSet(false);
               setCity("");
               setZipCode("");
-              setMiles("");
+              setMiles(5);
             }}
           >
             <img src={Back} style={{ width: "2rem" }} />

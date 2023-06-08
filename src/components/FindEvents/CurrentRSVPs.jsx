@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Typography, Button, Stack } from "@mui/material";
 import Back from "../../Icons/Back.png";
 import useStyles from "../../theming/styles";
+import NoImage from "../../Icons/NoImage.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -64,24 +65,30 @@ export default function CurrentRSVPs() {
                 <div direction="column" spacing={2} className={classes.events}>
                   <Typography className={classes.eventText}>
                     {event.event_title}
+                    <br /> {event.event_location.split(",")[0]}
+                    <br />
+                    {event.event_location.split(",")[1]},{" "}
+                    {event.event_location.split(",")[2]}
                     <br />
                     {new Date(event.event_start_date).toLocaleString(
                       "default",
                       {
                         month: "short",
                         day: "numeric",
-                        year: "numeric",
                       }
                     )}
-                    <br />
-                    {event.event_start_time} - {event.event_end_time}
+                    ,{event.event_start_time} - {event.event_end_time}
                   </Typography>
                 </div>
                 <div className={classes.ellipse}>
-                  <img
-                    className={classes.ellipseImg}
-                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                  />
+                  {JSON.parse(event.event_photo).length === 0 ? (
+                    <img className={classes.ellipseImg} src={NoImage} />
+                  ) : (
+                    <img
+                      className={classes.ellipseImg}
+                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                    />
+                  )}
                 </div>
               </Box>
             );

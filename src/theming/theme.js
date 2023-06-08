@@ -1,11 +1,19 @@
 import { createTheme } from "@material-ui/core/styles";
 import drKabelotf from "./DrKabel.otf";
+import interRegularotf from "./InterRegular.otf";
 
 const drKabel = {
   fontFamily: '"Dr Kabel"',
   src: `
     local('"Dr Kabel"'),
     url(${drKabelotf}) format('opentype')
+  `,
+};
+const inter = {
+  fontFamily: '"Inter"',
+  src: `
+    local('"Inter"'),
+    url(${interRegularotf}) format('opentype')
   `,
 };
 
@@ -38,6 +46,9 @@ const theme = createTheme({
       '"Segoe UI Symbol"',
       "Inter",
     ].join(","),
+  },
+  caption: {
+    fontFamily: inter,
   },
   overrides: {
     MuiCssBaseline: {

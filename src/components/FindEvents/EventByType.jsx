@@ -4,6 +4,7 @@ import { Stack, Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useStyles from "../../theming/styles";
 import Back from "../../Icons/Back.png";
+import NoImage from "../../Icons/NoImage.png";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -129,24 +130,30 @@ export default function EventByType() {
                   >
                     <Typography className={classes.eventText}>
                       {event.event_title}
+                      <br /> {event.event_location.split(",")[0]}
+                      <br />
+                      {event.event_location.split(",")[1]},{" "}
+                      {event.event_location.split(",")[2]}
                       <br />
                       {new Date(event.event_start_date).toLocaleString(
                         "default",
                         {
                           month: "short",
                           day: "numeric",
-                          year: "numeric",
                         }
                       )}
-                      <br />
-                      {event.event_start_time} - {event.event_end_time}
+                      ,{event.event_start_time} - {event.event_end_time}
                     </Typography>
                   </div>
                   <div className={classes.ellipse}>
-                    <img
-                      className={classes.ellipseImg}
-                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                    />
+                    {JSON.parse(event.event_photo).length === 0 ? (
+                      <img className={classes.ellipseImg} src={NoImage} />
+                    ) : (
+                      <img
+                        className={classes.ellipseImg}
+                        src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                      />
+                    )}
                   </div>
                 </Box>
               );
