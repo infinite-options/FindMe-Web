@@ -22,9 +22,10 @@ const EventDashboard = () => {
   const event = location.state
     ? location.state.event
     : JSON.parse(localStorage.getItem("event"));
-  const user = location.state
-    ? location.state.user
-    : JSON.parse(localStorage.getItem("user"));
+  const user =
+    typeof location.state.user === "string"
+      ? JSON.parse(location.state.user)
+      : location.state.user;
   const [eventStarted, setEventStarted] = useState(event.event_status === "1");
   const [activityStarted, setActivityStarted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
@@ -45,14 +46,14 @@ const EventDashboard = () => {
     else {
       localStorage.setItem("event", JSON.stringify(event));
       localStorage.setItem("user", JSON.stringify(user));
-      window.open("/waiting", "_blank");
+      window.open("/activityWaiting", "_blank");
     }
   };
 
-  const handleShowCheckinQRCode = () => {
+  const handleShowRegistrationCode = () => {
     localStorage.setItem("event", JSON.stringify(event));
     localStorage.setItem("user", JSON.stringify(user));
-    window.open("/showCheckinCode", "_blank");
+    window.open("/showRegistrationCode", "_blank");
   };
 
   const handleBroadcast = () => {
@@ -119,7 +120,12 @@ const EventDashboard = () => {
       <Typography variant="h5" className={classes.whiteText} align="center">
         {event.event_start_date}
       </Typography>
-      <Typography variant="h5" className={classes.whiteText} align="center">
+      <Typography
+        variant="h5"
+        className={classes.whiteText}
+        align="center"
+        sx={{ fontKerning: "none" }}
+      >
         {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
       </Typography>
       <Stack
@@ -131,11 +137,12 @@ const EventDashboard = () => {
         }}
       >
         <Stack spacing={5}>
-          {!eventStarted && (
-            <Button className={classes.button} onClick={handleStartEvent}>
-              {"Start Event"}
-            </Button>
-          )}
+          <Button
+            className={classes.button}
+            onClick={handleShowRegistrationCode}
+          >
+            {"Registration code"}
+          </Button>
           <Button
             className={classes.button}
             onClick={() =>
@@ -144,10 +151,7 @@ const EventDashboard = () => {
               })
             }
           >
-            {"View registrations"}
-          </Button>
-          <Button className={classes.button} onClick={handleShowCheckinQRCode}>
-            {"Show check-in QR/code"}
+            {"View Attendees"}
           </Button>
           {eventStarted && (
             <Box sx={{ my: 5 }}>
@@ -184,36 +188,14 @@ const EventDashboard = () => {
             </Box>
           )}
         </Stack>
-        <Box sx={{ display: "flex", flexDirection: "column", mt: 4 }}>
-          <Typography
-            align="center"
-            variant="h5"
-            className={classes.whiteText}
-            gutterBottom
-          >
-            {"Attendees"}
-          </Typography>
-          <Stack
-            sx={{
-              bgcolor: "background.paper",
-              border: 1,
-              borderColor: "primary.main",
-              borderRadius: "15px",
-            }}
-            direction="column"
-          >
-            {[...attendeeMap.keys()].map((k) => (
-              <Button key={k} variant="text">
-                {attendeeMap.get(k)}
-              </Button>
-            ))}
-            {attendeeMap.size < 1 && (
-              <Typography align="center" variant="h6" gutterBottom>
-                {"No attendees!"}
-              </Typography>
-            )}
-          </Stack>
-        </Box>
+        {!eventStarted && (
+          <Button className={classes.button} onClick={handleStartEvent}>
+            {"Start Event"}
+          </Button>
+        )}
+        <Button className={classes.button} onClick={() => navigate("/")}>
+          {"Home Page"}
+        </Button>
       </Stack>
       <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
         <DialogTitle>{"Broadcast message"}</DialogTitle>

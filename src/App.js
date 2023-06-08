@@ -45,7 +45,7 @@ import EventRegistrations from "./components/Arrival/EventRegistrations";
 import RegistrantDetails from "./components/Arrival/RegistrantDetails";
 import AttendeeCheckin from "./components/Arrival/AttendeeCheckin";
 import NetworkingActivity from "./components/Arrival/NetworkingActivity";
-import ShowCheckinCode from "./components/Arrival/ShowCheckinCode";
+import ShowRegistrationCode from "./components/Arrival/ShowRegistrationCode";
 import Waiting from "./components/Arrival/Waiting";
 import OrganizerEventList from "./components/EventCreation/OrganizerEventList";
 import SeeEventsList from "./components/EventCreation/SeeEventsList";
@@ -53,6 +53,8 @@ import EventPreRegCode from "./components/EventCreation/EventPreRegCode";
 import EventCheckInCode from "./components/EventCreation/EventCheckInCode";
 import EventAttendeesList from "./components/EventCreation/EventAttendeesList";
 import EventByLocation from "./components/FindEvents/EventByLocation";
+import EarlyArrival from "./components/Arrival/EarlyArrival";
+import ActivityWaiting from "./components/Arrival/ActivitiyWaiting";
 import useStyles from "./theming/styles";
 
 function App() {
@@ -146,7 +148,11 @@ function App() {
                 element={<RegistrationConfirmation />}
               />{" "}
               <Route exact path="/edit-event" element={<EditEventsReg />} />{" "}
-              <Route exact path="/event-details" element={<EventsRegDetails />} />
+              <Route
+                exact
+                path="/event-details"
+                element={<EventsRegDetails />}
+              />
               <Route exact path="/create-card" element={<CreateFindMeCard />} />
               <Route exact path="/login" element={<Login />} />{" "}
               <Route exact path="/signup" element={<Signup />} />
@@ -165,7 +171,11 @@ function App() {
               <Route exact path="/find-event" element={<FindEvent />} />
               <Route exact path="/event-list" element={<EventList />} />
               <Route exact path="/current-rsvps" element={<CurrentRSVPs />} />
-              <Route exact path="/event-bytype" element={<EventByType />} />{" "}
+              <Route
+                exact
+                path="/event-bytype"
+                element={<EventByType />}
+              />{" "}
               <Route
                 exact
                 path="/event-byorganizer"
@@ -223,9 +233,21 @@ function App() {
               />
               <Route exact path="/searchbox" element={<Searchbox />} />
               <Route exact path="/currentEvents" element={<CurrentEvents />} />
-              <Route exact path="/event-bylocation" element={<EventByLocation />} />
-              <Route exact path="/eventDashboard" element={<EventDashboard />} />
-              <Route exact path="/eventRegistrations" element={<EventRegistrations />} />
+              <Route
+                exact
+                path="/event-bylocation"
+                element={<EventByLocation />}
+              />
+              <Route
+                exact
+                path="/eventDashboard"
+                element={<EventDashboard />}
+              />
+              <Route
+                exact
+                path="/eventRegistrations"
+                element={<EventRegistrations />}
+              />
               <Route
                 exact
                 path="/registrantDetails"
@@ -236,13 +258,23 @@ function App() {
                 path="/attendeeCheckin"
                 element={<AttendeeCheckin />}
               />
-              <Route exact path="/networkingActivity" element={<NetworkingActivity />} />
               <Route
                 exact
-                path="/showCheckinCode"
-                element={<ShowCheckinCode />}
+                path="/networkingActivity"
+                element={<NetworkingActivity />}
+              />
+              <Route
+                exact
+                path="/showRegistrationCode"
+                element={<ShowRegistrationCode />}
               />
               <Route exact path="/waiting" element={<Waiting />} />
+              <Route
+                exact
+                path="/activityWaiting"
+                element={<ActivityWaiting />}
+              />
+              <Route exact path="/earlyArrival" element={<EarlyArrival />} />
             </Routes>
           </LoginContext.Provider>
         </Router>

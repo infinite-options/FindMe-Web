@@ -1,90 +1,71 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import MUIAlert from "@mui/material/Alert";
-import Slide from "@mui/material/Slide";
 import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
-const SlideTransition = (props) => {
-  return <Slide {...props} direction="down" />;
-};
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MUIAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
 const CurrentEvents = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { user } = location.state;
   const [events, setEvents] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
 
-  const handleEventClick = async (event) => {
-    const user_uid =
-      typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
-    if (!user_uid) alert("User UID is undefined");
-    const response = await axios.get(
-      `${BASE_URL}/isOrganizer?userId=${user_uid}&eventId=${event.event_uid}`
-    );
-    if (response.data.isOrganizer) {
-      navigate("/eventDashboard", {
-        state: { event, user },
-      });
+  const handleEventClick = (event) => {
+    if (
+      document.cookie !== "" &&
+      document.cookie.split("; ").find((row) => row.startsWith("loggedIn=")) !==
+        undefined
+    ) {
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("loggedIn="))
+        .split("=")[1] === "true"
+        ? navigate("/earlyArrival", {
+            state: {
+              email: document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("user_email="))
+                .split("=")[1],
+              user: document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("user_details="))
+                .split("=")[1],
+              eventObj: event,
+            },
+          })
+        : navigate("/login", {
+            state: { path: "/earlyArrival", eventObj: event },
+          });
     } else {
-      const response = await axios.get(
-        `${BASE_URL}/eventStatus?eventId=${event.event_uid}`
-      );
-      if (!response.data.eventStarted) setShowAlert(true);
-      else {
-        navigate("/attendeeCheckin", {
-          state: { event, user },
-        });
-      }
+      navigate("/login", {
+        state: { path: "/earlyArrival", eventObj: event },
+      });
     }
   };
 
-  const fetchEventsByOrganizer = async () => {
+  const fetchEvents = async () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const date = new Date();
+    const hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+    const amOrPm = date.getHours() >= 12 ? " PM" : " AM";
     const response = await axios.get(
-      `${BASE_URL}/currentEvents?timeZone=${user_timezone}`
+      `${BASE_URL}/GetEvents?event_start_date=${date.toLocaleDateString()}&event_start_time=${
+        hours + ":" + date.getMinutes() + amOrPm
+      }&timeZone=${user_timezone}`
     );
-    setEvents(response.data.events);
-  };
-
-  const handleAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowAlert(false);
+    setEvents(response.data.result);
   };
 
   useEffect(() => {
-    fetchEventsByOrganizer();
+    fetchEvents();
   }, []);
 
   return (
     <Box>
-      <Snackbar
-        open={showAlert}
-        autoHideDuration={5000}
-        onClose={handleAlertClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        TransitionComponent={SlideTransition}
-      >
-        <Alert onClose={handleAlertClose} severity="warning">
-          {"Event has not started yet"}
-        </Alert>
-      </Snackbar>
       <Typography variant="h2" className={classes.whiteText} gutterBottom>
         {"attend"}
       </Typography>
@@ -95,25 +76,45 @@ const CurrentEvents = () => {
         spacing={2}
         direction="column"
       >
-        {events.map((event) => (
-          <Button
-            key={event.event_uid}
-            onClick={() => handleEventClick(event)}
-            className={classes.button}
-            sx={{ py: 5 }}
-          >
-            {event.event_title + " " + event.event_start_date}
-          </Button>
-        ))}
-        {events.length < 1 && (
-          <Typography
-            align="center"
-            variant="h6"
-            className={classes.whiteText}
-            gutterBottom
-          >
-            {"No current events"}
-          </Typography>
+        {events.length > 0 ? (
+          events.map((event) => {
+            return (
+              <Box
+                key={event.event_uid}
+                className={classes.eventContainer}
+                onClick={() => handleEventClick(event)}
+              >
+                <div direction="column" spacing={2} className={classes.events}>
+                  <Typography className={classes.eventText}>
+                    {event.event_title} <br />
+                    {new Date(event.event_start_date).toLocaleString(
+                      "default",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }
+                    )}
+                    <br />
+                    {event.event_start_time} - {event.event_end_time}
+                  </Typography>
+                </div>
+                <div className={classes.ellipse}>
+                  <img
+                    className={classes.ellipseImg}
+                    src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                    alt={event.event_title}
+                  />
+                </div>
+              </Box>
+            );
+          })
+        ) : (
+          <Box className={classes.events} sx={{ alignSelf: "center" }}>
+            <Typography className={classes.eventText}>
+              No events available for today!
+            </Typography>
+          </Box>
         )}
       </Stack>
     </Box>
