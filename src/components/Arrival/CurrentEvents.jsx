@@ -49,13 +49,8 @@ const CurrentEvents = () => {
 
   const fetchEvents = async () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const date = new Date();
-    const hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-    const amOrPm = date.getHours() >= 12 ? " PM" : " AM";
     const response = await axios.get(
-      `${BASE_URL}/GetEvents?event_start_date=${date.toLocaleDateString()}&event_start_time=${
-        hours + ":" + date.getMinutes() + amOrPm
-      }&timeZone=${user_timezone}`
+      `${BASE_URL}/GetEvents?event_start_date=${new Date().toLocaleDateString()}&timeZone=${user_timezone}`
     );
     setEvents(response.data.result);
   };

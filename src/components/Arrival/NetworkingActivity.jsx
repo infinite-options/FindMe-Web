@@ -32,8 +32,11 @@ const NetworkingActivity = () => {
     ? location.state.event
     : JSON.parse(localStorage.getItem("event"));
   const user = location.state
-    ? location.state.user
+    ? typeof location.state.user === "string"
+      ? JSON.parse(location.state.user)
+      : location.state.user
     : JSON.parse(localStorage.getItem("user"));
+  const channel = ably.channels.get(`FindMe/${event.event_uid}`);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [options, setOptions] = useState({
@@ -83,7 +86,6 @@ const NetworkingActivity = () => {
   });
 
   const handleNodeClick = (e) => {
-    console.log(e);
     navigate("/attendeeDetails", {
       state: { event, user, attendeeId: e.id },
     });
@@ -133,17 +135,16 @@ const NetworkingActivity = () => {
   };
 
   const broadcastAndExitSubscribe = () => {
-    const channel = ably.channels.get(`FindMe/${event.event_uid}`);
-    channel.subscribe((event) => {
-      if (event.data.message === "Activity ended") {
+    channel.subscribe((e) => {
+      if (e.data.message === "Event ended") {
         handleStopEvent();
         handleExitEvent();
         channel.detach();
         navigate("/");
-      } else if (event.data.message === "New attendee") {
+      } else if (e.data.message === "New attendee") {
         refreshGraph();
       } else {
-        setMessage(event.data.message);
+        setMessage(e.data.message);
         setShowAlert(true);
       }
     });
@@ -156,9 +157,14 @@ const NetworkingActivity = () => {
     setShowAlert(false);
   };
 
+  const handleSeeAttendees = () => {
+    navigate("/eventAttendees", { state: { event, user } });
+  };
+
   useEffect(() => {
     refreshGraph();
     broadcastAndExitSubscribe();
+    return () => channel.unsubscribe();
   }, []);
 
   return (
@@ -193,12 +199,7 @@ const NetworkingActivity = () => {
           {event.name}
         </Typography>
         <HighchartsReact highcharts={Highcharts} options={options} />
-        <Button
-          className={classes.button}
-          onClick={() =>
-            navigate("/eventAttendees", { state: { event, user } })
-          }
-        >
+        <Button className={classes.button} onClick={handleSeeAttendees}>
           {"See attendees"}
         </Button>
       </Stack>
