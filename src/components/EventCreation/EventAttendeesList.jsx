@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { Grid, Avatar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Back from "../../Icons/Back.png";
 import useStyles from "../../theming/styles";
@@ -95,40 +96,31 @@ const EventAttendeesList = () => {
           Current Attendees
         </Typography>
         </Stack>
-      <Stack
-        sx={{
-          mt: 5,
-        }}
-        direction="column"
-      >
-        {attendees.map((attendee) => (
-          <Typography
-            key={attendee.user_uid}
-            align="center"
-            variant="h6"
-            className={classes.whiteText}
-            onClick={() => handleClickAttendee(attendee)}
-            gutterBottom
-          >
-            {attendee.first_name +
-              " " +
-              attendee.last_name +
-              "(" +
-              attendee.role +
-              ")"}
-          </Typography>
-        ))}
-        {attendees.length < 1 && (
-          <Typography
-            align="center"
-            variant="h6"
-            className={classes.whiteText}
-            gutterBottom
-          >
-            {"No attendees"}
-          </Typography>
-        )}
-      </Stack>
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          alignItems="center"
+          sx={{ minHeight: "30vh" }}
+        >
+          {attendees.map((attendee) => (
+            <Grid key={attendee.user_uid} item xs={4}>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Avatar
+                  src={attendee.images.replace(/\\/g, "").slice(2, -2)}
+                  sx={{
+                    width: "80px",
+                    height: "80px",
+                    bgcolor: "#ff5722",
+                    alignSelf: "center",
+                  }}
+                  alt={attendee.first_name}
+                  onClick={() => handleClickAttendee(attendee)}
+                />
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
       <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
         <Button className={classes.button} align="center" onClick={handleBack}>
           <img src={Back} style={{ width: "2rem" }} alt="back" />

@@ -31,7 +31,7 @@ export default function EventPreRegCode() {
         event["pre_event_questionnaire"] = retrievedEventObject.preEventQuestionnaire
         event["event_photo"] = retrievedEventObject.eventPhoto
         event["event_checkin_code"] = retrievedEventObject.eventCheckinCode
-            
+        event["user_timezone"] = Intl.DateTimeFormat().resolvedOptions().timeZone;
         axios.post(BASE_URL + "/SendEventDetails", event).then((res) => {
             console.log(res);
         });
