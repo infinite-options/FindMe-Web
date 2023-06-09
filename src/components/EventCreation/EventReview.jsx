@@ -103,6 +103,7 @@ export default function EventReview() {
     const data = await response.json();
     saveEventObject(data.result[0]);
     let event = data.result[0];
+    event.user_timezone = user_timezone;
     console.log(event);
     axios.post(BASE_URL + "/SendEventDetails", event).then((res) => {
       console.log(res);
@@ -155,33 +156,28 @@ export default function EventReview() {
 
   const saveEventObject = (data) => {
     retrievedEventObject["eventPhoto"] = data.event_photo;
-    retrievedEventObject["eventRegistrationCode"] = data.event_registration_code;
+    retrievedEventObject["eventRegistrationCode"] =
+      data.event_registration_code;
     retrievedEventObject["eventCheckinCode"] = data.event_checkin_code;
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
   };
 
   return (
-   <>
+    <>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Stack 
-          direction="row"
-          justifyContent="flex-start"
-        >
-        <Typography variant="h2" className={classes.whiteText}>
+        <Stack direction="row" justifyContent="flex-start">
+          <Typography variant="h2" className={classes.whiteText}>
             edit
-        </Typography>
+          </Typography>
         </Stack>
 
-        <Stack
-          direction="row"
-          justifyContent="center"
-        >
+        <Stack direction="row" justifyContent="center">
           <Typography
             variant="h4"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/eventTitle", { state: { edit: true } });
-                }}
+              navigate("/eventTitle", { state: { edit: true } });
+            }}
           >
             {retrievedEventObject.eventTitle}
           </Typography>
@@ -195,98 +191,81 @@ export default function EventReview() {
             variant="h5"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/eventParticulars", { state: { edit: true } });
-                }}
+              navigate("/eventParticulars", { state: { edit: true } });
+            }}
           >
-            {new Date(retrievedEventObject.eventStartDate).toLocaleString('default', { month: 'short', day: 'numeric' })}
+            {new Date(retrievedEventObject.eventStartDate).toLocaleString(
+              "default",
+              { month: "short", day: "numeric" }
+            )}
           </Typography>
         </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-        >
+        <Stack direction="row" justifyContent="center">
           <Typography
             variant="h5"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/eventParticulars", { state: { edit: true } });
-                }}
+              navigate("/eventParticulars", { state: { edit: true } });
+            }}
           >
-            {retrievedEventObject.eventStartTime} - {retrievedEventObject.eventEndTime}
+            {retrievedEventObject.eventStartTime} -{" "}
+            {retrievedEventObject.eventEndTime}
           </Typography>
         </Stack>
 
-        <Stack 
-          direction="row"
-          justifyContent="flex-start"
-          sx={{ mt :5}}
-        >
+        <Stack direction="row" justifyContent="flex-start" sx={{ mt: 5 }}>
           <Typography
             variant="h5"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/eventTypeMenu", { state: { edit: true } });
-                }}
+              navigate("/eventTypeMenu", { state: { edit: true } });
+            }}
           >
             {retrievedEventObject.eventType}
           </Typography>
         </Stack>
-        <Stack 
-          direction="row"
-          justifyContent="flex-start"
-          sx={{ mt :2}}
-        >
+        <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2 }}>
           <Typography
             variant="h5"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/eventVisibility", { state: { edit: true } });
-                }}
+              navigate("/eventVisibility", { state: { edit: true } });
+            }}
           >
             {retrievedEventObject.eventVisibility}
           </Typography>
         </Stack>
-        <Stack 
-          direction="row"
-          justifyContent="flex-start"
-          sx={{ mt :2}}
-        >
+        <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2 }}>
           <Typography
             variant="h5"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/eventLocation", { state: { edit: true } });
-                }}
+              navigate("/eventLocation", { state: { edit: true } });
+            }}
           >
-            {retrievedEventObject.eventLocation ? retrievedEventObject.eventLocation.split(',')[0] : ''}
+            {retrievedEventObject.eventLocation
+              ? retrievedEventObject.eventLocation.split(",")[0]
+              : ""}
           </Typography>
         </Stack>
-        <Stack 
-          direction="row"
-          justifyContent="flex-start"
-          sx={{ mt :2}}
-        >
+        <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2 }}>
           <Typography
             variant="h5"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/eventCapacity", { state: { edit: true } });
-                }}
+              navigate("/eventCapacity", { state: { edit: true } });
+            }}
           >
             Event Capacity : {retrievedEventObject.eventCapacity}
           </Typography>
         </Stack>
-        <Stack 
-          direction="row"
-          justifyContent="flex-start"
-          sx={{ mt :2}}
-        >
+        <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2 }}>
           <Typography
             variant="h5"
             className={classes.whiteText}
             onClick={() => {
-                  navigate("/preEventQuestionnaire", { state: { edit: true } });
-                }}
+              navigate("/preEventQuestionnaire", { state: { edit: true } });
+            }}
           >
             Pre-Event Questionnaire :{" "}
             {retrievedEventObject.preEventQuestionnaire.map(
@@ -298,18 +277,10 @@ export default function EventReview() {
             )}
           </Typography>
         </Stack>
-        <Stack 
-          direction="row"
-          justifyContent="center"
-          sx={{ mt :2}}
-        >
+        <Stack direction="row" justifyContent="center" sx={{ mt: 2 }}>
           <UploadPhotos state={imageState} />
         </Stack>
-        <Stack 
-          direction="row"
-          justifyContent="center"
-          sx={{ mt :2}}
-        >
+        <Stack direction="row" justifyContent="center" sx={{ mt: 2 }}>
           {edit || retrievedEventObject.event_uid ? (
             <Button
               className={classes.button}
@@ -332,7 +303,7 @@ export default function EventReview() {
             </Button>
           )}
         </Stack>
-        </Box>
+      </Box>
     </>
   );
 }

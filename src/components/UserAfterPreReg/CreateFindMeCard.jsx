@@ -294,7 +294,7 @@ export default function CreateFindMeCard() {
               <TextField
                 className={classes.textfield}
                 margin="normal"
-                label="First Name"
+                placeholder="First Name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 required
@@ -302,7 +302,7 @@ export default function CreateFindMeCard() {
               <TextField
                 className={classes.textfield}
                 margin="normal"
-                label="Last Name"
+                placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
@@ -310,7 +310,7 @@ export default function CreateFindMeCard() {
               {/* <TextField
                 className={classes.textfield}
                 margin="normal"
-                label="Email Address"
+                placeholder="Email Address"
                 value={email}
                 disabled
               /> */}
@@ -324,7 +324,7 @@ export default function CreateFindMeCard() {
               <TextField
                 className={classes.textfield}
                 margin="normal"
-                label="Phone Number"
+                placeholder="Phone Number"
                 value={phoneNumber}
                 onChange={(e) =>
                   setPhoneNumber(formatPhoneNumber(e.target.value))
@@ -334,7 +334,7 @@ export default function CreateFindMeCard() {
               <TextField
                 className={classes.textfield}
                 margin="normal"
-                label="Title"
+                placeholder="Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -342,7 +342,7 @@ export default function CreateFindMeCard() {
               <TextField
                 className={classes.textfield}
                 margin="normal"
-                label="Company"
+                placeholder="Company"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 required
@@ -350,16 +350,15 @@ export default function CreateFindMeCard() {
               <TextField
                 className={classes.textfield}
                 margin="normal"
-                label="Catch Phrase"
+                placeholder="Catch Phrase"
                 value={catchPhrase}
                 onChange={(e) => setCatchPhrase(e.target.value)}
                 required
               />
               <Select
-                InputLabelProps={{ shrink: true }}
                 className={classes.textfield}
                 value={role}
-                label="Role"
+                placeholder="Role"
                 onChange={(e) => setRole(e.target.value)}
                 required
               >
