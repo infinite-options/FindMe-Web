@@ -6,6 +6,7 @@ import useStyles from '../../theming/styles';
 import axios from "axios";
 
 const APP_URL = process.env.REACT_APP_CLIENT_BASE_URI;
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 export default function EventPreRegCode() {
     const classes = useStyles();
@@ -13,6 +14,29 @@ export default function EventPreRegCode() {
     const retrievedEventObject = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
     const link_path = "/preregistration-event/" + retrievedEventObject.eventRegistrationCode;
 
+    const sendEmail = () => {
+        let event = {};
+        event['event_organizer_uid'] = retrievedEventObject.event_organizer_uid
+        event["event_type"] = retrievedEventObject.eventType
+        event["event_visibility"] = retrievedEventObject.eventVisibility
+        event["event_title"] = retrievedEventObject.eventTitle
+        event["event_description"] = retrievedEventObject.eventDescription
+        event["event_capacity"] = retrievedEventObject.eventCapacity
+        event["event_location"] = retrievedEventObject.eventLocation
+        event["event_start_time"] = retrievedEventObject.eventStartTime
+        event["event_end_time"] = retrievedEventObject.eventEndTime
+        event["event_start_date"] = retrievedEventObject.eventStartDate
+        event["event_end_date"] = retrievedEventObject.eventEndDate
+        event["event_registration_code"] = retrievedEventObject.eventRegCode
+        event["pre_event_questionnaire"] = retrievedEventObject.preEventQuestionnaire
+        event["event_photo"] = retrievedEventObject.eventPhoto
+        event["event_checkin_code"] = retrievedEventObject.eventCheckinCode
+            
+        axios.post(BASE_URL + "/SendEventDetails", event).then((res) => {
+            console.log(res);
+        });
+    }
+            
     return (
         <>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -64,7 +88,7 @@ export default function EventPreRegCode() {
         >
             <Button 
             className={classes.button}
-            onClick={() => { }}>
+            onClick={() => {sendEmail() }}>
                 Send Email
             </Button>
         </Stack>
