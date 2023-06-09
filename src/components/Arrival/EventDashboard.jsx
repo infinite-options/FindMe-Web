@@ -27,30 +27,9 @@ const EventDashboard = () => {
       ? JSON.parse(location.state.user)
       : location.state.user;
   const [eventStarted, setEventStarted] = useState(event.event_status === "1");
-  const [activityStarted, setActivityStarted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [message, setMessage] = useState("");
   const channel = ably.channels.get(`FindMe/${event.event_uid}`);
-
-  const handleAttend = async () => {
-    const response = await axios.get(
-      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&userId=${user.user_uid}`
-    );
-    if (!response.data.hasRegistered) {
-      navigate("/preregistration-event/" + event.event_registration_code, {
-        state: { event },
-      });
-      return;
-    }
-    axios.put(
-      `${BASE_URL}/eventAttend?userId=${user.user_uid}&eventId=${event.event_uid}&attendFlag=1`
-    );
-    channel.publish({ data: { message: "New attendee" } });
-    localStorage.setItem("event", JSON.stringify(event));
-    localStorage.setItem("user", JSON.stringify(user));
-    window.open("/networkingActivity", "_blank");
-    handleStartActivity();
-  };
 
   const handleShowRegistrationCode = () => {
     localStorage.setItem("event", JSON.stringify(event));
@@ -68,24 +47,29 @@ const EventDashboard = () => {
   };
 
   const handleStartEvent = async () => {
+    const response = await axios.get(
+      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&userId=${user.user_uid}`
+    );
+    if (!response.data.hasRegistered) {
+      navigate("/preregistration-event/" + event.event_registration_code, {
+        state: { event },
+      });
+      return;
+    }
     await axios.put(
       `${BASE_URL}/eventStatus?eventId=${event.event_uid}&eventStatus=1`
     );
     event.event_status = "1";
     setEventStarted(true);
     localStorage.setItem("event", JSON.stringify(event));
-    handleAttend();
+    localStorage.setItem("user", JSON.stringify(user));
+    channel.publish({ data: { message: "Event started" } });
+    window.open("/networkingActivity", "_blank");
   };
 
-  const handleStartActivity = () => {
-    setActivityStarted(true);
-    channel.publish({ data: { message: "Activity started" } });
-  };
-
-  const handleStopActivity = () => {
-    setActivityStarted(false);
+  const handleStopEvent = () => {
     setEventStarted(false);
-    channel.publish({ data: { message: "Activity ended" } });
+    channel.publish({ data: { message: "Event ended" } });
     event.event_status = "0";
     localStorage.setItem("event", JSON.stringify(event));
     axios.put(
@@ -93,15 +77,15 @@ const EventDashboard = () => {
     );
   };
 
-  const enterPresence = () => {
-    channel.presence.enterClient(user.user_uid + event.event_uid, {
-      user_uid: user.user_uid,
-      name: user.first_name + " " + user.last_name,
-    });
+  const handleOrganizerAttend = () => {
+    axios.put(
+      `${BASE_URL}/eventAttend?userId=${user.user_uid}&eventId=${event.event_uid}&attendFlag=1`
+    );
+    channel.presence.enterClient(user.user_uid + event.event_uid);
   };
 
   useEffect(() => {
-    enterPresence();
+    handleOrganizerAttend();
   }, []);
 
   return (
@@ -113,7 +97,10 @@ const EventDashboard = () => {
         {event.event_title}
       </Typography>
       <Typography variant="h5" className={classes.whiteText} align="center">
-        {event.event_start_date}
+        {new Date(event.event_start_date).toLocaleString("default", {
+          month: "short",
+          day: "numeric",
+        })}
       </Typography>
       <Typography
         variant="h5"
@@ -148,19 +135,17 @@ const EventDashboard = () => {
           >
             {"View Attendees"}
           </Button>
+          <Button
+            className={classes.button}
+            onClick={() => setShowDialog(true)}
+          >
+            {"Broadcast"}
+          </Button>
           {eventStarted && (
             <Box sx={{ my: 5 }}>
-              <Stack spacing={5} align="center" direction="column">
-                <Button className={classes.button} onClick={handleStopActivity}>
-                  {"Stop Event"}
-                </Button>
-                <Button
-                  className={classes.button}
-                  onClick={() => setShowDialog(true)}
-                >
-                  {"Broadcast"}
-                </Button>
-              </Stack>
+              <Button className={classes.button} onClick={handleStopEvent}>
+                {"Stop Event"}
+              </Button>
             </Box>
           )}
         </Stack>

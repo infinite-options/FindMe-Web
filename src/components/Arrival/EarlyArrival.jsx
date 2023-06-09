@@ -18,7 +18,18 @@ const EarlyArrival = () => {
   const channel = ably.channels.get(`FindMe/${eventObj.event_uid}`);
 
   const handleEnterWaitingRoom = async () => {
-    navigate("/eventAttendees", { state: { event: eventObj, user } });
+    const response = await axios.get(
+      `${BASE_URL}/eventStatus?eventId=${eventObj.event_uid}&userId=${user.user_uid}`
+    );
+    if (response.data.eventStarted === "1") {
+      navigate("/networkingActivity", {
+        state: { event: eventObj, user },
+      });
+    } else {
+      navigate("/eventAttendees", {
+        state: { event: eventObj, user },
+      });
+    }
   };
 
   const handleNewAttendee = () => {

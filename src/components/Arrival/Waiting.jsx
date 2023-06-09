@@ -1,25 +1,14 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import ably from "../../config/ably";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import MUIAlert from "@mui/material/Alert";
-import Slide from "@mui/material/Slide";
 import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
-
-const SlideTransition = (props) => {
-  return <Slide {...props} direction="down" />;
-};
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MUIAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const Waiting = () => {
   const classes = useStyles();
@@ -32,7 +21,7 @@ const Waiting = () => {
     ? location.state.event
     : JSON.parse(localStorage.getItem("event"));
   const [orgProfile, setOrgProfile] = useState({ images: "[]" });
-  const [showAlert, setShowAlert] = useState(false);
+  const channel = ably.channels.get(`FindMe/${event.event_uid}`);
 
   const fetchOrganizerProfile = async () => {
     const response = await axios.get(
@@ -41,17 +30,19 @@ const Waiting = () => {
     setOrgProfile(response.data.profile);
   };
 
-  const handleAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowAlert(false);
-  };
-
   const handleAttend = async () => {
-    navigate("/eventAttendees", {
-      state: { event, user },
-    });
+    const response = await axios.get(
+      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&userId=${user.user_uid}`
+    );
+    if (response.data.eventStarted === "1") {
+      navigate("/networkingActivity", {
+        state: { event, user },
+      });
+    } else {
+      navigate("/eventAttendees", {
+        state: { event, user },
+      });
+    }
   };
 
   useEffect(() => {
@@ -60,17 +51,6 @@ const Waiting = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Snackbar
-        open={showAlert}
-        autoHideDuration={5000}
-        onClose={handleAlertClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        TransitionComponent={SlideTransition}
-      >
-        <Alert onClose={handleAlertClose} severity="warning">
-          {"Event has not started yet"}
-        </Alert>
-      </Snackbar>
       <Typography variant="h2" className={classes.whiteText} gutterBottom>
         {"attend"}
       </Typography>
