@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import * as ReactBootStrap from "react-bootstrap";
 import useStyles from "../../theming/styles";
 import Back from "../../Icons/Back.png";
 import NoImage from "../../Icons/NoImage.png";
@@ -22,12 +23,16 @@ export default function EventByLocation() {
   const [city, setCity] = useState("");
   const [miles, setMiles] = useState(5);
   const [zipCode, setZipCode] = useState("");
+  const [address, setAddress] = useState("");
   const [events, setEvents] = useState([]);
   const [eventCitySet, setEventCitySet] = useState(false);
   const [eventZipSet, setEventZipSet] = useState(false);
+  const [eventAddressSet, setEventAddressSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [showSpinner, setShowSpinner] = useState(false);
+  console.log(address);
   const getEventByLocation = () => {
+    setShowSpinner(true);
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (city !== "") {
       let obj = {
@@ -37,7 +42,22 @@ export default function EventByLocation() {
         .post(BASE_URL + `/EventsByCity?timeZone=${user_timezone}`, obj)
         .then((response) => {
           setEvents(response.data.result);
+          setEventCitySet(true);
+          setShowSpinner(false);
+          setIsLoading(false);
+        });
+    } else if (address !== "") {
+      let obj = {
+        miles: miles,
+        address: address,
+      };
+
+      axios
+        .post(BASE_URL + `/EventsByAddress?timeZone=${user_timezone}`, obj)
+        .then((response) => {
+          setEvents(response.data.result);
           setEventZipSet(true);
+          setShowSpinner(false);
           setIsLoading(false);
         });
     } else {
@@ -49,7 +69,8 @@ export default function EventByLocation() {
         .post(BASE_URL + `/EventsByZipCodes?timeZone=${user_timezone}`, obj)
         .then((response) => {
           setEvents(response.data.result);
-          setEventZipSet(true);
+          setEventAddressSet(true);
+          setShowSpinner(false);
           setIsLoading(false);
         });
     }
@@ -62,12 +83,12 @@ export default function EventByLocation() {
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${API_KEY}`
         )
         .then((response) => {
-          let result = response.data.results[0].address_components[6];
-          setZipCode(result.short_name);
+          let result = response.data.results[0];
+          setAddress(result.formatted_address);
         });
     });
   };
-
+  console.log(showSpinner);
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2, p: 2 }}>
@@ -86,7 +107,7 @@ export default function EventByLocation() {
         spacing={2}
         sx={{ mt: 2 }}
       >
-        {!eventCitySet && !eventZipSet ? (
+        {!eventCitySet && !eventZipSet && !eventAddressSet ? (
           <div
             style={{
               display: "flex",
@@ -181,6 +202,14 @@ export default function EventByLocation() {
                   Current Location
                 </Button>
               </div>
+              <Typography className={classes.whiteText} sx={{ m: 2 }}>
+                {address}
+              </Typography>{" "}
+              {showSpinner ? (
+                <ReactBootStrap.Spinner animation="border" role="status" />
+              ) : (
+                ""
+              )}
             </Box>
             <Button
               className={classes.button}
@@ -257,14 +286,16 @@ export default function EventByLocation() {
         spacing={2}
         sx={{ mt: 12 }}
       >
-        {eventCitySet || eventZipSet ? (
+        {eventCitySet || eventZipSet || eventAddressSet ? (
           <Button
             className={classes.button}
             onClick={() => {
               setEventCitySet(false);
               setEventZipSet(false);
+              setEventAddressSet(false);
               setCity("");
               setZipCode("");
+              setAddress("");
               setMiles(5);
             }}
           >
