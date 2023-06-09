@@ -97,7 +97,7 @@ export default function EventCapacity() {
           >
             <TextField
               className={classes.textfield}
-              label="Event Capacity"
+              // label="Event Capacity"
               type="number"
               value={eventCapacity}
               disabled={disabled}

@@ -208,7 +208,7 @@ export default function EmailBroadcastMessage() {
             type="email"
             value={subject}
             margin="normal"
-            label="Subject"
+            // label="Subject"
             size="small"
             InputLabelProps={{ shrink: true }}
             onChange={(e) => setSubject(e.target.value)}
@@ -232,7 +232,7 @@ export default function EmailBroadcastMessage() {
             type="email"
             value={message}
             margin="normal"
-            label="Message"
+            // label="Message"
             InputLabelProps={{ shrink: true }}
             onChange={(e) => setMessage(e.target.value)}
             fullWidth
