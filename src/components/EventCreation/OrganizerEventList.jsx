@@ -33,20 +33,20 @@ export default function OrganizerEventList() {
   const { state } = useLocation();
   const retrievedEventObject = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
   
-  var user_uid;
-  useEffect(() => {
-    if (state !== null) {
-      let user = state.user;
-      user_uid = typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
-    }
-    else {
-      user_uid = retrievedEventObject.event_organizer_uid;
-    }
-    setEventOrganizerUID(user_uid)
-  },[])
+  // var user_uid;
+  // useEffect(() => {
+  //   if (state !== null) {
+  //     let user = state.user;
+  //     user_uid = typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
+  //   }
+  //   else {
+  //     user_uid = retrievedEventObject.event_organizer_uid;
+  //   }
+  //   setEventOrganizerUID(user_uid)
+  // },[])
   
   const [events, setEvents] = useState([]);
-  const [eventOrganizerUID, setEventOrganizerUID] = useState(user_uid);
+  const [eventOrganizerUID, setEventOrganizerUID] = useState(state !== null ? (typeof state.user === "string" ? JSON.parse(state.user).user_uid : state.user.user_uid) : retrievedEventObject.event_organizer_uid);
 
   const getAllEvents = () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone

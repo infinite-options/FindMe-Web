@@ -52,7 +52,7 @@ export default function EventTitle() {
             <TextField 
             className={classes.textfield}
             // id="outlined-basic" 
-            label="Enter Event Title" 
+            // label="Enter Event Title" 
             // variant="outlined"
             value={eventTitle}
             onChange={handleTitleInput}/>
@@ -76,7 +76,7 @@ export default function EventTitle() {
             // id="outlined-basic" 
             multiline
             rows={7}
-            label="Enter Event Description" 
+            // label="Enter Event Description" 
             // variant="outlined" sx={{ width: '30%', mt: 2}} 
             value={eventDescription}
             onChange={handleDescInput}/>

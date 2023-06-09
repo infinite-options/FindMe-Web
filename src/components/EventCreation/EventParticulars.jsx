@@ -75,7 +75,7 @@ export default function EventParticulars() {
             <DatePicker 
                 className={classes.textfield}
                 // sx={{mt: 2, backgroundColor:"white", borderRadius: "30px"}}
-                label="Event Start Date" 
+                // label="Event Start Date" 
                 value={selectedStartDate}
                 // defaultValue={today}
                 minDate={today}
@@ -110,7 +110,7 @@ export default function EventParticulars() {
             <DatePicker
                 className={classes.textfield}
                 // sx={{mt: 2, backgroundColor:"white", borderRadius: "30px"}}
-                label="Event End Date" 
+                // label="Event End Date" 
                 value={selectedEndDate}
                 // defaultValue={today}
                 minDate={selectedStartDate}
@@ -142,7 +142,7 @@ export default function EventParticulars() {
             <TimePicker
                 className={classes.textfield}
                 // sx={{mt: 2, backgroundColor:"white", borderRadius: "30px",}}
-                label="Enter Event Start Time"
+                // label="Enter Event Start Time"
                 value={startTime}
                 onChange={(newStartTime) => { 
                     setStartTime(newStartTime);
@@ -171,7 +171,7 @@ export default function EventParticulars() {
             <TimePicker
                 className={classes.textfield}
                 // sx={{ backgroundColor:"white", borderRadius: "30px"}}
-                label="Enter Event End Time"
+                // label="Enter Event End Time"
                 value={endTime}
                 onChange={(newEndTime) => 
                 {
