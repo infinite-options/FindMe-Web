@@ -17,6 +17,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useLocation, useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
 import useStyles from "../../theming/styles";
+import NoImage from "../../Icons/NoImage.png"
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -52,7 +53,7 @@ export default function OrganizerEventList() {
     axios
       .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}&timeZone=${user_timezone}`)
       .then((response) => {
-        // console.log("GetEvents result", response.data.result);
+        console.log("GetEvents result", response.data.result);
         setEvents(response.data.result);
       });
   };
@@ -142,7 +143,7 @@ export default function OrganizerEventList() {
                       justifyContent="center"
                       spacing={2}
                     >
-                      <Typography variant="h4" className={classes.blueText}>15</Typography>
+                      <Typography variant="h4" className={classes.blueText}>{event.num_attendees}</Typography>
                     </Stack>
                   <Typography className={classes.eventText}>
                     {event.event_title}
@@ -160,11 +161,15 @@ export default function OrganizerEventList() {
                   </Typography>
                 </div>
                 <div className={classes.ellipse}>
-                <img
-                  className={classes.ellipse}
-                  src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                />
-              </div>
+                  {JSON.parse(event.event_photo).length === 0 ? (
+                    <img className={classes.ellipseImg} src={NoImage} />
+                  ) : (
+                    <img
+                      className={classes.ellipseImg}
+                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                    />
+                  )}
+                </div>
               </Box>
           );
         })}

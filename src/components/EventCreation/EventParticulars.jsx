@@ -55,71 +55,135 @@ export default function EventParticulars() {
             Event Date & Time
         </Typography>
         </Stack>
+       
         <Stack 
-          direction="row"
-          justifyContent="flex-start"
-          sx={{ mt: 5 }}
-        >                 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={['DatePicker', 'TimePicker']}>
-                <Grid
-            container
-            direction="column">
-            <Typography variant="poster" className={classes.whiteText} sx={{mt: 2}}> Select Event Date </Typography>
-
-            <DatePicker 
-            sx={{mt: 2, backgroundColor:"white", borderRadius: "30px"}}
-            label="Event Start Date" 
-            value={selectedStartDate}
-            // defaultValue={today}
-            minDate={today}
-            onChange={(newDate) => 
-            {
-                setSelectedStartDate(newDate);
-                if (selectedEndDate < newDate)
-                { setSelectedEndDate(newDate); }
-            }}
-            />
-            <DatePicker
-            sx={{mt: 2, backgroundColor:"white", borderRadius: "30px"}}
-            label="Event End Date" 
-            value={selectedEndDate}
-            // defaultValue={today}
-            minDate={selectedStartDate}
-            onChange={(newDate) => {
-                setSelectedEndDate(newDate)
-            }}
-            />
-            </Grid>
-            
-            <Grid
-            container
-            direction="column">
-            <Typography variant="poster" className={classes.whiteText} sx={{mt: 2}}> Select Event Timings </Typography>
-
-            <TimePicker
-            sx={{mt: 2, backgroundColor:"white", borderRadius: "30px",}}
-            label="Enter Event Start Time"
-            value={startTime}
-            onChange={(newStartTime) => { 
-                setStartTime(newStartTime);
-            }}
-            />
-            <TimePicker
-            sx={{mt: 2, backgroundColor:"white", borderRadius: "30px"}}
-            label="Enter Event End Time"
-            value={endTime}
-            onChange={(newEndTime) => 
-            {
-                setEndTime(newEndTime)
-                if (newEndTime < startTime && selectedStartDate === selectedEndDate)
-                { setSelectedEndDate(dayjs(selectedStartDate).add(1, 'day')); }
-            }}
-            />
-            </Grid>
-        </DemoContainer>
-        </LocalizationProvider>
+        direction="row"
+        justifyContent="flex-start"
+        sx={{ mt: 5 }}
+        alignItems="center"
+        >
+            <Typography variant="h5" className={classes.whiteText}> Start Date </Typography>
         </Stack>
+        <Stack 
+        direction="row"
+        justifyContent="center"
+        sx={{ mt: 2 }}
+        alignItems="center"
+        >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker', 'TimePicker']}>
+            <DatePicker 
+                className={classes.textfield}
+                // sx={{mt: 2, backgroundColor:"white", borderRadius: "30px"}}
+                label="Event Start Date" 
+                value={selectedStartDate}
+                // defaultValue={today}
+                minDate={today}
+                onChange={(newDate) => 
+                {
+                    setSelectedStartDate(newDate);
+                    if (selectedEndDate < newDate)
+                    { setSelectedEndDate(newDate); }
+                }}
+            />
+            </DemoContainer>
+            </LocalizationProvider>
+        </Stack>
+        
+        <Stack 
+        direction="row"
+        justifyContent="flex-start"
+        sx={{ mt: 2 }}
+        alignItems="center"
+        >
+            <Typography variant="h5" className={classes.whiteText}> End Date </Typography>
+        </Stack>
+        <Stack 
+        direction="row"
+        // spacing={1}
+        justifyContent="center"
+        sx={{ mt: 2 }}
+        alignItems="center"
+        >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker', 'TimePicker']}>
+            <DatePicker
+                className={classes.textfield}
+                // sx={{mt: 2, backgroundColor:"white", borderRadius: "30px"}}
+                label="Event End Date" 
+                value={selectedEndDate}
+                // defaultValue={today}
+                minDate={selectedStartDate}
+                onChange={(newDate) => {
+                    setSelectedEndDate(newDate)
+                }}
+            />
+            </DemoContainer>
+            </LocalizationProvider>
+        </Stack>
+        
+        <Stack 
+        direction="row"
+        justifyContent="flex-start"
+        sx={{ mt: 2 }}
+        alignItems="center"
+        >
+            <Typography variant="h5" className={classes.whiteText}> Start Time </Typography>
+        </Stack>
+        <Stack 
+        direction="row"
+        // spacing={1}
+        justifyContent="center"
+        sx={{ mt: 2 }}
+        alignItems="center"
+        >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker', 'TimePicker']}>
+            <TimePicker
+                className={classes.textfield}
+                // sx={{mt: 2, backgroundColor:"white", borderRadius: "30px",}}
+                label="Enter Event Start Time"
+                value={startTime}
+                onChange={(newStartTime) => { 
+                    setStartTime(newStartTime);
+                }}
+            />
+            </DemoContainer>
+            </LocalizationProvider>
+        </Stack>
+        
+        <Stack 
+        direction="row"
+        justifyContent="flex-start"
+        sx={{ mt: 2 }}
+        alignItems="center"
+        >
+            <Typography variant="h5" className={classes.whiteText} > End Time </Typography>
+        </Stack>
+        <Stack 
+        direction="row"
+        justifyContent="center"
+        sx={{ mt: 2 }}
+        alignItems="center"
+        >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker', 'TimePicker']}>
+            <TimePicker
+                className={classes.textfield}
+                // sx={{ backgroundColor:"white", borderRadius: "30px"}}
+                label="Enter Event End Time"
+                value={endTime}
+                onChange={(newEndTime) => 
+                {
+                    setEndTime(newEndTime)
+                    if (newEndTime < startTime && selectedStartDate === selectedEndDate)
+                    { setSelectedEndDate(dayjs(selectedStartDate).add(1, 'day')); }
+                }}
+            />
+            </DemoContainer>
+            </LocalizationProvider>
+        </Stack>
+        
         <Stack 
         direction="row"
         justifyContent="center"

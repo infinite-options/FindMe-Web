@@ -14,16 +14,40 @@ export default function EventLocation() {
     const [long, setLong] = useState(-121.887370);
     const [address, setAddress] = useState('');
     const [zipcode, setZipcode] = useState('');
+    const [locationName, setLocationName] = useState('');
 
     const latLongHandler = (lat, long) => {
         setLat(lat)
         setLong(long)
     }
-    const addressHandler = (address, zipcode) => {
+    const addressHandler = (address, name) => {
+        setLocationName(name)
         setAddress(address)
-        setZipcode(zipcode)
+        console.log(address)
+
+        let zip = " ";
+
+        var addressComponents = address.split(',');
+        if (addressComponents && addressComponents.length > 1) {
+            var stateZipCountry = addressComponents.slice(-2);
+            if (stateZipCountry && stateZipCountry.length == 2) {
+                var stateZip = stateZipCountry[0]
+                // console.log("stateZip ", stateZip)
+                var country = stateZipCountry[1]
+
+                var stateZip_components = stateZip.split(/(\s+)/);
+                // console.log("stateZip_components ", stateZip_components)
+                if (stateZip_components && stateZip_components.length >0) {
+                    zip = stateZip_components.pop()
+                }
+            }
+            console.log(" selected adddress = location ", name, "\n zip ", zip, "\n country ", country )
+        }
+        // console.log(address.split(',')).slice(-2)[0]
+        setZipcode(zip)
     }
     const saveEventObject = () => {
+        retrievedEventObject['eventLocationName'] = locationName;
         retrievedEventObject['eventLocation'] = address;
         retrievedEventObject['eventZip'] = zipcode;
         localStorage.setItem('event', JSON.stringify(retrievedEventObject));
