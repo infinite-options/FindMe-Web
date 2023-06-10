@@ -121,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "50%",
     marginLeft: "-50px",
     marginTop: "0px",
+    objectFit: "cover",
   },
   circularImage: {
     clipPath: "circle()",
