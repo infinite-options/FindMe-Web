@@ -27,7 +27,7 @@ export default function CreateFindMeCard() {
   const edit = state.edit;
   const user_uid = state.user_uid;
   const path = state.path;
-  const eventObj = state.eventObj;
+  let eventObj = state.eventObj !== undefined ? state.eventObj : "";
   console.log(eventObj);
   // const [userDetails, setUserDetails] = useState([]);
   const [displayCard, setDisplayCard] = useState(false);
@@ -123,6 +123,7 @@ export default function CreateFindMeCard() {
         state: {
           email: email,
           user: userDetails,
+          eventObj: eventObj,
         },
       });
     } else {
@@ -171,6 +172,7 @@ export default function CreateFindMeCard() {
           email: email,
           user: userDetails,
           user_uid: user_uid,
+          eventObj: eventObj,
         },
       });
     }

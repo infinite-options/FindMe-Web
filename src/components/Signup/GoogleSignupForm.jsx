@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Stack,
@@ -15,7 +15,7 @@ import axios from "axios";
 import UserAlreadyExistsModal from "./UserAlreadyExistsModal";
 import { formatPhoneNumber } from "../../helper";
 import useStyles from "../../theming/styles";
-import { boldSmall } from "../../styles";
+import LoginContext from "../../LoginContext";
 
 let SCOPES =
   "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile";
@@ -23,10 +23,12 @@ let SCOPES =
 function GoogleSignupForm(props) {
   const navigate = useNavigate();
   const classes = useStyles();
+  const loginContext = useContext(LoginContext);
   const { state } = useLocation();
   let user = state.user;
   let path = state.path;
   let eventObj = state.eventObj !== undefined ? state.eventObj : "";
+  console.log(eventObj);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -58,6 +60,19 @@ function GoogleSignupForm(props) {
           return;
           // add validation
         } else {
+          document.cookie = "user_uid=" + u.user_uid;
+          document.cookie = "user_email=" + user.email;
+          document.cookie = "user_details=" + JSON.stringify(u);
+          document.cookie = "loggedIn=" + true;
+          loginContext.setLoginState({
+            ...loginContext.loginState,
+            reload: false,
+            loggedIn: true,
+            user_uid: user.user_uid,
+            user_email: user.email,
+            user_details: user,
+          });
+
           navigate("/create-card", {
             state: {
               email: email,
