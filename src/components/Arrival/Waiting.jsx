@@ -81,7 +81,7 @@ const Waiting = () => {
           {"Waiting for the host"}
         </Typography>
         <Avatar
-          src={orgProfile.images.replace(/\\/g, "").slice(2, -2)}
+          src={JSON.parse(orgProfile.images)[0]}
           sx={{
             width: "150px",
             height: "150px",

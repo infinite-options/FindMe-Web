@@ -12,6 +12,7 @@ import HighchartsReact from "highcharts-react-official";
 import Snackbar from "@mui/material/Snackbar";
 import MUIAlert from "@mui/material/Alert";
 import Slide from "@mui/material/Slide";
+import NoUserImage from "../../Icons/NoUserImage.png";
 import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
@@ -91,6 +92,11 @@ const NetworkingActivity = () => {
     });
   };
 
+  const handleUserImage = (images) => {
+    const imagesArr = JSON.parse(images);
+    return imagesArr.length > 0 ? imagesArr[0] : NoUserImage;
+  };
+
   const refreshGraph = async () => {
     const response = await axios.get(
       `${BASE_URL}/networkingGraph?eventId=${event.event_uid}&userId=${user.user_uid}`
@@ -102,7 +108,7 @@ const NetworkingActivity = () => {
         id: u.user_uid,
         mass: u.graph_code,
         marker: {
-          symbol: `url(${u.images.slice(2, -2)})`,
+          symbol: `url(${handleUserImage(u.images)})`,
           width: 50,
           height: 50,
         },
@@ -184,7 +190,10 @@ const NetworkingActivity = () => {
         {event.event_title}
       </Typography>
       <Typography variant="h6" className={classes.whiteText} align="center">
-        {event.event_start_date}
+        {new Date(event.event_start_date).toLocaleString("default", {
+          month: "short",
+          day: "numeric",
+        })}
       </Typography>
       <Typography
         variant="h6"

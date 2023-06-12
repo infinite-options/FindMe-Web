@@ -32,9 +32,9 @@ const EventDashboard = () => {
   const channel = ably.channels.get(`FindMe/${event.event_uid}`);
 
   const handleShowRegistrationCode = () => {
-    localStorage.setItem("event", JSON.stringify(event));
-    localStorage.setItem("user", JSON.stringify(user));
-    window.open("/showRegistrationCode", "_blank");
+    navigate("/showRegistrationCode", {
+      state: { event, user },
+    });
   };
 
   const handleBroadcast = () => {
@@ -115,7 +115,7 @@ const EventDashboard = () => {
         direction="column"
         spacing={5}
         sx={{
-          pt: 5,
+          py: 5,
         }}
       >
         <Stack spacing={5}>
@@ -124,6 +124,16 @@ const EventDashboard = () => {
             onClick={handleShowRegistrationCode}
           >
             {"Registration code"}
+          </Button>
+          <Button
+            className={classes.button}
+            onClick={() =>
+              navigate("/eventRegistrants", {
+                state: { event, user },
+              })
+            }
+          >
+            {"View Registrants"}
           </Button>
           <Button
             className={classes.button}

@@ -55,6 +55,7 @@ import EventAttendeesList from "./components/EventCreation/EventAttendeesList";
 import EventByLocation from "./components/FindEvents/EventByLocation";
 import EarlyArrival from "./components/Arrival/EarlyArrival";
 import ActivityWaiting from "./components/Arrival/ActivitiyWaiting";
+import EventRegistrants from "./components/Arrival/EventRegistrants";
 import useStyles from "./theming/styles";
 
 function App() {
@@ -275,6 +276,11 @@ function App() {
                 element={<ActivityWaiting />}
               />
               <Route exact path="/earlyArrival" element={<EarlyArrival />} />
+              <Route 
+                exact 
+                path="/eventRegistrants" 
+                element={<EventRegistrants />} 
+              />
             </Routes>
           </LoginContext.Provider>
         </Router>
