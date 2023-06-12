@@ -48,7 +48,7 @@ export default function EventReview() {
       }
     } else {
       const images = retrievedEventObject.eventPhoto;
-      console.log(images);
+      console.log("images ",images);
       let i = 0;
       if (images !== null) {
         files.push({
@@ -243,9 +243,12 @@ export default function EventReview() {
               navigate("/eventLocation", { state: { edit: true } });
             }}
           >
-            {retrievedEventObject.eventLocation
+            {/* {retrievedEventObject.eventLocation
               ? retrievedEventObject.eventLocation.split(",")[0]
-              : ""}
+              : ""} */}
+            {!retrievedEventObject.eventLocationName || retrievedEventObject.eventLocationName.match(/^\d/)
+              ? retrievedEventObject.eventLocation
+              : retrievedEventObject.eventLocationName+", "+retrievedEventObject.eventLocation}
           </Typography>
         </Stack>
         <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2 }}>

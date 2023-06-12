@@ -4,6 +4,7 @@ import { Grid, Typography, Button, Box, Stack } from "@mui/material";
 import QRCode from '../QRCode/QRCode';
 import useStyles from '../../theming/styles';
 import axios from "axios";
+import Back from "../../Icons/Back.png";
 
 const APP_URL = process.env.REACT_APP_CLIENT_BASE_URI;
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
@@ -23,15 +24,19 @@ export default function EventPreRegCode() {
         event["event_description"] = retrievedEventObject.eventDescription
         event["event_capacity"] = retrievedEventObject.eventCapacity
         event["event_location"] = retrievedEventObject.eventLocation
+        event["event_location_name"] = retrievedEventObject.eventLocationName
         event["event_start_time"] = retrievedEventObject.eventStartTime
         event["event_end_time"] = retrievedEventObject.eventEndTime
         event["event_start_date"] = retrievedEventObject.eventStartDate
         event["event_end_date"] = retrievedEventObject.eventEndDate
-        event["event_registration_code"] = retrievedEventObject.eventRegCode
-        event["pre_event_questionnaire"] = retrievedEventObject.preEventQuestionnaire
+        event["event_registration_code"] = retrievedEventObject.eventRegistrationCode
+        event["pre_event_questionnaire"] = JSON.stringify(retrievedEventObject.preEventQuestionnaire)
         event["event_photo"] = retrievedEventObject.eventPhoto
         event["event_checkin_code"] = retrievedEventObject.eventCheckinCode
+        event["event_status"] = null
         event["user_timezone"] = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        console.log("found it ", event);
         axios.post(BASE_URL + "/SendEventDetails", event).then((res) => {
             console.log(res);
         });
@@ -100,6 +105,7 @@ export default function EventPreRegCode() {
             <Button 
             className={classes.button}
             onClick={() => { navigate(-1); }}>
+                <img src={Back} style={{ width: "2rem" }} alt="back" />
                 Back
             </Button>
         </Stack>
