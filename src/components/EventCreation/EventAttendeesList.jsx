@@ -26,10 +26,37 @@ const EventAttendeesList = () => {
   //   const location = useLocation();
   //   const event = location.state;
   const retrievedEventObject = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
+  const retrievedUserObject = localStorage.getItem("user") === null ? {} : JSON.parse(localStorage.getItem("user"));
   const [attendees, setAttendees] = useState([]);
 
-  const handleClickAttendee = (attendee) => {
-    // navigate("/attendeeDetails", { state: attendee });
+  const eventCreation = (event) => {
+        event['event_organizer_uid'] = retrievedEventObject.event_organizer_uid
+        event["event_type"] = retrievedEventObject.eventType
+        event["event_visibility"] = retrievedEventObject.eventVisibility
+        event["event_title"] = retrievedEventObject.eventTitle
+        event["event_description"] = retrievedEventObject.eventDescription
+        event["event_capacity"] = retrievedEventObject.eventCapacity
+        event["event_location"] = retrievedEventObject.eventLocation
+        event["event_location_name"] = retrievedEventObject.eventLocationName
+        event["event_start_time"] = retrievedEventObject.eventStartTime
+        event["event_end_time"] = retrievedEventObject.eventEndTime
+        event["event_start_date"] = retrievedEventObject.eventStartDate
+        event["event_end_date"] = retrievedEventObject.eventEndDate
+        event["event_registration_code"] = retrievedEventObject.eventRegCode
+        event["pre_event_questionnaire"] = retrievedEventObject.preEventQuestionnaire
+        event["event_photo"] = retrievedEventObject.eventPhoto
+        event["event_checkin_code"] = retrievedEventObject.eventCheckinCode
+        event["event_status"] = null
+        event["event_uid"] = retrievedEventObject.event_uid
+        return event;
+    }
+  const handleClickAttendee = (attendeeId) => {
+    var event1 = {}
+    var event = eventCreation(event1)
+    console.log("event ", event)
+    console.log("user ", retrievedUserObject)
+    console.log("attendeeId ", attendeeId)
+    navigate("/attendeeDetails", { state: { event: event, user: retrievedUserObject, attendeeId: attendeeId } });
   };
 
   const handleBack = () => {
@@ -105,7 +132,7 @@ const EventAttendeesList = () => {
         >
           {attendees.map((attendee) => (
             <Grid key={attendee.user_uid} item xs={4}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems:"center" }}>
                 <Avatar
                   src={attendee.images.replace(/\\/g, "").slice(2, -2)}
                   sx={{
@@ -115,8 +142,9 @@ const EventAttendeesList = () => {
                     alignSelf: "center",
                   }}
                   alt={attendee.first_name}
-                  onClick={() => handleClickAttendee(attendee)}
+                  onClick={() => handleClickAttendee(attendee.user_uid)}
                 />
+                <Typography className={classes.whiteText}>{attendee.first_name}</Typography>
               </Box>
             </Grid>
           ))}

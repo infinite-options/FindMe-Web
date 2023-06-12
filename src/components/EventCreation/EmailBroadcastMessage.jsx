@@ -20,6 +20,7 @@ export default function EmailBroadcastMessage() {
   const [message, setMessage] = useState("");
   const [failed, setFailed] = useState([]);
   const [showDialogSendingEmail, setShowDialogSendingEmail] = useState(false);
+  const [showDialogSendingText, setShowDialogSendingText] = useState(false);
   const [showSendingFailed, setShowSendingFailed] = useState(false);
   const [showSendingSuccess, setShowSendingSuccess] = useState(false);
   const event =
@@ -27,6 +28,7 @@ export default function EmailBroadcastMessage() {
       ? {}
       : JSON.parse(localStorage.getItem("event"));
   const [attendeesEmails, setAttendeesEmails] = useState([]);
+  const [attendeesPhoneNumbers, setAttendeesPhoneNumbers] = useState([]);
   console.log(event);
   const handleClickAttendee = (attendee) => {
     navigate("/attendeeDetails", { state: attendee });
@@ -43,17 +45,49 @@ export default function EmailBroadcastMessage() {
     const data = response["data"];
     let attendees = data.attendees;
     let emails = [];
+    let phone_numbers = [];
     for (let i = 0; i < attendees.length; i++) {
       emails.push(attendees[i].email);
+      phone_numbers.push(attendees[i].phone_number);
     }
     setAttendeesEmails(emails);
+    setAttendeesPhoneNumbers(phone_numbers);
   };
 
   useEffect(() => {
     if (event && event.event_uid) {
       fetchAttendees();
-    } else setAttendeesEmails([]);
+    } else {
+      setAttendeesEmails([]);
+      setAttendeesPhoneNumbers([]);
+    }
   }, []);
+  const sendText = () => {
+    let obj = {
+      recipient: attendeesPhoneNumbers,
+      subject: subject,
+      message: message,
+    };
+    let newstate = Object.assign(obj, event);
+    console.log(newstate);
+    setShowDialogSendingText(true);
+    axios.post(BASE_URL + "/SendTextAttendee", obj).then((response) => {
+      setShowDialogSendingText(false);
+      let failedMessages = [];
+      for (let i = 0; i < response.data.message.length; i++) {
+        if (response.data["message"][i].includes("failed")) {
+          failedMessages.push(response.data["message"][i]);
+        }
+      }
+
+      setFailed(failedMessages);
+      if (failedMessages.length > 0) {
+        setShowSendingFailed(true);
+      } else {
+        setShowSendingSuccess(true);
+      }
+    });
+  }
   const sendMessages = () => {
     let obj = {
       recipient: attendeesEmails,
@@ -79,6 +113,33 @@ export default function EmailBroadcastMessage() {
         setShowSendingSuccess(true);
       }
     });
+  };
+  const DialogSendingText = () => {
+    return (
+      <Dialog
+        open={showDialogSendingText}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title"></DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+              padding: "1rem",
+            }}
+          >
+            <h3> Sending Text Messages</h3>
+
+            <img src={ThreeDots} style={{ width: "20%" }} alt="loading..." />
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
   };
   const DialogSendingEmail = () => {
     return (
@@ -177,6 +238,7 @@ export default function EmailBroadcastMessage() {
   };
   return (
     <>
+        {DialogSendingText()}
         {DialogSendingEmail()}
         {DialogSendingFailed()}
         {DialogSendingSuccess()}
@@ -245,7 +307,7 @@ export default function EmailBroadcastMessage() {
             className={classes.button} 
             variant="outlined" 
             sx={{ mt: 2 }} 
-            onClick={()=>{}}>
+            onClick={sendText}>
             Send Text
           </Button>
           <Button 

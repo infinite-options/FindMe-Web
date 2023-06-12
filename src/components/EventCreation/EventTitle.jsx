@@ -51,6 +51,8 @@ export default function EventTitle() {
         >
             <TextField 
             className={classes.textfield}
+            inputProps={{ maxLength: 20 }}
+            placeholder="Limit to 20 characters"
             // id="outlined-basic" 
             // label="Enter Event Title" 
             // variant="outlined"
@@ -76,6 +78,8 @@ export default function EventTitle() {
             // id="outlined-basic" 
             multiline
             rows={7}
+            inputProps={{ maxLength: 100 }}
+            placeholder="Limit to 100 characters"
             // label="Enter Event Description" 
             // variant="outlined" sx={{ width: '30%', mt: 2}} 
             value={eventDescription}

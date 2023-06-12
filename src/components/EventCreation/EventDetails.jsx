@@ -107,7 +107,7 @@ export default function EventDetails() {
               navigate("/eventAttendeesList");
             }}
             >
-              View Attendees
+              View Registrants
             </Button>
             <Button
             className={classes.button}

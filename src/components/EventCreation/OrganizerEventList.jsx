@@ -33,17 +33,12 @@ export default function OrganizerEventList() {
   const { state } = useLocation();
   const retrievedEventObject = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
   
-  // var user_uid;
-  // useEffect(() => {
-  //   if (state !== null) {
-  //     let user = state.user;
-  //     user_uid = typeof user === "string" ? JSON.parse(user).user_uid : user.user_uid;
-  //   }
-  //   else {
-  //     user_uid = retrievedEventObject.event_organizer_uid;
-  //   }
-  //   setEventOrganizerUID(user_uid)
-  // },[])
+  useEffect(() => {
+    if (state !== null) {
+      let user = state.user;
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  },[])
   
   const [events, setEvents] = useState([]);
   const [eventOrganizerUID, setEventOrganizerUID] = useState(state !== null ? (typeof state.user === "string" ? JSON.parse(state.user).user_uid : state.user.user_uid) : retrievedEventObject.event_organizer_uid);
@@ -58,7 +53,7 @@ export default function OrganizerEventList() {
       });
   };
   const handleCreateEvent = () => {
-    localStorage.clear();
+    localStorage.removeItem("event");
     let newEvent = {};
     newEvent["event_organizer_uid"] = eventOrganizerUID;
     localStorage.setItem("event", JSON.stringify(newEvent));
@@ -86,6 +81,7 @@ export default function OrganizerEventList() {
     retrievedEventObject["eventEndTime"] = event.event_end_time;
     retrievedEventObject["event_uid"] = event.event_uid;
     retrievedEventObject["eventLocation"] = event.event_location;
+    retrievedEventObject["eventLocationName"] = event.event_location_name;
     retrievedEventObject["eventZip"] = event.event_zip;
     retrievedEventObject["eventRegistrationCode"] = event.event_registration_code;
     retrievedEventObject["eventCheckinCode"] = event.event_checkin_code;
