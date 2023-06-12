@@ -1,28 +1,15 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ably from "../../config/ably";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
-import Snackbar from "@mui/material/Snackbar";
-import MUIAlert from "@mui/material/Alert";
-import Slide from "@mui/material/Slide";
 import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
-
-const SlideTransition = (props) => {
-  return <Slide {...props} direction="down" />;
-};
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MUIAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const LightTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -35,70 +22,45 @@ const LightTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-const EventAttendees = () => {
+const EventRegistrants = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const { event, user } = location.state;
-  const [attendees, setAttendees] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
-  const [message, setMessage] = useState("");
-  const channel = ably.channels.get(`FindMe/${event.event_uid}`);
+  const [registrants, setRegistrants] = useState([]);
 
-  const handleClickAttendee = (attendee) => {
+  const handleBack = () => {
+    navigate(-1, {
+      state: { event, user },
+    });
+  };
+
+  const handleClickRegistrant = (attendee) => {
     navigate("/attendeeDetails", {
       state: { event, user, attendeeId: attendee.user_uid },
     });
   };
 
-  const fetchAttendees = async () => {
+  const fetchRegistrants = async () => {
     const response = await axios.get(
-      `${BASE_URL}/eventAttendees?eventId=${event.event_uid}&attendFlag=1`
+      `${BASE_URL}/eventAttendees?eventId=${event.event_uid}`
     );
     const data = response["data"];
-    setAttendees(data["attendees"]);
-  };
-
-  const handleAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowAlert(false);
-  };
-
-  const joinSubscribe = () => {
-    channel.subscribe((e) => {
-      if (e.data.message === "Event started") {
-        navigate("/networkingActivity", { state: { event, user } });
-      } else if (e.data.message === "New attendee") {
-        fetchAttendees();
-      } else {
-        setMessage(e.data.message);
-        setShowAlert(true);
-      }
-    });
+    setRegistrants(data["attendees"]);
   };
 
   useEffect(() => {
-    fetchAttendees();
-    joinSubscribe();
-    return () => channel.unsubscribe();
+    fetchRegistrants();
   }, []);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Snackbar
-        open={showAlert}
-        autoHideDuration={15000}
-        onClose={handleAlertClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        TransitionComponent={SlideTransition}
+      <Typography
+        variant="h2"
+        className={classes.whiteText}
+        onClick={handleBack}
+        gutterBottom
       >
-        <Alert onClose={handleAlertClose} severity="info">
-          {message}
-        </Alert>
-      </Snackbar>
-      <Typography variant="h2" className={classes.whiteText} gutterBottom>
         {"attend"}
       </Typography>
       <Typography variant="h5" className={classes.whiteText} align="center">
@@ -133,20 +95,20 @@ const EventAttendees = () => {
         alignItems="center"
         sx={{ minHeight: "30vh" }}
       >
-        {attendees.map((attendee) => (
-          <Grid key={attendee.user_uid} item xs={4}>
+        {registrants.map((registrant) => (
+          <Grid key={registrant.user_uid} item xs={4}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <LightTooltip title={attendee.first_name} arrow>
+              <LightTooltip title={registrant.first_name} arrow>
                 <Avatar
-                  src={JSON.parse(attendee.images)[0]}
+                  src={JSON.parse(registrant.images)[0]}
                   sx={{
                     width: "80px",
                     height: "80px",
                     bgcolor: "#ff5722",
                     alignSelf: "center",
                   }}
-                  alt={attendee.first_name}
-                  onClick={() => handleClickAttendee(attendee)}
+                  alt={registrant.first_name}
+                  onClick={() => handleClickRegistrant(registrant)}
                 />
               </LightTooltip>
             </Box>
@@ -157,4 +119,4 @@ const EventAttendees = () => {
   );
 };
 
-export default EventAttendees;
+export default EventRegistrants;

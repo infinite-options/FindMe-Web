@@ -61,7 +61,12 @@ const CurrentEvents = () => {
 
   return (
     <Box>
-      <Typography variant="h2" className={classes.whiteText} gutterBottom>
+      <Typography
+        variant="h2"
+        className={classes.whiteText}
+        onClick={() => navigate(-1)}
+        gutterBottom
+      >
         {"attend"}
       </Typography>
       <Stack

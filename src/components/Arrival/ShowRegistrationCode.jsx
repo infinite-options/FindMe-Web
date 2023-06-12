@@ -1,10 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import QRCode from "../QRCode/QRCode";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import useStyles from "../../theming/styles";
+
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 const ShowRegistrationCode = () => {
   const classes = useStyles();
@@ -14,9 +17,18 @@ const ShowRegistrationCode = () => {
     ? location.state.event
     : JSON.parse(localStorage.getItem("event"));
 
+  const sendEmail = () => {
+    axios.post(BASE_URL + "/SendEventDetails", event);
+  };
+
   return (
     <Box>
-      <Typography variant="h2" className={classes.whiteText} gutterBottom>
+      <Typography
+        variant="h2"
+        className={classes.whiteText}
+        onClick={() => navigate(-1)}
+        gutterBottom
+      >
         {"attend"}
       </Typography>
       <Typography variant="h4" className={classes.whiteText} align="center">
@@ -62,8 +74,8 @@ const ShowRegistrationCode = () => {
         ></QRCode>
       </Stack>
       <Stack direction="row" justifyContent="center" sx={{ mt: 5 }}>
-        <Button className={classes.button} onClick={() => {}}>
-          Send Email
+        <Button className={classes.button} onClick={sendEmail}>
+          {"Send Email"}
         </Button>
       </Stack>
     </Box>
