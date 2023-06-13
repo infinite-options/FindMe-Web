@@ -10,6 +10,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import UploadPhotos from "../UploadPhotos";
 import QRCode from "../QRCode/QRCode";
 import useStyles from "../../theming/styles";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
@@ -18,6 +21,7 @@ export default function EventReview() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const edit = state.edit;
+  const [showUnsavedData, setShowUnsavedData] = useState(false)
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
@@ -162,11 +166,58 @@ export default function EventReview() {
     localStorage.setItem("event", JSON.stringify(retrievedEventObject));
   };
 
+  const DialogUnsavedData = () => {
+    return (
+      <Dialog
+        open={showUnsavedData}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            padding: "2rem",
+          }}
+        >
+          Exit without saving changes?
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowUnsavedData(false);
+              navigate("/organizerEventList");
+            }}
+          >
+            Exit
+          </Button>
+          <Button
+            onClick={() => {
+              setShowUnsavedData(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+        </Dialog>
+    )
+  }
+  
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Stack direction="row" justifyContent="flex-start">
-          <Typography variant="h2" className={classes.whiteText}>
+          <Typography
+            variant="h2"
+            className={classes.whiteText}
+            onClick={() => {
+              setShowUnsavedData(true);
+            }}
+          >
             edit
           </Typography>
         </Stack>
@@ -214,6 +265,7 @@ export default function EventReview() {
         </Stack>
 
         <Stack direction="row" justifyContent="flex-start" sx={{ mt: 5 }}>
+          {DialogUnsavedData()}
           <Typography
             variant="h5"
             className={classes.whiteText}

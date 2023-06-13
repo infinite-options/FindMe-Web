@@ -7,6 +7,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import useStyles from '../../theming/styles';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function EventCapacity() {
   const classes = useStyles();
@@ -19,6 +22,7 @@ export default function EventCapacity() {
   const [limitOption, setLimitOption] = useState(retrievedEventObject && retrievedEventObject.eventCapacity!=="No Limit" ? "Set Limit" : "No Limit");
   const [eventCapacity, setEventCapacity] = useState(retrievedEventObject && retrievedEventObject.eventCapacity ? retrievedEventObject.eventCapacity : "No Limit");
   const [disabled, setDisabled] = useState(retrievedEventObject && retrievedEventObject.eventCapacity!=="No Limit" ? false : true);
+  const [showAddCapacity, setShowAddCapacity] = useState(false);
 
   const handleSetLimitChange = (e) => {
     setLimitOption(e.target.value);
@@ -28,6 +32,7 @@ export default function EventCapacity() {
     }
     if (e.target.value === "Set Limit") {
       setDisabled(false);
+      setEventCapacity("Set Limit");
     }
   };
   const handleCapacityChange = (e) => {
@@ -35,11 +40,56 @@ export default function EventCapacity() {
   };
 
   const saveEventObject = () => {
-    console.log("** ", retrievedEventObject);
-    retrievedEventObject["eventCapacity"] = eventCapacity;
-    localStorage.setItem("event", JSON.stringify(retrievedEventObject));
-    console.log("66 ", retrievedEventObject);
+    // console.log("retrievedEventObject ", retrievedEventObject);
+    if (eventCapacity === "" || eventCapacity === "Set Limit") {
+      setShowAddCapacity(true)
+      console.log("blank eventCapacity!! ", eventCapacity)
+    }
+    else {
+      retrievedEventObject["eventCapacity"] = eventCapacity;
+      localStorage.setItem("event", JSON.stringify(retrievedEventObject));
+      console.log("retrievedEventObject ", retrievedEventObject);
+
+      if(location.state && location.state.edit){
+          navigate(-1);
+      }
+      else{
+          navigate("/preEventQuestionnaire");
+      }
+    }
   };
+
+  const DialogAddCapacity = () => {
+    return (
+      <Dialog
+        open={showAddCapacity}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            padding: "2rem",
+          }}
+        >
+          Enter a limit
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowAddCapacity(false);
+            }}
+          >
+            Okay
+          </Button>
+        </DialogActions>
+        </Dialog>
+        )}
   return (
     <>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -66,6 +116,7 @@ export default function EventCapacity() {
           justifyContent="flex-start"
           sx={{ mt: 5 }}
         >
+          {DialogAddCapacity()}
           <FormControl>
             {/* <FormLabel id="demo-radio-buttons-group-label">
               <Typography className={classes.whiteText}>Select Maximum Event Capacity</Typography>
@@ -101,6 +152,9 @@ export default function EventCapacity() {
               type="number"
               value={eventCapacity}
               disabled={disabled}
+              inputProps={{ 
+                autoComplete: 'off'
+              }}
               onChange={handleCapacityChange}
               sx={{ mt: 2 }}
             />
@@ -114,12 +168,12 @@ export default function EventCapacity() {
             className={classes.button}
             onClick={() => {
               saveEventObject()
-              if(location.state && location.state.edit){
-                  navigate(-1);
-              }
-              else{
-                  navigate("/preEventQuestionnaire");
-              }
+              // if(location.state && location.state.edit){
+              //     navigate(-1);
+              // }
+              // else{
+              //     navigate("/preEventQuestionnaire");
+              // }
             }}
           >
             {" "}
