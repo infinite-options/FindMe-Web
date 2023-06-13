@@ -149,7 +149,13 @@ export default function EventByLocation() {
                 }}
               >
                 <TextField
-                  style={{ width: 50 }}
+                  style={{
+                    width: 50,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  inputProps={{ style: { textAlign: "center" } }}
                   type="email"
                   value={miles}
                   margin="normal"
@@ -186,17 +192,9 @@ export default function EventByLocation() {
                 <Button
                   margin="normal"
                   sx={{
-                    height: "62px",
                     width: "214px",
-                    color: "#000000",
-                    backgroundColor: "#ffffff",
-                    borderRadius: "30px",
-                    padding: "15px",
-                    fontSize: "18px !important",
-                    fontWeight: "400 !important",
-                    // fontFamily: "Inter !important",
-                    textTransform: "none !important",
                   }}
+                  className={classes.button}
                   onClick={() => getCurrentLocation()}
                 >
                   Current Location

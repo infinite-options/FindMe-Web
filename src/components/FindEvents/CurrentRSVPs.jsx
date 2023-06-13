@@ -19,9 +19,15 @@ export default function CurrentRSVPs() {
   const [events, setEvents] = useState([]);
 
   const getRSVPdEvents = () => {
-    axios.get(BASE_URL + `/GetEventUser/${user_uid}`).then((response) => {
-      setEvents(response.data.result);
-    });
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    axios
+      .get(
+        BASE_URL +
+          `/GetEventUser?timeZone=${user_timezone}&eu_user_id=${user_uid}`
+      )
+      .then((response) => {
+        setEvents(response.data.result);
+      });
   };
   useEffect(() => {
     getRSVPdEvents();
