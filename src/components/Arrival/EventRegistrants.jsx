@@ -2,25 +2,12 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import useStyles from "../../theming/styles";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
-
-const LightTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-}));
 
 const EventRegistrants = () => {
   const classes = useStyles();
@@ -86,7 +73,7 @@ const EventRegistrants = () => {
         align="center"
         sx={{ my: 5 }}
       >
-        {"Current Attendees"}
+        {"Current Registrants"}
       </Typography>
       <Grid
         container
@@ -98,19 +85,20 @@ const EventRegistrants = () => {
         {registrants.map((registrant) => (
           <Grid key={registrant.user_uid} item xs={4}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <LightTooltip title={registrant.first_name} arrow>
-                <Avatar
-                  src={JSON.parse(registrant.images)[0]}
-                  sx={{
-                    width: "80px",
-                    height: "80px",
-                    bgcolor: "#ff5722",
-                    alignSelf: "center",
-                  }}
-                  alt={registrant.first_name}
-                  onClick={() => handleClickRegistrant(registrant)}
-                />
-              </LightTooltip>
+              <Avatar
+                src={JSON.parse(registrant.images)[0]}
+                sx={{
+                  width: "80px",
+                  height: "80px",
+                  bgcolor: "#ff5722",
+                  alignSelf: "center",
+                }}
+                alt={registrant.first_name}
+                onClick={() => handleClickRegistrant(registrant)}
+              />
+              <Typography className={classes.whiteText} align="center">
+                {registrant.first_name}
+              </Typography>
             </Box>
           </Grid>
         ))}
