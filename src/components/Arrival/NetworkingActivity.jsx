@@ -44,7 +44,7 @@ const NetworkingActivity = () => {
     chart: {
       type: "networkgraph",
       height: 400,
-      backgroundColor: "#0A23A6",
+      backgroundColor: "transparent",
     },
     title: {
       text: null,
@@ -52,11 +52,6 @@ const NetworkingActivity = () => {
     plotOptions: {
       networkgraph: {
         keys: ["from", "to"],
-        layoutAlgorithm: {
-          enableSimulation: true,
-          friction: -0.9,
-          integration: "euler",
-        },
         point: {
           events: {
             click(e) {
@@ -70,6 +65,7 @@ const NetworkingActivity = () => {
       {
         link: {
           width: 2,
+          color: "white",
         },
         dataLabels: {
           enabled: false,
@@ -103,7 +99,7 @@ const NetworkingActivity = () => {
     );
     const data = response["data"];
     let nodesArr = [];
-    data["users"].forEach((u, i) => {
+    data["users"].forEach((u) => {
       nodesArr.push({
         id: u.user_uid,
         mass: u.graph_code,
@@ -113,8 +109,6 @@ const NetworkingActivity = () => {
           height: 50,
         },
         name: `${u.first_name} is ${u.role}`,
-        plotX: Math.random() * 500,
-        plotY: Math.random() * 500,
         className: classes.circularImage,
       });
     });

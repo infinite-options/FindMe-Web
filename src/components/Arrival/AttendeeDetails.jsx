@@ -20,12 +20,16 @@ const AttendeeDetails = () => {
   const [qas, setQas] = useState([]);
 
   const fetchRegistrantDetails = async () => {
-    const response = await axios.get(
-      `${BASE_URL}/eventRegistrant?eventId=${event.event_uid}&registrantId=${attendeeId}`
-    );
-    const data = response["data"];
-    setRegistrant(data.registrant);
-    setQas(JSON.parse(data.registrant.eu_qas.replace(/\\/g, "")));
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/eventRegistrant?eventId=${event.event_uid}&registrantId=${attendeeId}`
+      );
+      const data = response["data"];
+      setRegistrant(data.registrant);
+      setQas(JSON.parse(data.registrant.eu_qas));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -129,7 +133,7 @@ const AttendeeDetails = () => {
       <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
         <Button
           className={classes.button}
-          onClick={() => navigate(-1, { event, user })}
+          onClick={() => navigate(-1, { state: { event, user } })}
         >
           <img src={Back} style={{ width: "2rem" }} alt="back" />
           {"Back"}

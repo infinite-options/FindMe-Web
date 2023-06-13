@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ably from "../../config/ably";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
@@ -23,17 +21,6 @@ const SlideTransition = (props) => {
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MUIAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-const LightTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-}));
 
 const EventAttendees = () => {
   const classes = useStyles();
@@ -98,7 +85,12 @@ const EventAttendees = () => {
           {message}
         </Alert>
       </Snackbar>
-      <Typography variant="h2" className={classes.whiteText} gutterBottom>
+      <Typography
+        variant="h2"
+        className={classes.whiteText}
+        onClick={() => navigate(-1, { state: { event, user } })}
+        gutterBottom
+      >
         {"attend"}
       </Typography>
       <Typography variant="h5" className={classes.whiteText} align="center">
@@ -136,19 +128,20 @@ const EventAttendees = () => {
         {attendees.map((attendee) => (
           <Grid key={attendee.user_uid} item xs={4}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <LightTooltip title={attendee.first_name} arrow>
-                <Avatar
-                  src={JSON.parse(attendee.images)[0]}
-                  sx={{
-                    width: "80px",
-                    height: "80px",
-                    bgcolor: "#ff5722",
-                    alignSelf: "center",
-                  }}
-                  alt={attendee.first_name}
-                  onClick={() => handleClickAttendee(attendee)}
-                />
-              </LightTooltip>
+              <Avatar
+                src={JSON.parse(attendee.images)[0]}
+                sx={{
+                  width: "80px",
+                  height: "80px",
+                  bgcolor: "#ff5722",
+                  alignSelf: "center",
+                }}
+                alt={attendee.first_name}
+                onClick={() => handleClickAttendee(attendee)}
+              />
+              <Typography className={classes.whiteText} align="center">
+                {attendee.first_name}
+              </Typography>
             </Box>
           </Grid>
         ))}
