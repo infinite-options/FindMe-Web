@@ -10,10 +10,10 @@ import {
   Button,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import GroupsIcon from "@mui/icons-material/Groups";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ThreeDots from "../../Icons/Threedots.gif";
 import { useLocation, useNavigate } from "react-router-dom";
 import { mediumBold, xSmall, small } from "../../styles";
 import useStyles from "../../theming/styles";
@@ -31,6 +31,7 @@ export default function OrganizerEventList() {
   const classes = useStyles();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [showDialogLoading, setShowDialogLoading] = useState(true);
   const retrievedEventObject = localStorage.getItem("event") === null ? {} : JSON.parse(localStorage.getItem("event"));
   
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function OrganizerEventList() {
     axios
       .get(BASE_URL + `/GetEvents?event_organizer_uid=${eventOrganizerUID}&timeZone=${user_timezone}`)
       .then((response) => {
+        setShowDialogLoading(false)
         console.log("GetEvents result", response.data.result);
         setEvents(response.data.result);
       });
@@ -90,6 +92,33 @@ export default function OrganizerEventList() {
     // console.log("retrievedEventObject ", retrievedEventObject);
   };
 
+  const DialogLoading = () => {
+    return (
+      <Dialog
+        open={showDialogLoading}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title"></DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+              padding: "1rem",
+            }}
+          >
+            <h3> Loading</h3>
+
+            <img src={ThreeDots} style={{ width: "20%" }} alt="loading..." />
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
   return (
     <>
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -120,6 +149,7 @@ export default function OrganizerEventList() {
           spacing={2}
           sx={{ mt: 2 }}
         >
+          {DialogLoading()}
         {events.map((event) => {
           return (
             <Box

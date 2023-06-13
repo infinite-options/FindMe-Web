@@ -11,11 +11,15 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useStyles from "../../theming/styles";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function PreEventQuestionnaire() {
     const classes = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
+    const [showAddQuestion, setShowAddQuestion] = useState(false);
     const retrievedEventObject =
         localStorage.getItem("event") === null
         ? {}
@@ -58,8 +62,15 @@ export default function PreEventQuestionnaire() {
     };
 
     const handleAddQuestion = (question) => {
-        if (selectedOptions.length < 3) {
-        setSelectedOptions([...selectedOptions, question]);
+        console.log(" question ", question)
+        if (question === "" || question === " ") {
+            setShowAddQuestion(true)
+        }
+        else {
+            if (selectedOptions.length < 3) {
+            setSelectedOptions([...selectedOptions, question]);
+            }
+            setQuestion("")
         }
     };
 
@@ -75,6 +86,37 @@ export default function PreEventQuestionnaire() {
         // console.log("retrievedEventObject - ", retrievedEventObject);
     };
 
+    const DialogAddQuestion = () => {
+    return (
+      <Dialog
+        open={showAddQuestion}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            padding: "2rem",
+          }}
+        >
+          Enter question
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowAddQuestion(false);
+            }}
+          >
+            Okay
+          </Button>
+        </DialogActions>
+        </Dialog>
+        )}
     return (
         <>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -130,11 +172,15 @@ export default function PreEventQuestionnaire() {
             </Select>
 
             <div style={{ marginBlock: "30px" }}>
+                {DialogAddQuestion()}
                 <TextField
                 className={classes.textfield}
-                id="outlined-basic"
-                label="Write your own question"
-                variant="outlined"
+                // id="outlined-basic"
+                placeholder="Write your own question"
+                inputProps={{
+                    autoComplete: 'off'
+                }}
+                // variant="outlined"
                 // sx={{ mt:2 }}
                 value={question}
                 onChange={handleQuestionInput}
