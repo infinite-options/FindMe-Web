@@ -273,6 +273,9 @@ export default function EmailBroadcastMessage() {
             // label="Subject"
             size="small"
             InputLabelProps={{ shrink: true }}
+            inputProps={{ 
+                autoComplete: 'off'
+            }}
             onChange={(e) => setSubject(e.target.value)}
             fullWidth
           />
@@ -296,6 +299,9 @@ export default function EmailBroadcastMessage() {
             margin="normal"
             // label="Message"
             InputLabelProps={{ shrink: true }}
+            inputProps={{ 
+                autoComplete: 'off'
+            }}
             onChange={(e) => setMessage(e.target.value)}
             fullWidth
             multiline
