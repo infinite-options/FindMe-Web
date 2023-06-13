@@ -96,6 +96,23 @@ export default function PreRegistration() {
           <Typography variant="h5" className={classes.whiteText}>
             {event.event_start_time} - {event.event_end_time}
           </Typography>
+          <Typography
+            variant="h5"
+            className={classes.whiteText}
+            style={{ cursor: "pointer" }}
+          >
+            <a
+              onClick={() => {
+                window.open(
+                  `http://maps.google.com/maps?q=${event.event_location}`,
+                  "_blank"
+                );
+              }}
+              target="_blank"
+            >
+              {event.event_location}
+            </a>
+          </Typography>
         </div>
         <div
           style={{
