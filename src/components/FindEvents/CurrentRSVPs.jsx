@@ -86,7 +86,7 @@ export default function CurrentRSVPs() {
                           day: "numeric",
                         }
                       )}
-                      ,{event.event_start_time} - {event.event_end_time}
+                      , {event.event_start_time} - {event.event_end_time}
                     </Typography>
                   </div>
                   <div className={classes.ellipse}>
