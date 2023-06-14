@@ -21,7 +21,7 @@ export default function EventReview() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const edit = state.edit;
-  const [showUnsavedData, setShowUnsavedData] = useState(false)
+  const [showUnsavedData, setShowUnsavedData] = useState(false);
   const retrievedEventObject =
     localStorage.getItem("event") === null
       ? {}
@@ -52,7 +52,7 @@ export default function EventReview() {
       }
     } else {
       const images = retrievedEventObject.eventPhoto;
-      console.log("images ",images);
+      console.log("images ", images);
       let i = 0;
       if (images !== null) {
         files.push({
@@ -69,8 +69,16 @@ export default function EventReview() {
   const addEvent = async () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     retrievedEventObject["user_timezone"] = user_timezone;
-    retrievedEventObject["eventStartTime"] = retrievedEventObject["eventStartTime"] && retrievedEventObject["eventStartTime"].split(':')[0].length() == 1 ? ("0" + retrievedEventObject["eventStartTime"]) : retrievedEventObject["eventStartTime"];
-    retrievedEventObject["eventEndTime"] = retrievedEventObject["eventEndTime"] && retrievedEventObject["eventEndTime"].split(':')[0].length() == 1 ? ("0" + retrievedEventObject["eventEndTime"]) : retrievedEventObject["eventEndTime"];
+    retrievedEventObject["eventStartTime"] =
+      retrievedEventObject["eventStartTime"] &&
+      retrievedEventObject["eventStartTime"].split(":")[0].length == 1
+        ? "0" + retrievedEventObject["eventStartTime"]
+        : retrievedEventObject["eventStartTime"];
+    retrievedEventObject["eventEndTime"] =
+      retrievedEventObject["eventEndTime"] &&
+      retrievedEventObject["eventEndTime"].split(":")[0].length == 1
+        ? "0" + retrievedEventObject["eventEndTime"]
+        : retrievedEventObject["eventEndTime"];
     const files = imageState[0];
     let i = 0;
     for (const file of imageState[0]) {
@@ -120,8 +128,16 @@ export default function EventReview() {
   const updateEvent = async () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     retrievedEventObject["user_timezone"] = user_timezone;
-    retrievedEventObject["eventStartTime"] = retrievedEventObject["eventStartTime"] && retrievedEventObject["eventStartTime"].split(':')[0].length == 1 ? ("0" + retrievedEventObject["eventStartTime"]) : retrievedEventObject["eventStartTime"];
-    retrievedEventObject["eventEndTime"] = retrievedEventObject["eventEndTime"] && retrievedEventObject["eventEndTime"].split(':')[0].length == 1 ? ("0" + retrievedEventObject["eventEndTime"]) : retrievedEventObject["eventEndTime"];
+    retrievedEventObject["eventStartTime"] =
+      retrievedEventObject["eventStartTime"] &&
+      retrievedEventObject["eventStartTime"].split(":")[0].length == 1
+        ? "0" + retrievedEventObject["eventStartTime"]
+        : retrievedEventObject["eventStartTime"];
+    retrievedEventObject["eventEndTime"] =
+      retrievedEventObject["eventEndTime"] &&
+      retrievedEventObject["eventEndTime"].split(":")[0].length == 1
+        ? "0" + retrievedEventObject["eventEndTime"]
+        : retrievedEventObject["eventEndTime"];
     const files = imageState[0];
     let i = 0;
     for (const file of imageState[0]) {
@@ -207,10 +223,10 @@ export default function EventReview() {
             Cancel
           </Button>
         </DialogActions>
-        </Dialog>
-    )
-  }
-  
+      </Dialog>
+    );
+  };
+
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -302,9 +318,12 @@ export default function EventReview() {
             {/* {retrievedEventObject.eventLocation
               ? retrievedEventObject.eventLocation.split(",")[0]
               : ""} */}
-            {!retrievedEventObject.eventLocationName || retrievedEventObject.eventLocationName.match(/^\d/)
+            {!retrievedEventObject.eventLocationName ||
+            retrievedEventObject.eventLocationName.match(/^\d/)
               ? retrievedEventObject.eventLocation
-              : retrievedEventObject.eventLocationName+", "+retrievedEventObject.eventLocation}
+              : retrievedEventObject.eventLocationName +
+                ", " +
+                retrievedEventObject.eventLocation}
           </Typography>
         </Stack>
         <Stack direction="row" justifyContent="flex-start" sx={{ mt: 2 }}>
