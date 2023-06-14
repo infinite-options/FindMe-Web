@@ -13,24 +13,24 @@ const EventRegistrants = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
-  const { event, user } = location.state;
+  const { eventObj, userObj } = location.state;
   const [registrants, setRegistrants] = useState([]);
 
   const handleBack = () => {
     navigate(-1, {
-      state: { event, user },
+      state: { eventObj, userObj },
     });
   };
 
-  const handleClickRegistrant = (attendee) => {
+  const handleClickRegistrant = (registrant) => {
     navigate("/attendeeDetails", {
-      state: { event, user, attendeeId: attendee.user_uid },
+      state: { eventObj, userObj, id: registrant.user_uid },
     });
   };
 
   const fetchRegistrants = async () => {
     const response = await axios.get(
-      `${BASE_URL}/eventAttendees?eventId=${event.event_uid}`
+      `${BASE_URL}/eventAttendees?eventId=${eventObj.event_uid}`
     );
     const data = response["data"];
     setRegistrants(data["attendees"]);
@@ -51,10 +51,10 @@ const EventRegistrants = () => {
         {"attend"}
       </Typography>
       <Typography variant="h5" className={classes.whiteText} align="center">
-        {event.event_title}
+        {eventObj.event_title}
       </Typography>
       <Typography variant="h6" className={classes.whiteText} align="center">
-        {new Date(event.event_start_date).toLocaleString("default", {
+        {new Date(eventObj.event_start_date).toLocaleString("default", {
           month: "short",
           day: "numeric",
         })}
@@ -65,7 +65,9 @@ const EventRegistrants = () => {
         align="center"
         sx={{ fontKerning: "none" }}
       >
-        {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
+        {`${eventObj.event_start_time.slice(0, -2)} - ${
+          eventObj.event_end_time
+        }`}
       </Typography>
       <Typography
         variant="h5"

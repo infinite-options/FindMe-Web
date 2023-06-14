@@ -56,6 +56,7 @@ import EventByLocation from "./components/FindEvents/EventByLocation";
 import EarlyArrival from "./components/Arrival/EarlyArrival";
 import ActivityWaiting from "./components/Arrival/ActivitiyWaiting";
 import EventRegistrants from "./components/Arrival/EventRegistrants";
+import OverallNetwork from "./components/Arrival/OverallNetwork";
 import useStyles from "./theming/styles";
 
 function App() {
@@ -280,6 +281,11 @@ function App() {
                 exact 
                 path="/eventRegistrants" 
                 element={<EventRegistrants />} 
+              />
+              <Route
+                exact
+                path="/overallNetwork"
+                element={<OverallNetwork />}
               />
             </Routes>
           </LoginContext.Provider>

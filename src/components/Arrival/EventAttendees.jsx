@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ably from "../../config/ably";
+import useAbly from "../../util/ably";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -26,21 +26,23 @@ const EventAttendees = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
-  const { event, user } = location.state;
+  const { eventObj, userObj } = location.state;
   const [attendees, setAttendees] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState("");
-  const channel = ably.channels.get(`FindMe/${event.event_uid}`);
+  const { onAttendeeUpdate, subscribe, unSubscribe } = useAbly(
+    eventObj.event_uid
+  );
 
   const handleClickAttendee = (attendee) => {
     navigate("/attendeeDetails", {
-      state: { event, user, attendeeId: attendee.user_uid },
+      state: { eventObj, userObj, id: attendee.user_uid },
     });
   };
 
   const fetchAttendees = async () => {
     const response = await axios.get(
-      `${BASE_URL}/eventAttendees?eventId=${event.event_uid}&attendFlag=1`
+      `${BASE_URL}/eventAttendees?eventId=${eventObj.event_uid}&attendFlag=1`
     );
     const data = response["data"];
     setAttendees(data["attendees"]);
@@ -54,13 +56,14 @@ const EventAttendees = () => {
   };
 
   const joinSubscribe = () => {
-    channel.subscribe((e) => {
-      if (e.data.message === "Event started") {
-        navigate("/networkingActivity", { state: { event, user } });
-      } else if (e.data.message === "New attendee") {
-        fetchAttendees();
+    onAttendeeUpdate((m) => {
+      fetchAttendees();
+    });
+    subscribe((e) => {
+      if (e.data === "Event started") {
+        navigate("/networkingActivity", { state: { eventObj, userObj } });
       } else {
-        setMessage(e.data.message);
+        setMessage(e.data);
         setShowAlert(true);
       }
     });
@@ -69,7 +72,7 @@ const EventAttendees = () => {
   useEffect(() => {
     fetchAttendees();
     joinSubscribe();
-    return () => channel.unsubscribe();
+    return () => unSubscribe();
   }, []);
 
   return (
@@ -88,16 +91,16 @@ const EventAttendees = () => {
       <Typography
         variant="h2"
         className={classes.whiteText}
-        onClick={() => navigate(-1, { state: { event, user } })}
+        onClick={() => navigate(-1, { state: { eventObj, userObj } })}
         gutterBottom
       >
         {"attend"}
       </Typography>
       <Typography variant="h5" className={classes.whiteText} align="center">
-        {event.event_title}
+        {eventObj.event_title}
       </Typography>
       <Typography variant="h6" className={classes.whiteText} align="center">
-        {new Date(event.event_start_date).toLocaleString("default", {
+        {new Date(eventObj.event_start_date).toLocaleString("default", {
           month: "short",
           day: "numeric",
         })}
@@ -108,7 +111,9 @@ const EventAttendees = () => {
         align="center"
         sx={{ fontKerning: "none" }}
       >
-        {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
+        {`${eventObj.event_start_time.slice(0, -2)} - ${
+          eventObj.event_end_time
+        }`}
       </Typography>
       <Typography
         variant="h5"

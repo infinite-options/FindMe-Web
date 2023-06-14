@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ably from "../../config/ably";
+import useAbly from "../../util/ably";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -19,26 +19,23 @@ const EventDashboard = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
-  const event = location.state
-    ? location.state.event
-    : JSON.parse(localStorage.getItem("event"));
-  const user =
-    typeof location.state.user === "string"
-      ? JSON.parse(location.state.user)
-      : location.state.user;
-  const [eventStarted, setEventStarted] = useState(event.event_status === "1");
+  const { eventObj, userObj } = location.state;
+  const [eventStarted, setEventStarted] = useState(
+    eventObj.event_status === "1" ||
+      JSON.parse(localStorage.getItem("event")).event_status === "1"
+  );
   const [showDialog, setShowDialog] = useState(false);
   const [message, setMessage] = useState("");
-  const channel = ably.channels.get(`FindMe/${event.event_uid}`);
+  const { publish } = useAbly(eventObj.event_uid);
 
   const handleShowRegistrationCode = () => {
     navigate("/showRegistrationCode", {
-      state: { event, user },
+      state: { eventObj, userObj },
     });
   };
 
   const handleBroadcast = () => {
-    channel.publish({ data: { message } });
+    publish(message);
     setShowDialog(false);
   };
 
@@ -48,56 +45,50 @@ const EventDashboard = () => {
 
   const handleStartEvent = async () => {
     const response = await axios.get(
-      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&userId=${user.user_uid}`
+      `${BASE_URL}/eventStatus?eventId=${eventObj.event_uid}&userId=${userObj.user_uid}`
     );
     if (!response.data.hasRegistered) {
-      navigate("/preregistration-event/" + event.event_registration_code, {
-        state: { event },
+      navigate("/preregistration-event/" + eventObj.event_registration_code, {
+        state: { event: eventObj },
       });
       return;
     }
     await axios.put(
-      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&eventStatus=1`
+      `${BASE_URL}/eventStatus?eventId=${eventObj.event_uid}&eventStatus=1`
     );
-    event.event_status = "1";
+    eventObj.event_status = "1";
     setEventStarted(true);
-    localStorage.setItem("event", JSON.stringify(event));
-    localStorage.setItem("user", JSON.stringify(user));
-    channel.publish({ data: { message: "Event started" } });
+    localStorage.setItem("event", JSON.stringify(eventObj));
+    localStorage.setItem("user", JSON.stringify(userObj));
     window.open("/networkingActivity", "_blank");
+    publish("Event started");
   };
 
   const handleStopEvent = () => {
     setEventStarted(false);
-    channel.publish({ data: { message: "Event ended" } });
-    event.event_status = "0";
-    localStorage.setItem("event", JSON.stringify(event));
+    publish("Event ended");
+    eventObj.event_status = "0";
+    localStorage.setItem("event", JSON.stringify(eventObj));
     axios.put(
-      `${BASE_URL}/eventStatus?eventId=${event.event_uid}&eventStatus=0`
+      `${BASE_URL}/eventStatus?eventId=${eventObj.event_uid}&eventStatus=0`
     );
   };
-
-  const handleOrganizerAttend = () => {
-    axios.put(
-      `${BASE_URL}/eventAttend?userId=${user.user_uid}&eventId=${event.event_uid}&attendFlag=1`
-    );
-    channel.presence.enterClient(user.user_uid + event.event_uid);
-  };
-
-  useEffect(() => {
-    handleOrganizerAttend();
-  }, []);
 
   return (
     <Box>
-      <Typography variant="h2" className={classes.whiteText} gutterBottom>
+      <Typography
+        variant="h2"
+        className={classes.whiteText}
+        onClick={() => navigate("/currentEvents")}
+        gutterBottom
+      >
         {"attend"}
       </Typography>
       <Typography variant="h4" className={classes.whiteText} align="center">
-        {event.event_title}
+        {eventObj.event_title}
       </Typography>
       <Typography variant="h5" className={classes.whiteText} align="center">
-        {new Date(event.event_start_date).toLocaleString("default", {
+        {new Date(eventObj.event_start_date).toLocaleString("default", {
           month: "short",
           day: "numeric",
         })}
@@ -108,7 +99,9 @@ const EventDashboard = () => {
         align="center"
         sx={{ fontKerning: "none" }}
       >
-        {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
+        {`${eventObj.event_start_time.slice(0, -2)} - ${
+          eventObj.event_end_time
+        }`}
       </Typography>
       <Stack
         align="center"
@@ -129,7 +122,7 @@ const EventDashboard = () => {
             className={classes.button}
             onClick={() =>
               navigate("/eventRegistrants", {
-                state: { event, user },
+                state: { eventObj, userObj },
               })
             }
           >
@@ -139,11 +132,21 @@ const EventDashboard = () => {
             className={classes.button}
             onClick={() =>
               navigate("/eventAttendees", {
-                state: { event, user },
+                state: { eventObj, userObj },
               })
             }
           >
             {"View Attendees"}
+          </Button>
+          <Button
+            className={classes.button}
+            onClick={() =>
+              navigate("/overallNetwork", {
+                state: { eventObj, userObj },
+              })
+            }
+          >
+            {"View Network"}
           </Button>
           <Button
             className={classes.button}

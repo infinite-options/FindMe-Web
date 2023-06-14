@@ -14,7 +14,7 @@ const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 const AttendeeDetails = () => {
   const classes = useStyles();
   const location = useLocation();
-  const { event, user, attendeeId } = location.state;
+  const { eventObj, userObj, id } = location.state;
   const navigate = useNavigate();
   const [registrant, setRegistrant] = useState({ images: "[]" });
   const [qas, setQas] = useState([]);
@@ -22,7 +22,7 @@ const AttendeeDetails = () => {
   const fetchRegistrantDetails = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/eventRegistrant?eventId=${event.event_uid}&registrantId=${attendeeId}`
+        `${BASE_URL}/eventRegistrant?eventId=${eventObj.event_uid}&registrantId=${id}`
       );
       const data = response["data"];
       setRegistrant(data.registrant);
@@ -39,10 +39,10 @@ const AttendeeDetails = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Typography variant="h5" className={classes.whiteText} align="center">
-        {event.event_title}
+        {eventObj.event_title}
       </Typography>
       <Typography variant="h6" className={classes.whiteText} align="center">
-        {new Date(event.event_start_date).toLocaleString("default", {
+        {new Date(eventObj.event_start_date).toLocaleString("default", {
           month: "short",
           day: "numeric",
         })}
@@ -53,7 +53,9 @@ const AttendeeDetails = () => {
         align="center"
         sx={{ fontKerning: "none" }}
       >
-        {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
+        {`${eventObj.event_start_time.slice(0, -2)} - ${
+          eventObj.event_end_time
+        }`}
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", mt: 4 }}>
         <Stack align="center" direction="column">
@@ -133,7 +135,7 @@ const AttendeeDetails = () => {
       <Box sx={{ display: "flex", flexDirection: "column", my: 4 }}>
         <Button
           className={classes.button}
-          onClick={() => navigate(-1, { state: { event, user } })}
+          onClick={() => navigate(-1, { state: { eventObj, userObj } })}
         >
           <img src={Back} style={{ width: "2rem" }} alt="back" />
           {"Back"}

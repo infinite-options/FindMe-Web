@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import ably from "../../config/ably";
+import useAbly from "../../util/ably";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -15,28 +15,28 @@ const EarlyArrival = () => {
   const { eventObj, user } = location.state;
   const userObj = typeof user === "string" ? JSON.parse(user) : user;
   const navigate = useNavigate();
-  const channel = ably.channels.get(`FindMe/${eventObj.event_uid}`);
+  const { addAttendee, isAttendeePresent } = useAbly(eventObj.event_uid);
 
   const handleEnterWaitingRoom = async () => {
     const response = await axios.get(
-      `${BASE_URL}/eventStatus?eventId=${eventObj.event_uid}&userId=${user.user_uid}`
+      `${BASE_URL}/eventStatus?eventId=${eventObj.event_uid}&userId=${userObj.user_uid}`
     );
     if (response.data.eventStarted === "1") {
       navigate("/networkingActivity", {
-        state: { event: eventObj, user },
+        state: { eventObj, userObj },
       });
     } else {
       navigate("/eventAttendees", {
-        state: { event: eventObj, user },
+        state: { eventObj, userObj },
       });
     }
   };
 
-  const handleNewAttendee = () => {
-    axios.put(
+  const handleNewAttendee = async () => {
+    await axios.put(
       `${BASE_URL}/eventAttend?userId=${userObj.user_uid}&eventId=${eventObj.event_uid}&attendFlag=1`
     );
-    channel.publish({ data: { message: "New attendee" } });
+    addAttendee(userObj.user_uid);
   };
 
   const validateAndRoute = async () => {
@@ -44,8 +44,9 @@ const EarlyArrival = () => {
       `${BASE_URL}/isOrganizer?userId=${userObj.user_uid}&eventId=${eventObj.event_uid}`
     );
     if (response.data.isOrganizer) {
+      handleNewAttendee();
       navigate("/eventDashboard", {
-        state: { event: eventObj, user },
+        state: { eventObj, userObj },
       });
     } else {
       const response = await axios.get(
@@ -58,23 +59,17 @@ const EarlyArrival = () => {
         return;
       }
       handleNewAttendee();
-      channel.presence.get(
-        { clientId: eventObj.event_organizer_uid + eventObj.event_uid },
-        async (err, members) => {
-          if (err) console.error("Ably error: " + err.message);
-          if (members.length > 0) {
-            if (response.data.eventStarted === "1") {
-              navigate("/networkingActivity", {
-                state: { event: eventObj, user },
-              });
-            } else {
-              navigate("/waiting", {
-                state: { event: eventObj, user },
-              });
-            }
-          }
+      isAttendeePresent(eventObj.event_organizer_uid, () => {
+        if (response.data.eventStarted === "1") {
+          navigate("/networkingActivity", {
+            state: { eventObj, userObj },
+          });
+        } else {
+          navigate("/waiting", {
+            state: { eventObj, userObj },
+          });
         }
-      );
+      });
     }
   };
 
@@ -84,7 +79,12 @@ const EarlyArrival = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Typography variant="h2" className={classes.whiteText} gutterBottom>
+      <Typography
+        variant="h2"
+        className={classes.whiteText}
+        onClick={() => navigate("/currentEvents")}
+        gutterBottom
+      >
         {"attend"}
       </Typography>
       <Typography variant="h5" className={classes.whiteText} align="center">

@@ -13,12 +13,10 @@ const ShowRegistrationCode = () => {
   const classes = useStyles();
   const location = useLocation();
   const navigate = useNavigate();
-  const event = location.state
-    ? location.state.event
-    : JSON.parse(localStorage.getItem("event"));
+  const { eventObj } = location.state;
 
   const sendEmail = () => {
-    axios.post(BASE_URL + "/SendEventDetails", event);
+    axios.post(BASE_URL + "/SendEventDetails", eventObj);
   };
 
   return (
@@ -32,10 +30,10 @@ const ShowRegistrationCode = () => {
         {"attend"}
       </Typography>
       <Typography variant="h4" className={classes.whiteText} align="center">
-        {event.event_title}
+        {eventObj.event_title}
       </Typography>
       <Typography variant="h6" className={classes.whiteText} align="center">
-        {new Date(event.event_start_date).toLocaleString("default", {
+        {new Date(eventObj.event_start_date).toLocaleString("default", {
           month: "short",
           day: "numeric",
         })}
@@ -46,7 +44,9 @@ const ShowRegistrationCode = () => {
         align="center"
         sx={{ fontKerning: "none" }}
       >
-        {`${event.event_start_time.slice(0, -2)} - ${event.event_end_time}`}
+        {`${eventObj.event_start_time.slice(0, -2)} - ${
+          eventObj.event_end_time
+        }`}
       </Typography>
       <Typography
         variant="h4"
@@ -61,16 +61,18 @@ const ShowRegistrationCode = () => {
           variant="h4"
           className={classes.whiteText}
           onClick={() => {
-            navigate("/preregistration-event/" + event.event_registration_code);
+            navigate(
+              "/preregistration-event/" + eventObj.event_registration_code
+            );
           }}
         >
-          {event.event_registration_code}
+          {eventObj.event_registration_code}
         </Typography>
       </Stack>
       <Stack direction="row" justifyContent="center" sx={{ mt: 5 }}>
         <QRCode
           route={"/preregistration-event/"}
-          event_registration_code={event.event_registration_code}
+          event_registration_code={eventObj.event_registration_code}
         ></QRCode>
       </Stack>
       <Stack direction="row" justifyContent="center" sx={{ mt: 5 }}>
