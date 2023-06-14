@@ -69,6 +69,8 @@ export default function EventReview() {
   const addEvent = async () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     retrievedEventObject["user_timezone"] = user_timezone;
+    retrievedEventObject["eventStartTime"] = retrievedEventObject["eventStartTime"] && retrievedEventObject["eventStartTime"].split(':')[0].length() == 1 ? ("0" + retrievedEventObject["eventStartTime"]) : retrievedEventObject["eventStartTime"];
+    retrievedEventObject["eventEndTime"] = retrievedEventObject["eventEndTime"] && retrievedEventObject["eventEndTime"].split(':')[0].length() == 1 ? ("0" + retrievedEventObject["eventEndTime"]) : retrievedEventObject["eventEndTime"];
     const files = imageState[0];
     let i = 0;
     for (const file of imageState[0]) {
@@ -118,6 +120,8 @@ export default function EventReview() {
   const updateEvent = async () => {
     let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     retrievedEventObject["user_timezone"] = user_timezone;
+    retrievedEventObject["eventStartTime"] = retrievedEventObject["eventStartTime"] && retrievedEventObject["eventStartTime"].split(':')[0].length == 1 ? ("0" + retrievedEventObject["eventStartTime"]) : retrievedEventObject["eventStartTime"];
+    retrievedEventObject["eventEndTime"] = retrievedEventObject["eventEndTime"] && retrievedEventObject["eventEndTime"].split(':')[0].length == 1 ? ("0" + retrievedEventObject["eventEndTime"]) : retrievedEventObject["eventEndTime"];
     const files = imageState[0];
     let i = 0;
     for (const file of imageState[0]) {

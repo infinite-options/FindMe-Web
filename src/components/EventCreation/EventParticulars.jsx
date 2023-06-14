@@ -9,11 +9,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import useStyles from '../../theming/styles';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function EventParticulars() {
     const classes = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
+    const [showAddTime, setShowAddTime] = useState(false);
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
     
     const today = dayjs();
@@ -26,15 +30,62 @@ export default function EventParticulars() {
     const [endTime, setEndTime] = useState('');
 
     const saveEventObject = () => {
-        console.log("retrievedEventObject - ", retrievedEventObject)
-        retrievedEventObject['eventStartDate'] = new Date(selectedStartDate).toLocaleDateString("en-US");
-        retrievedEventObject['eventEndDate'] = new Date(selectedEndDate).toLocaleDateString("en-US");
-        retrievedEventObject['eventStartTime'] = new Date(startTime).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });;
-        retrievedEventObject['eventEndTime'] = new Date(endTime).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });;
-        localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("retrievedEventObject - ",retrievedEventObject)
+        if (startTime === '' || endTime === '') {
+            setShowAddTime(true);
+        }
+        else {
+            console.log("retrievedEventObject - ", retrievedEventObject)
+            retrievedEventObject['eventStartDate'] = new Date(selectedStartDate).toLocaleDateString("en-US");
+            retrievedEventObject['eventEndDate'] = new Date(selectedEndDate).toLocaleDateString("en-US");
+            let start_time = new Date(startTime).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+            retrievedEventObject['eventStartTime'] = start_time ? start_time.replace(/^0+/, '') : '';
+            let end_time = new Date(endTime).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+            retrievedEventObject['eventEndTime'] = end_time ? end_time.replace(/^0+/, '') : '';
+            localStorage.setItem('event', JSON.stringify(retrievedEventObject));
+            console.log("retrievedEventObject - ", retrievedEventObject)
+
+            if(location.state && location.state.edit){
+                navigate(-1);
+            }
+            else{
+                navigate('/eventLocation');
+            }
+        }
     }
 
+    const DialogAddTime = () => {
+    return (
+      <Dialog
+        open={showAddTime}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            padding: "2rem",
+          }}
+        >
+          Enter Event Time
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowAddTime(false);
+            }}
+          >
+            Okay
+          </Button>
+        </DialogActions>
+        </Dialog>
+        )
+    }
+    
     return (
         <>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -70,6 +121,7 @@ export default function EventParticulars() {
         sx={{ mt: 2 }}
         alignItems="center"
         >
+            {DialogAddTime()}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DatePicker', 'TimePicker']}>
             <DatePicker 
@@ -192,12 +244,6 @@ export default function EventParticulars() {
         className={classes.button}
         onClick={() => {
             saveEventObject()
-            if(location.state && location.state.edit){
-                navigate(-1);
-            }
-            else{
-                navigate('/eventLocation');
-            }
         }}> Next</Button>
         </Stack>
         </Box>
