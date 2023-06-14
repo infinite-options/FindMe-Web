@@ -275,7 +275,30 @@ export default function EventByLocation() {
             })}
           </div>
         ) : (
-          `No events in the ${city} ${zipCode}`
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <div className={classes.events}>
+              {eventCitySet ? (
+                <Typography className={classes.eventText}>
+                  No events in the ${city}
+                </Typography>
+              ) : eventZipSet ? (
+                <Typography className={classes.eventText}>
+                  No events in the {miles} vicinity of ${zipCode}
+                </Typography>
+              ) : (
+                <Typography className={classes.eventText}>
+                  No events in the {miles} vicinity of ${address}
+                </Typography>
+              )}
+            </div>
+          </div>
         )}
       </Stack>
       <Stack
