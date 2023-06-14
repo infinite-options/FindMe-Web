@@ -4,6 +4,9 @@ import { Grid, Typography, Button, TextField, Box, Stack } from "@mui/material";
 import Searchbox from './Searchbox';
 import MapComponent from './MapComponent';
 import useStyles from '../../theming/styles';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function EventLocation() {
     const classes = useStyles();
@@ -15,7 +18,8 @@ export default function EventLocation() {
     const [address, setAddress] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [locationName, setLocationName] = useState('');
-
+    const [showAddLocation, setShowAddLocation] = useState(false);
+    
     const latLongHandler = (lat, long) => {
         setLat(lat)
         setLong(long)
@@ -47,11 +51,56 @@ export default function EventLocation() {
         setZipcode(zip)
     }
     const saveEventObject = () => {
-        retrievedEventObject['eventLocationName'] = locationName;
-        retrievedEventObject['eventLocation'] = address;
-        retrievedEventObject['eventZip'] = zipcode;
-        localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("retrievedEventObject - ", retrievedEventObject)
+        if (address === '') {
+            setShowAddLocation(true)
+        }
+        else {
+            retrievedEventObject['eventLocationName'] = locationName;
+            retrievedEventObject['eventLocation'] = address;
+            retrievedEventObject['eventZip'] = zipcode;
+            localStorage.setItem('event', JSON.stringify(retrievedEventObject));
+            console.log("retrievedEventObject - ", retrievedEventObject)
+
+            if (location.state && location.state.edit) {
+                navigate(-1);
+            }
+            else {
+                navigate('/eventTitle');
+            }
+        }
+    }
+
+    const DialogAddLocation = () => {
+    return (
+      <Dialog
+        open={showAddLocation}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            padding: "2rem",
+          }}
+        >
+          Enter Event Location
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowAddLocation(false);
+            }}
+          >
+            Okay
+          </Button>
+        </DialogActions>
+        </Dialog>
+        )
     }
     return (
         <>
@@ -85,6 +134,7 @@ export default function EventLocation() {
         alignItems="center"
         justify="center"
         >
+            {DialogAddLocation()}
             <Searchbox
                 latLongHandler={latLongHandler}
                 addressHandler={addressHandler}
@@ -102,12 +152,6 @@ export default function EventLocation() {
                 className={classes.button}
                 onClick={() => {
                     saveEventObject()
-                    if(location.state && location.state.edit){
-                        navigate(-1);
-                    }
-                    else{
-                        navigate('/eventTitle');
-                    }
                 }}> Next</Button>
             </Stack>
         </Grid>

@@ -2,6 +2,9 @@ import React, { Component, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Typography, Button, TextField, Box, Stack } from "@mui/material";
 import useStyles from '../../theming/styles';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function EventTitle() {
     const classes = useStyles();
@@ -10,7 +13,8 @@ export default function EventTitle() {
     const retrievedEventObject = localStorage.getItem('event') === null ? {} : JSON.parse(localStorage.getItem('event'));
     const [eventTitle, setEventTitle] = useState(retrievedEventObject && retrievedEventObject.eventTitle ? retrievedEventObject.eventTitle : '');
     const [eventDescription, setEventDescription] = useState(retrievedEventObject && retrievedEventObject.eventDescription ? retrievedEventObject.eventDescription : '');
-    
+    const [showAddTitle, setShowAddTitle] = useState(false)
+
     const handleTitleInput = (e) => {
         setEventTitle(e.target.value)
     }
@@ -18,11 +22,55 @@ export default function EventTitle() {
          setEventDescription(e.target.value)
     }
     const saveEventObject = () => {
-        console.log("** ", retrievedEventObject)
-        retrievedEventObject['eventTitle'] = eventTitle;
-        retrievedEventObject['eventDescription'] = eventDescription;
-        localStorage.setItem('event', JSON.stringify(retrievedEventObject));
-        console.log("66 ",retrievedEventObject)
+        if (eventTitle === '') {
+            setShowAddTitle(true);
+        }
+        else {
+            console.log("retrievedEventObject ", retrievedEventObject)
+            retrievedEventObject['eventTitle'] = eventTitle;
+            retrievedEventObject['eventDescription'] = eventDescription;
+            localStorage.setItem('event', JSON.stringify(retrievedEventObject));
+            console.log("retrievedEventObject ", retrievedEventObject)
+
+            if(location.state && location.state.edit){
+                navigate(-1);
+            }
+            else{
+                navigate('/eventCapacity');
+            }
+        }
+    }
+    const DialogAddTitle = () => {
+    return (
+      <Dialog
+        open={showAddTitle}
+        // onClose={onCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            padding: "2rem",
+          }}
+        >
+          Enter Event Title
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowAddTitle(false);
+            }}
+          >
+            Okay
+          </Button>
+        </DialogActions>
+        </Dialog>
+        )
     }
     return (
         <>
@@ -49,6 +97,7 @@ export default function EventTitle() {
           justifyContent="center"
           sx={{ mt: 5 }}
         >
+            {DialogAddTitle()}
             <TextField 
             className={classes.textfield}
             inputProps={{
@@ -100,12 +149,6 @@ export default function EventTitle() {
             className={classes.button}
             onClick={() => {
                 saveEventObject()
-                if(location.state && location.state.edit){
-                    navigate(-1);
-                }
-                else{
-                    navigate('/eventCapacity');
-                }
             }}> Next</Button>
         </Stack>
         </Box>
