@@ -59,67 +59,56 @@ export default function CurrentRSVPs() {
             flexDirection: "column",
           }}
         >
-          {" "}
-          {events.map((event) => {
-            return (
-              <Box
-                className={classes.eventContainer}
-                onClick={() => {
-                  navigate("/event-details", { state: { event: event } });
-                }}
-              >
-                <div direction="column" spacing={2} className={classes.events}>
-                  <Typography className={classes.eventText}>
-                    {event.event_title}
-                    <br />
-                    {event.event_location.split(",")[1]},{" "}
-                    {event.event_location.split(",")[2]}
-                    <br />
-                    {new Date(event.event_start_date).toLocaleString(
-                      "default",
-                      {
-                        month: "short",
-                        day: "numeric",
-                      }
+          {events.length > 0 ? (
+            events.map((event) => {
+              return (
+                <Box
+                  className={classes.eventContainer}
+                  onClick={() => {
+                    navigate("/event-details", { state: { event: event } });
+                  }}
+                >
+                  <div
+                    direction="column"
+                    spacing={2}
+                    className={classes.events}
+                  >
+                    <Typography className={classes.eventText}>
+                      {event.event_title}
+                      <br />
+                      {event.event_location.split(",")[1]},{" "}
+                      {event.event_location.split(",")[2]}
+                      <br />
+                      {new Date(event.event_start_date).toLocaleString(
+                        "default",
+                        {
+                          month: "short",
+                          day: "numeric",
+                        }
+                      )}
+                      ,{event.event_start_time} - {event.event_end_time}
+                    </Typography>
+                  </div>
+                  <div className={classes.ellipse}>
+                    {JSON.parse(event.event_photo).length === 0 ? (
+                      <img className={classes.ellipseImg} src={NoImage} />
+                    ) : (
+                      <img
+                        className={classes.ellipseImg}
+                        src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                      />
                     )}
-                    ,{event.event_start_time} - {event.event_end_time}
-                  </Typography>
-                </div>
-                <div className={classes.ellipse}>
-                  {JSON.parse(event.event_photo).length === 0 ? (
-                    <img className={classes.ellipseImg} src={NoImage} />
-                  ) : (
-                    <img
-                      className={classes.ellipseImg}
-                      src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                    />
-                  )}
-                </div>
-              </Box>
-            );
-          })}
+                  </div>
+                </Box>
+              );
+            })
+          ) : (
+            <Typography className={classes.eventText}>
+              No current RSVPs
+            </Typography>
+          )}
         </div>
       </Stack>
-      {/* {events ? (
-        <Stack
-          direction="column"
-          justifyContent="center"
-          spacing={2}
-          sx={{ mt: 12 }}
-        >
-          <Button
-            className={classes.button}
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            <img src={Back} style={{ width: "2rem" }} />
-            &nbsp; &nbsp;Back
-          </Button>
-        </Stack>
-      ) : (
-        ""
-      )} */}
     </Box>
   );
 }

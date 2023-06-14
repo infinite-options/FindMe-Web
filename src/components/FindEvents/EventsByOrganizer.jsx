@@ -167,7 +167,20 @@ export default function EventByOrganizer() {
               );
             })
           ) : (
-            `No events of type ${eventOrganizer}`
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <div className={classes.events}>
+                <Typography className={classes.eventText}>
+                  No events by organizer ${eventOrganizer}
+                </Typography>
+              </div>
+            </div>
           )}
         </div>
       </Stack>

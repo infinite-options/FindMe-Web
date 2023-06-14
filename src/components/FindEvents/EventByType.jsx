@@ -110,56 +110,74 @@ export default function EventByType() {
               flexDirection: "column",
             }}
           >
-            {events.map((event) => {
-              return (
-                <Box
-                  className={classes.eventContainer}
-                  onClick={() => {
-                    navigate(
-                      "/preregistration-event/" + event.event_registration_code,
-                      {
-                        state: { event: event },
-                      }
-                    );
-                  }}
-                >
-                  <div
-                    direction="column"
-                    spacing={2}
-                    className={classes.events}
-                  >
-                    <Typography className={classes.eventText}>
-                      {event.event_title}
-                      <br />
-                      {event.event_location.split(",")[1]},{" "}
-                      {event.event_location.split(",")[2]}
-                      <br />
-                      {new Date(event.event_start_date).toLocaleString(
-                        "default",
+            {events.length > 0 ? (
+              events.map((event) => {
+                return (
+                  <Box
+                    className={classes.eventContainer}
+                    onClick={() => {
+                      navigate(
+                        "/preregistration-event/" +
+                          event.event_registration_code,
                         {
-                          month: "short",
-                          day: "numeric",
+                          state: { event: event },
                         }
+                      );
+                    }}
+                  >
+                    <div
+                      direction="column"
+                      spacing={2}
+                      className={classes.events}
+                    >
+                      <Typography className={classes.eventText}>
+                        {event.event_title}
+                        <br />
+                        {event.event_location.split(",")[1]},{" "}
+                        {event.event_location.split(",")[2]}
+                        <br />
+                        {new Date(event.event_start_date).toLocaleString(
+                          "default",
+                          {
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
+                        ,{event.event_start_time} - {event.event_end_time}
+                      </Typography>
+                    </div>
+                    <div className={classes.ellipse}>
+                      {JSON.parse(event.event_photo).length === 0 ? (
+                        <img className={classes.ellipseImg} src={NoImage} />
+                      ) : (
+                        <img
+                          className={classes.ellipseImg}
+                          src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
+                        />
                       )}
-                      ,{event.event_start_time} - {event.event_end_time}
-                    </Typography>
-                  </div>
-                  <div className={classes.ellipse}>
-                    {JSON.parse(event.event_photo).length === 0 ? (
-                      <img className={classes.ellipseImg} src={NoImage} />
-                    ) : (
-                      <img
-                        className={classes.ellipseImg}
-                        src={`${JSON.parse(event.event_photo)}?${Date.now()}`}
-                      />
-                    )}
-                  </div>
-                </Box>
-              );
-            })}{" "}
+                    </div>
+                  </Box>
+                );
+              })
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <div className={classes.events}>
+                  <Typography className={classes.eventText}>
+                    No events of type {eventType}
+                  </Typography>
+                </div>
+              </div>
+            )}
           </div>
         ) : (
-          `No events of type ${eventType}`
+          ""
         )}
       </Stack>
       <Stack
