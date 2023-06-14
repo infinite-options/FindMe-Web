@@ -19,10 +19,13 @@ export default function EventByOrganizer() {
   const [isLoading, setIsLoading] = useState(true);
 
   const getOrganizers = () => {
-    axios.get(BASE_URL + `/GetOrganizers`).then((response) => {
-      setOrganizers(response.data.result);
-      setIsLoading(false);
-    });
+    let user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    axios
+      .get(BASE_URL + `/GetOrganizers?timeZone=${user_timezone}`)
+      .then((response) => {
+        setOrganizers(response.data.result);
+        setIsLoading(false);
+      });
   };
 
   const getEventsByOrganizer = (id) => {
