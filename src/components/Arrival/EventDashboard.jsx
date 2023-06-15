@@ -21,8 +21,7 @@ const EventDashboard = () => {
   const location = useLocation();
   const { eventObj, userObj } = location.state;
   const [eventStarted, setEventStarted] = useState(
-    eventObj.event_status === "1" ||
-      JSON.parse(localStorage.getItem("event")).event_status === "1"
+    eventObj.event_status === "1"
   );
   const [showDialog, setShowDialog] = useState(false);
   const [message, setMessage] = useState("");
@@ -58,20 +57,32 @@ const EventDashboard = () => {
     );
     eventObj.event_status = "1";
     setEventStarted(true);
+    handleClearStorage(["event", "user"]);
     localStorage.setItem("event", JSON.stringify(eventObj));
     localStorage.setItem("user", JSON.stringify(userObj));
     window.open("/networkingActivity", "_blank");
     publish("Event started");
+    navigate(".", {
+      state: { eventObj, userObj },
+    });
   };
 
   const handleStopEvent = () => {
     setEventStarted(false);
     publish("Event ended");
-    eventObj.event_status = "0";
-    localStorage.setItem("event", JSON.stringify(eventObj));
     axios.put(
       `${BASE_URL}/eventStatus?eventId=${eventObj.event_uid}&eventStatus=0`
     );
+    eventObj.event_status = "0";
+    navigate(".", {
+      state: { eventObj, userObj },
+    });
+  };
+
+  const handleClearStorage = (items) => {
+    items.forEach((item) => {
+      localStorage.removeItem(item);
+    });
   };
 
   return (
